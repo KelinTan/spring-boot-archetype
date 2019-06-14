@@ -1,0 +1,1 @@
+INSERT INTO t_user(id,user_name) VALUES (1,'hehe');
