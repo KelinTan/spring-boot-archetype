@@ -1,4 +1,5 @@
 // Copyright 2018 Alo7 Inc. All rights reserved.
+
 package com.jrs.kelin.entity;
 
 import lombok.AllArgsConstructor;
