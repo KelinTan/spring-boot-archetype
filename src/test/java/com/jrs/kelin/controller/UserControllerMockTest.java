@@ -22,7 +22,6 @@ import org.springframework.http.MediaType;
  */
 public class UserControllerMockTest extends BaseTest {
     @Mock
-    @Autowired
     UserMapper userMapper;
 
     @InjectMocks
