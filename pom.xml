@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.alo7.kelin</groupId>
-    <artifactId>spring-boot-demo</artifactId>
+    <artifactId>spring-boot-archetype</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>demo-base</module>
-        <module>demo-common</module>
-        <module>demo-api</module>
+        <module>archetype-base</module>
+        <module>archetype-common</module>
+        <module>archetype-api</module>
     </modules>
 
-    <name>spring-boot-demo</name>
+    <name>spring-boot-archetype</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -32,12 +32,12 @@
         <dependencies>
             <dependency>
                 <groupId>com.alo7.kelin</groupId>
-                <artifactId>demo-common</artifactId>
+                <artifactId>archetype-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.alo7.kelin</groupId>
-                <artifactId>demo-base</artifactId>
+                <artifactId>archetype-base</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -67,6 +67,18 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>1.4.196</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.6</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
