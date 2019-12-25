@@ -8,14 +8,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.alo7.kelin.testing.BaseWebTest;
+import com.alo7.kelin.testing.BaseMockMvcTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
 /**
  * @author Kelin Tan
  */
-public class DemoUserControllerTest extends BaseWebTest {
+public class DemoUserControllerTest extends BaseMockMvcTest {
     @Test
     public void testFindAllUsers() throws Exception {
         mockMvc.perform(get("/user/findAll").accept(MediaType.APPLICATION_JSON))

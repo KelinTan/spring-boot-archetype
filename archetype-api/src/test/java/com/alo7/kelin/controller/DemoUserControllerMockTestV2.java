@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.alo7.kelin.entity.User;
 import com.alo7.kelin.mapper.UserMapper;
-import com.alo7.kelin.testing.BaseMockWebTest;
+import com.alo7.kelin.testing.BaseMockMvcTest;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -20,7 +20,7 @@ import org.springframework.http.MediaType;
 /**
  * @author Kelin Tan
  */
-public class DemoUserControllerMockTestV2 extends BaseMockWebTest {
+public class DemoUserControllerMockTestV2 extends BaseMockMvcTest {
     @Mock
     UserMapper userMapper;
 

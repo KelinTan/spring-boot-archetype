@@ -33,4 +33,11 @@ public class UserMapperTest extends BaseSpringTest {
 
         Assert.isTrue(insert.getUserName().equals("test"), "数据插入失败");
     }
+
+    @Test
+    public void testDelete() {
+        userMapper.deleteById(3L);
+
+        Assert.isNull(userMapper.findById(3L), "数据删除失败");
+    }
 }

@@ -2,6 +2,8 @@
 
 package com.alo7.kelin.testing;
 
+import org.junit.Before;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
@@ -10,7 +12,12 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Kelin Tan
  */
 @AutoConfigureMockMvc
-public class BaseWebTest extends BaseSpringTest {
+public class BaseMockMvcTest extends BaseSpringTest {
     @Autowired
     protected MockMvc mockMvc;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 }

@@ -1,3 +1,5 @@
+server:
+  port: 9000
 spring:
   profiles: test
   cloud.config.enabled: false
