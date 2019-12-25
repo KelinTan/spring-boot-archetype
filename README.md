@@ -8,3 +8,7 @@
 # v1.0
 
 2019-12-23 support 分模块 && 基础单元测试
+
+# v2.0
+
+2019-12-25 rename to spring-boot-archetype && support rpc client
