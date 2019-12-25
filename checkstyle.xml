@@ -14,6 +14,7 @@
 
 <module name = "Checker">
     <property name="charset" value="UTF-8"/>
+
     <property name="severity" value="error"/>
 
     <property name="fileExtensions" value="java,xml,properties,scala,groovy,kt"/>
@@ -21,6 +22,11 @@
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
+    </module>
+
+    <module name="RegexpHeader">
+        <property name="header" value="^// Copyright (\(C\) )?\d{4} (Alo7|ALO7) Inc\. All rights reserved\.$\n^$\n"/>
+        <property name="fileExtensions" value="java,kt"/>
     </module>
 
     <module name="RegexpMultiline">
@@ -103,6 +109,7 @@
                      value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
         </module>
         <module name="WhitespaceAfter"/>
+        <module name="SingleSpaceSeparator"/>
         <module name="OneStatementPerLine"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="ArrayTypeStyle"/>
@@ -130,6 +137,7 @@
         <module name="SeparatorWrap">
             <!-- ELLIPSIS is EOL until https://github.com/google/styleguide/issues/258 -->
             <property name="id" value="SeparatorWrapEllipsis"/>
+            <property name="tokens" value="ELLIPSIS"/>
             <property name="option" value="EOL"/>
         </module>
         <module name="SeparatorWrap">
@@ -140,6 +148,7 @@
         </module>
         <module name="SeparatorWrap">
             <property name="id" value="SeparatorWrapMethodRef"/>
+            <property name="tokens" value="METHOD_REF"/>
             <property name="option" value="nl"/>
         </module>
         <module name="ConstantName">
@@ -223,13 +232,13 @@
         </module>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceBefore">
-            <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT"/>
+            <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
             <property name="allowLineBreaks" value="true"/>
         </module>
         <module name="ParenPad"/>
         <module name="OperatorWrap">
             <property name="option" value="NL"/>
-            <property name="tokens" value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR"/>
+            <property name="tokens" value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF "/>
         </module>
         <module name="AnnotationLocation">
             <property name="id" value="AnnotationLocationMostCases"/>
