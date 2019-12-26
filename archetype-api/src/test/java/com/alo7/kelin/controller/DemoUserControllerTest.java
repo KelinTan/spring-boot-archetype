@@ -20,7 +20,7 @@ public class DemoUserControllerTest extends BaseMockMvcTest {
     public void testFindAllUsers() throws Exception {
         mockMvc.perform(get("/user/findAll").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value("1"))
+                .andExpect(jsonPath("$.length()").value("4"))
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[0].userName").value("hehe"));
     }
