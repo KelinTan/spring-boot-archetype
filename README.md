@@ -4,6 +4,8 @@
 2. 集成H2的单元测试 脚手架: mvn test
 3. checkstyle plugin校验支持 mvn checkstyle
 4. jacoco coverage 覆盖
+5. maven 多模块项目
+6. 自定义RpcClient调用外部服务
 
 # v1.0
 
