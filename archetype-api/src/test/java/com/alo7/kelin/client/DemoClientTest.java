@@ -63,7 +63,7 @@ public class DemoClientTest extends BaseSpringTest {
 
     @Test
     public void testRpcGetByIdWithRequestParam() {
-        User user = demoClient.findUser(1L);
+        User user = demoClient.findUser2(1L);
         assert user != null;
         assert user.getId() == 1;
         assert user.getUserName().equals("hehe");

@@ -20,7 +20,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,6 +30,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Kelin Tan
@@ -38,15 +38,15 @@ import java.util.Map;
 @Log4j2
 public class RpcClientProxy implements InvocationHandler {
     private Class<?> clazz;
-    private String requestUrlOnClass;
+    private String endpoint;
     private Map<Method, String> requestUrlOnMethods = new HashMap<>();
     private Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
     private Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
 
-    RpcClientProxy(Class<?> clazz) {
+    RpcClientProxy(Class<?> clazz, String endpoint) {
         super();
 
-        init(clazz);
+        init(clazz, endpoint);
     }
 
     @Override
@@ -59,7 +59,8 @@ public class RpcClientProxy implements InvocationHandler {
             Object requestBody = buildRequestBody(method, args);
 
             HttpRequestBase baseRequest = createRequest(
-                    buildUrl(requestUrlOnClass, requestUrlOnMethods.get(method), parameterMap, pathParameterMap),
+                    buildUrl(endpoint, requestUrlOnMethods.get(method), parameterMap,
+                            pathParameterMap),
                     requestMethod, headerMap, requestBody);
 
             CloseableHttpResponse response = RpcUtils.getDefaultHttpClient().execute(baseRequest);
@@ -80,9 +81,9 @@ public class RpcClientProxy implements InvocationHandler {
         return null;
     }
 
-    private void init(Class<?> clazz) {
+    private void init(Class<?> clazz, String endpoint) {
         this.clazz = clazz;
-        this.requestUrlOnClass = getRequestUri(clazz);
+        this.endpoint = endpoint;
         Method[] methods = clazz.getMethods();
         Arrays.stream(methods).forEach(method -> {
             this.requestUrlOnMethods.put(method, getRequestUri(method));
@@ -105,7 +106,8 @@ public class RpcClientProxy implements InvocationHandler {
                 HttpPost post = new HttpPost(uri);
                 if (requestBody != null) {
                     post.setEntity(
-                            new StringEntity(JsonConverter.serialize(requestBody), ContentType.APPLICATION_JSON));
+                            new StringEntity(Objects.requireNonNull(JsonConverter.serialize(requestBody)),
+                                    ContentType.APPLICATION_JSON));
                 }
                 requestBase = post;
                 break;
@@ -113,7 +115,8 @@ public class RpcClientProxy implements InvocationHandler {
                 HttpPut put = new HttpPut(uri);
                 if (requestBody != null) {
                     put.setEntity(
-                            new StringEntity(JsonConverter.serialize(requestBody), ContentType.APPLICATION_JSON));
+                            new StringEntity(Objects.requireNonNull(JsonConverter.serialize(requestBody)),
+                                    ContentType.APPLICATION_JSON));
                 }
                 requestBase = put;
                 break;
@@ -125,9 +128,10 @@ public class RpcClientProxy implements InvocationHandler {
         return requestBase;
     }
 
-    private String buildUrl(String requestUrlOnClass, String requestUrlOnMethod, Map<String, Object> parameterMap,
+    private String buildUrl(String endpoint, String requestUrlOnMethod,
+            Map<String, Object> parameterMap,
             Map<String, Object> pathParameterMap) {
-        String url = RpcUtils.concatPath(requestUrlOnClass, requestUrlOnMethod);
+        String url = RpcUtils.concatPath(endpoint, requestUrlOnMethod);
 
         url = RpcUtils.replacePathVariable(url, pathParameterMap);
         url = RpcUtils.appendParams(url, parameterMap);
@@ -136,28 +140,22 @@ public class RpcClientProxy implements InvocationHandler {
     }
 
     private RequestMethod getRequestMethod(Method method) {
-        RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-        if (annotation == null || annotation.method().length == 0) {
+        HttpMethod annotation = AnnotationUtils.findAnnotation(method, HttpMethod.class);
+        if (annotation == null) {
             throw new RuntimeException(
-                    String.format("%s.%s错误requestMapping method", clazz.getName(), method.getName()));
+                    String.format("%s.%s缺少HttpMethod", clazz.getName(), method.getName()));
+        } else {
+            annotation.method();
         }
-        return annotation.method()[0];
-    }
-
-    private String getRequestUri(Class<?> clazz) {
-        RequestMapping requestMapping = clazz.getAnnotation(RequestMapping.class);
-        if (requestMapping != null && requestMapping.value().length != 0) {
-            return requestMapping.value()[0];
-        }
-        return "";
+        return annotation.method();
     }
 
     private String getRequestUri(Method method) {
-        RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-        if (annotation == null || annotation.value().length == 0) {
-            throw new RuntimeException(String.format("%s.%s错误requestMapping value", clazz.getName(), method.getName()));
+        HttpMethod annotation = AnnotationUtils.findAnnotation(method, HttpMethod.class);
+        if (annotation == null) {
+            throw new RuntimeException(String.format("%s.%s缺少HttpMethod", clazz.getName(), method.getName()));
         }
-        return annotation.value()[0];
+        return annotation.value();
     }
 
     private Map<String, Object> buildParameterMap(Method method, Object[] args) {

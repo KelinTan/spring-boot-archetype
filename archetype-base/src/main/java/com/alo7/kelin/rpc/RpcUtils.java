@@ -68,6 +68,16 @@ class RpcUtils {
         return path;
     }
 
+    static String getProperty(String property) {
+        Matcher matcher = PATH_VARIAABLE_PATTERN.matcher(property);
+        if (matcher.find()) {
+            String group = matcher.group();
+            return group.substring(group.indexOf("{") + 1, group.indexOf("}"));
+        }
+
+        return property;
+    }
+
     static String appendParams(String path, Map<String, Object> parameterMap) {
         if (MapUtils.isEmpty(parameterMap)) {
             return path;
