@@ -108,8 +108,12 @@ public class RpcClientRegistrar
         try {
             AnnotationMetadata annotationMetadata = definition.getMetadata();
             Class<?> target = Class.forName(annotationMetadata.getClassName());
+
+            String endpoint = this.environment.getProperty(
+                    RpcUtils.getProperty(target.getAnnotation(RpcClient.class).host()));
+
             return Proxy.newProxyInstance(RpcClient.class.getClassLoader(), new Class[] {target},
-                    new RpcClientProxy(target));
+                    new RpcClientProxy(target, endpoint));
         } catch (ClassNotFoundException e) {
             if (log.isDebugEnabled()) {
                 log.debug(e.getMessage());

@@ -16,3 +16,6 @@ spring:
     data: classpath:data/*.sql
     initialization-mode: always
     platform: h2
+client:
+  endpoint:
+     demo: http://127.0.0.1:9000
