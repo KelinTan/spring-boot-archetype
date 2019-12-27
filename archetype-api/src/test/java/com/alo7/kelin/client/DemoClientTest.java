@@ -28,6 +28,12 @@ public class DemoClientTest extends BaseSpringTest {
     UserMapper userMapper;
 
     @Test
+    public void testRpcInit() {
+        assert demoClient != null;
+        assert Proxy.isProxyClass(demoClient.getClass());
+    }
+
+    @Test
     public void testRpcDeleteWithPathVariable() {
         assert userMapper.findById(3L) != null;
         demoClient.delete(3L);
@@ -39,12 +45,6 @@ public class DemoClientTest extends BaseSpringTest {
         assert userMapper.findById(4L) != null;
         demoClient.delete2(4L);
         assert userMapper.findById(4L) == null;
-    }
-
-    @Test
-    public void testRpcInit() {
-        assert demoClient != null;
-        assert Proxy.isProxyClass(demoClient.getClass());
     }
 
     @Test

@@ -15,5 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Import(RpcClientRegistrar.class)
-public @interface EnableRpcClient {
+public @interface RpcClientScan {
+    String[] value() default {};
+
+    String[] basePackages() default {};
 }
