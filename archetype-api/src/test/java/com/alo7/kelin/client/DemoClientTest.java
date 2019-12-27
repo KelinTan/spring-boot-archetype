@@ -84,4 +84,13 @@ public class DemoClientTest extends BaseSpringTest {
         assert user != null;
         assert user.getUserName().equals("rpcSave2");
     }
+
+    @Test
+    public void testRpcPutWithRequestBody() {
+        User data = new User();
+        data.setUserName("rpcSave3");
+        User user = demoClient.save3(data);
+        assert user != null;
+        assert user.getUserName().equals("rpcSave3");
+    }
 }
