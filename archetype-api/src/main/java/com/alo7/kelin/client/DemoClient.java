@@ -32,6 +32,9 @@ public interface DemoClient {
     @HttpMethod(value = "/user/save2", method = RequestMethod.POST)
     User save2(@RequestBody User user);
 
+    @HttpMethod(value = "/user/save3", method = RequestMethod.PUT)
+    User save3(@RequestBody User user);
+
     @HttpMethod(value = "/user/{id}", method = RequestMethod.DELETE)
     void delete(@PathVariable(value = "id") Long id);
 
