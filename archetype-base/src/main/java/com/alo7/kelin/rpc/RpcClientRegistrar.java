@@ -13,15 +13,16 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,8 +33,6 @@ import java.util.Set;
 public class RpcClientRegistrar
         implements
         ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanClassLoaderAware, EnvironmentAware, BeanFactoryAware {
-    private static final String BASE_PACKAGE = "com.alo7.kelin";
-
     private ResourceLoader resourceLoader;
     private BeanFactory beanFactory;
     private ClassLoader classLoader;
@@ -41,7 +40,7 @@ public class RpcClientRegistrar
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata meta, BeanDefinitionRegistry registry) {
-        registerRpcClient();
+        registerRpcClient(meta);
     }
 
     @Override
@@ -64,9 +63,16 @@ public class RpcClientRegistrar
         this.resourceLoader = resourceLoader;
     }
 
-    private void registerRpcClient() {
-        ClassPathScanningCandidateComponentProvider classScanner = getRpcClientScanner();
-        Set<BeanDefinition> beanDefinitionSet = classScanner.findCandidateComponents(BASE_PACKAGE);
+    private void registerRpcClient(AnnotationMetadata metadata) {
+        AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(
+                RpcClientScan.class.getName()));
+        if (annoAttrs == null) {
+            return;
+        }
+        List<String> basePackages = geScanPackages(annoAttrs);
+        ClassPathRpcClientScanner classScanner = new ClassPathRpcClientScanner(environment, classLoader,
+                resourceLoader);
+        Set<BeanDefinition> beanDefinitionSet = classScanner.scan(basePackages);
 
         beanDefinitionSet.forEach(beanDefinition -> {
             if (beanDefinition instanceof AnnotatedBeanDefinition) {
@@ -75,28 +81,19 @@ public class RpcClientRegistrar
         });
     }
 
-    private ClassPathScanningCandidateComponentProvider getRpcClientScanner() {
-        ClassPathScanningCandidateComponentProvider provider =
-                new ClassPathScanningCandidateComponentProvider(false, this.environment) {
-                    @Override
-                    protected boolean isCandidateComponent(
-                            AnnotatedBeanDefinition beanDefinition) {
-                        AnnotationMetadata metadata = beanDefinition.getMetadata();
-                        if (metadata.isInterface()) {
-                            try {
-                                Class<?> target = ClassUtils.forName(metadata.getClassName(), classLoader);
-                                return !target.isAnnotation();
-                            } catch (Exception e) {
-                                log.error("load class exception:", e);
-                            }
-                        }
-                        return false;
-                    }
-                };
-
-        provider.setResourceLoader(this.resourceLoader);
-        provider.addIncludeFilter(new AnnotationTypeFilter(RpcClient.class));
-        return provider;
+    private List<String> geScanPackages(AnnotationAttributes annoAttrs) {
+        List<String> basePackages = new ArrayList<>();
+        for (String pkg : annoAttrs.getStringArray("value")) {
+            if (StringUtils.hasText(pkg)) {
+                basePackages.add(pkg);
+            }
+        }
+        for (String pkg : annoAttrs.getStringArray("basePackages")) {
+            if (StringUtils.hasText(pkg)) {
+                basePackages.add(pkg);
+            }
+        }
+        return basePackages;
     }
 
     private void registerBean(AnnotatedBeanDefinition definition) {
