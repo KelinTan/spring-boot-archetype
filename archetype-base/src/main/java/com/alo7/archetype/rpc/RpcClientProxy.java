@@ -133,8 +133,8 @@ public class RpcClientProxy implements InvocationHandler {
             Map<String, Object> pathParameterMap) {
         String url = RpcUtils.concatPath(endpoint, requestUrlOnMethod);
 
-        url = RpcUtils.replacePathVariable(url, pathParameterMap);
-        url = RpcUtils.appendParams(url, parameterMap);
+        url = RpcUtils.formatUrlWithPathParams(url, pathParameterMap);
+        url = RpcUtils.formatUrlWithParams(url, parameterMap);
 
         return url;
     }

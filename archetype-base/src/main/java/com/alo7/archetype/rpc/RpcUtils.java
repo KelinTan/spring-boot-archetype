@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 class RpcUtils {
     private static CloseableHttpClient defaultHttpClient;
-    private static final Pattern PATH_VARIAABLE_PATTERN = Pattern.compile("\\{([^}])*}");
+    private static final Pattern PATH_VARIABLE_PATTERN = Pattern.compile("\\{([^}])*}");
 
     static {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
@@ -37,7 +37,7 @@ class RpcUtils {
         return defaultHttpClient;
     }
 
-    static String concatPath(String base, String relative) {
+    public static String concatPath(String base, String relative) {
         if (base.endsWith("/")) {
             if (relative.startsWith("/")) {
                 return base + relative.substring(1);
@@ -53,39 +53,32 @@ class RpcUtils {
         }
     }
 
-    static String replacePathVariable(String path, Map<String, Object> pathParameterMap) {
-        Matcher matcher = PATH_VARIAABLE_PATTERN.matcher(path);
+    public static String formatUrlWithPathParams(String path, Map<String, Object> pathParameterMap) {
+        Matcher matcher = PATH_VARIABLE_PATTERN.matcher(path);
         while (matcher.find()) {
             String group = matcher.group();
             String pathParameter = group.substring(group.indexOf("{") + 1, group.indexOf("}"));
-            if (!pathParameterMap.containsKey(pathParameter)) {
-                throw new RuntimeException(String.format("%s 缺少对应的path参数%s", path, pathParameter));
+            if (pathParameterMap.containsKey(pathParameter)) {
+                path = path.replace(group, pathParameterMap.get(pathParameter).toString());
             }
-
-            path = path.replace(group, pathParameterMap.get(pathParameter).toString());
         }
-
         return path;
     }
 
-    static String appendParams(String path, Map<String, Object> parameterMap) {
+    public static String formatUrlWithParams(String path, Map<String, Object> parameterMap) {
         if (MapUtils.isEmpty(parameterMap)) {
             return path;
         }
         if (path.contains("?")) {
-            return path + buildQueryParams(parameterMap);
+            return path + "&" + buildQueryParams(parameterMap);
         } else {
             return path + "?" + buildQueryParams(parameterMap);
         }
     }
 
     private static String buildQueryParams(Map<String, Object> parameterMap) {
-        if (MapUtils.isEmpty(parameterMap)) {
-            return "";
-        }
-
         StringBuilder stringBuilder = new StringBuilder();
-        parameterMap.forEach((s, o) -> stringBuilder.append(String.format("%s=%s", s, o.toString())));
-        return stringBuilder.toString();
+        parameterMap.forEach((s, o) -> stringBuilder.append(String.format("%s=%s&", s, o.toString())));
+        return stringBuilder.substring(0, stringBuilder.lastIndexOf("&"));
     }
 }
