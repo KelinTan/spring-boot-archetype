@@ -8,7 +8,9 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kelin Tan
@@ -34,11 +36,22 @@ public class JsonConverter {
         }
     }
 
-    public static <T> T deserializeList(String json, Class<T> clazz) {
+    public static <T> List<T> deserializeList(String json, Class<T> clazz) {
         try {
             return JsonMapperFactory.defaultMapper().readValue(json,
                     JsonMapperFactory.defaultMapper().getTypeFactory().constructCollectionType(
                             List.class, clazz));
+        } catch (IOException e) {
+            log.error(e);
+            return null;
+        }
+    }
+
+    public static <T, E> Map<T, E> deserializeMap(String json, Class<T> key, Class<E> value) {
+        try {
+            return JsonMapperFactory.defaultMapper().readValue(json,
+                    JsonMapperFactory.defaultMapper().getTypeFactory().constructMapType(
+                            HashMap.class, key, value));
         } catch (IOException e) {
             log.error(e);
             return null;

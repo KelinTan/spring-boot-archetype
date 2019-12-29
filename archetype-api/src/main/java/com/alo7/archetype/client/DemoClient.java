@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Kelin Tan
  */
-@RpcClient(host = "${client.endpoint.demo}")
+@RpcClient(endpoint = "${client.endpoint.demo}")
 public interface DemoClient {
     @HttpMethod(value = "/user/findAll", method = RequestMethod.GET)
     List<User> findAll();
