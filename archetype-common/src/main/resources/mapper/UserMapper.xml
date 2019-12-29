@@ -2,7 +2,7 @@
 <!-- Copyright 2018 Alo7 Inc. All rights reserved. -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.alo7.kelin.mapper.UserMapper">
+<mapper namespace="com.alo7.archetype.mapper.UserMapper">
 
     <sql id="columns">
         id,user_name
@@ -10,30 +10,31 @@
 
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-        t_user(user_name)
-        VALUES(#{userName})
+            t_user(user_name)
+        VALUES
+            (#{userName})
     </insert>
 
     <delete id="deleteById">
         DELETE FROM
             t_user
         WHERE
-        id = #{id}
+            id = #{id}
     </delete>
 
     <select id="findAll" resultType="User">
         SELECT
-        <include refid="columns"/>
+            <include refid="columns"/>
         FROM
-        t_user
+            t_user
     </select>
 
     <select id="findById" resultType="User">
         SELECT
-        <include refid="columns"/>
+            <include refid="columns"/>
         FROM
-        t_user
-        where
-        id = #{id}
+            t_user
+        WHERE
+            id = #{id}
     </select>
 </mapper>
