@@ -8,6 +8,6 @@
         <setting name="localCacheScope" value="STATEMENT"/>
     </settings>
     <typeAliases>
-        <package name="com.alo7.kelin.entity"/>
+        <package name="com.alo7.archetype.entity"/>
     </typeAliases>
 </configuration>
