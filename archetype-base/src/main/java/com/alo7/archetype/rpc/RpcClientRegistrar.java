@@ -2,7 +2,7 @@
 
 package com.alo7.archetype.rpc;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -28,8 +28,7 @@ import java.util.Set;
 /**
  * @author Kelin Tan
  */
-@Log4j2
-@SuppressWarnings("SpellCheckingInspection")
+@Slf4j
 public class RpcClientRegistrar
         implements
         ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanClassLoaderAware, EnvironmentAware, BeanFactoryAware {
@@ -64,12 +63,12 @@ public class RpcClientRegistrar
     }
 
     private void registerRpcClient(AnnotationMetadata metadata) {
-        AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(
+        AnnotationAttributes annotationAttributes = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(
                 RpcClientScan.class.getName()));
-        if (annoAttrs == null) {
+        if (annotationAttributes == null) {
             return;
         }
-        List<String> basePackages = geScanPackages(annoAttrs);
+        List<String> basePackages = geScanPackages(annotationAttributes);
         ClassPathRpcClientScanner classScanner = new ClassPathRpcClientScanner(environment, classLoader,
                 resourceLoader);
         Set<BeanDefinition> beanDefinitionSet = classScanner.scan(basePackages);
@@ -81,14 +80,14 @@ public class RpcClientRegistrar
         });
     }
 
-    private List<String> geScanPackages(AnnotationAttributes annoAttrs) {
+    private List<String> geScanPackages(AnnotationAttributes annotationAttributes) {
         List<String> basePackages = new ArrayList<>();
-        for (String pkg : annoAttrs.getStringArray("value")) {
+        for (String pkg : annotationAttributes.getStringArray("value")) {
             if (StringUtils.hasText(pkg)) {
                 basePackages.add(pkg);
             }
         }
-        for (String pkg : annoAttrs.getStringArray("basePackages")) {
+        for (String pkg : annotationAttributes.getStringArray("basePackages")) {
             if (StringUtils.hasText(pkg)) {
                 basePackages.add(pkg);
             }

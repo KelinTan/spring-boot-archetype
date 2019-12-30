@@ -2,7 +2,7 @@
 
 package com.alo7.archetype.client;
 
-import com.alo7.archetype.ServerApplication;
+import com.alo7.archetype.SpringBootArchetypeServer;
 import com.alo7.archetype.entity.User;
 import com.alo7.archetype.mapper.UserMapper;
 import com.alo7.archetype.testing.BaseSpringTest;
@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Kelin Tan
  */
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = ServerApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = SpringBootArchetypeServer.class)
 public class DemoClientTest extends BaseSpringTest {
     @Autowired
     DemoClient demoClient;

@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @RpcClientScan("com.alo7.archetype.client")
 @MapperScan("com.alo7.archetype.mapper")
-public class ServerApplication {
+public class SpringBootArchetypeServer {
     public static void main(String[] args) {
-        SpringApplication.run(ServerApplication.class, args);
+        SpringApplication.run(SpringBootArchetypeServer.class, args);
     }
 }

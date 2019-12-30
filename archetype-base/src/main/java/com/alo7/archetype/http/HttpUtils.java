@@ -1,11 +1,8 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.rpc;
+package com.alo7.archetype.http;
 
 import org.apache.commons.collections4.MapUtils;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,27 +11,19 @@ import java.util.regex.Pattern;
 /**
  * @author Kelin Tan
  */
-class RpcUtils {
-    private static CloseableHttpClient defaultHttpClient;
+public class HttpUtils {
     private static final Pattern PATH_VARIABLE_PATTERN = Pattern.compile("\\{([^}])*}");
 
-    static {
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setDefaultMaxPerRoute(32);
-        connectionManager.setMaxTotal(1024);
-
-        defaultHttpClient = HttpClients.custom()
-                .setConnectionManager(connectionManager)
-                .setConnectionManagerShared(true)
-                .disableCookieManagement()
-                .disableAuthCaching()
-                .disableRedirectHandling()
-                .disableConnectionState()
-                .build();
+    public static boolean isHttpOk(int status) {
+        return status / 100 == 2;
     }
 
-    static CloseableHttpClient getDefaultHttpClient() {
-        return defaultHttpClient;
+    public static boolean isBadRequest(int status) {
+        return status / 100 == 4;
+    }
+
+    public static boolean isErrorRequest(int status) {
+        return status / 100 == 5;
     }
 
     public static String concatPath(String base, String relative) {

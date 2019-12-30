@@ -4,7 +4,7 @@ package com.alo7.archetype.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -15,14 +15,14 @@ import java.util.Map;
 /**
  * @author Kelin Tan
  */
-@Log4j2
+@Slf4j
 public class JsonConverter {
     public static Object deserialize(String json, Type type) {
         try {
             return JsonMapperFactory.defaultMapper().readValue(json,
                     JsonMapperFactory.defaultMapper().getTypeFactory().constructType(type));
         } catch (IOException e) {
-            log.error(e);
+            log.error("json deserialize error", e);
             return null;
         }
     }
@@ -31,7 +31,7 @@ public class JsonConverter {
         try {
             return JsonMapperFactory.defaultMapper().readValue(json, clazz);
         } catch (IOException e) {
-            log.error(e);
+            log.error("json deserialize error", e);
             return null;
         }
     }
@@ -42,7 +42,7 @@ public class JsonConverter {
                     JsonMapperFactory.defaultMapper().getTypeFactory().constructCollectionType(
                             List.class, clazz));
         } catch (IOException e) {
-            log.error(e);
+            log.error("json deserialize error", e);
             return null;
         }
     }
@@ -53,7 +53,7 @@ public class JsonConverter {
                     JsonMapperFactory.defaultMapper().getTypeFactory().constructMapType(
                             HashMap.class, key, value));
         } catch (IOException e) {
-            log.error(e);
+            log.error("json deserialize error", e);
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class JsonConverter {
         try {
             return JsonMapperFactory.defaultMapper().readTree(json);
         } catch (IOException e) {
-            log.error(e);
+            log.error("json read tree error", e);
             return null;
         }
     }
@@ -71,7 +71,7 @@ public class JsonConverter {
         try {
             return JsonMapperFactory.defaultMapper().writeValueAsString(clazz);
         } catch (JsonProcessingException e) {
-            log.error(e);
+            log.error("json serialize error", e);
             return null;
         }
     }
@@ -83,7 +83,7 @@ public class JsonConverter {
         try {
             return JsonMapperFactory.defaultMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            log.error(e);
+            log.error("json serialize error", e);
             return null;
         }
     }
@@ -92,7 +92,7 @@ public class JsonConverter {
         try {
             return JsonMapperFactory.defaultMapper().writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
-            log.error(e);
+            log.error("json serialize error", e);
             return null;
         }
     }

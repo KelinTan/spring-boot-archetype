@@ -2,7 +2,8 @@
 
 package com.alo7.archetype.rpc;
 
-import lombok.extern.log4j.Log4j2;
+import com.alo7.archetype.log.LogMessageBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -19,7 +20,7 @@ import java.util.Set;
 /**
  * @author Kelin Tan
  */
-@Log4j2
+@Slf4j
 public class ClassPathRpcClientScanner extends ClassPathScanningCandidateComponentProvider {
     private ClassLoader classLoader;
 
@@ -38,7 +39,10 @@ public class ClassPathRpcClientScanner extends ClassPathScanningCandidateCompone
                 Class<?> target = ClassUtils.forName(metadata.getClassName(), classLoader);
                 return !target.isAnnotation();
             } catch (Exception e) {
-                log.error("load class exception:", e);
+                log.error(LogMessageBuilder.builder()
+                        .message("load class exception")
+                        .parameter("bean", beanDefinition)
+                        .build(), e);
             }
         }
         return false;
