@@ -2,21 +2,25 @@
 
 package com.alo7.archetype.rest.exception;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 /**
  * @author Kelin Tan
  */
-@Data
 public class RestException extends RuntimeException {
     /**
      * http status {@link org.springframework.http.HttpStatus}
      */
+    @Getter
+    @Setter
     private HttpStatus status;
     /**
      * 错误码
      */
+    @Getter
+    @Setter
     private int errorCode;
 
     public RestException(HttpStatus httpStatus) {
