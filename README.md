@@ -14,3 +14,7 @@
 # v2.0
 
 2019-12-25 rename to spring-boot-archetype && support rpc client
+
+# v3.0
+
+2019-12-31 support RestResponse && RestException
