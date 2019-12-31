@@ -3,6 +3,7 @@
 package com.alo7.archetype.client;
 
 import com.alo7.archetype.entity.User;
+import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.rpc.HttpMethod;
 import com.alo7.archetype.rpc.RpcClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,27 +18,27 @@ import java.util.List;
  */
 @RpcClient(endpoint = "${client.endpoint.demo}")
 public interface DemoClient {
-    @HttpMethod(value = "/user/findAll", method = RequestMethod.GET)
-    List<User> findAll();
+    @HttpMethod(value = "/api/v1/user/findAll", method = RequestMethod.GET)
+    RestResponse<List<User>> findAll();
 
-    @HttpMethod(value = "/user/{id}", method = RequestMethod.GET)
-    User findUser(@PathVariable(value = "id") Long id);
+    @HttpMethod(value = "/api/v1/user/{id}", method = RequestMethod.GET)
+    RestResponse<User> findUser(@PathVariable(value = "id") Long id);
 
-    @HttpMethod(value = "/user/findUser", method = RequestMethod.GET)
-    User findUser2(@RequestParam(value = "id") Long id);
+    @HttpMethod(value = "/api/v1/user/findUser", method = RequestMethod.GET)
+    RestResponse<User> findUser2(@RequestParam(value = "id") Long id);
 
-    @HttpMethod(value = "/user/save", method = RequestMethod.POST)
-    User save(@RequestParam(value = "name") String name);
+    @HttpMethod(value = "/api/v1/user/save", method = RequestMethod.POST)
+    RestResponse<User> save(@RequestParam(value = "name") String name);
 
-    @HttpMethod(value = "/user/save2", method = RequestMethod.POST)
-    User save2(@RequestBody User user);
+    @HttpMethod(value = "/api/v1/user/save2", method = RequestMethod.POST)
+    RestResponse<User> save2(@RequestBody User user);
 
-    @HttpMethod(value = "/user/save3", method = RequestMethod.PUT)
-    User save3(@RequestBody User user);
+    @HttpMethod(value = "/api/v1/user/save3", method = RequestMethod.PUT)
+    RestResponse<User> save3(@RequestBody User user);
 
-    @HttpMethod(value = "/user/{id}", method = RequestMethod.DELETE)
+    @HttpMethod(value = "/api/v1/user/{id}", method = RequestMethod.DELETE)
     void delete(@PathVariable(value = "id") Long id);
 
-    @HttpMethod(value = "/user/delete", method = RequestMethod.DELETE)
+    @HttpMethod(value = "/api/v1/user/delete", method = RequestMethod.DELETE)
     void delete2(@RequestParam(value = "id") Long id);
 }

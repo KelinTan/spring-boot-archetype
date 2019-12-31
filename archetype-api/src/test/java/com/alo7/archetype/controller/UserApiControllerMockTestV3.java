@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.alo7.archetype.entity.User;
 import com.alo7.archetype.mapper.UserMapper;
+import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.testing.BaseMockTest;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
@@ -19,20 +20,20 @@ import java.util.List;
 /**
  * @author Kelin Tan
  */
-public class DemoUserControllerMockTestV3 extends BaseMockTest {
+public class UserApiControllerMockTestV3 extends BaseMockTest {
     @Mock
     UserMapper userMapper;
 
     @InjectMocks
     @Autowired
-    DemoUserController demoUserController;
+    UserApiController userApiController;
 
     @Test
     public void mockUserMapperTest() {
         when(userMapper.findAll()).thenReturn(Lists.newArrayList(new User("mock", 2L)));
 
-        List<User> users = demoUserController.findAll();
-        Assert.assertEquals(1, users.size());
-        Assert.assertEquals(2L, (long) users.get(0).getId());
+        RestResponse<List<User>> response = userApiController.findAll();
+        Assert.assertEquals(1, response.getResult().size());
+        Assert.assertEquals(2L, (long) response.getResult().get(0).getId());
     }
 }

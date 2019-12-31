@@ -18,11 +18,11 @@ public class HttpUtils {
         return status / 100 == 2;
     }
 
-    public static boolean isBadRequest(int status) {
+    public static boolean isHttpBadRequest(int status) {
         return status / 100 == 4;
     }
 
-    public static boolean isErrorRequest(int status) {
+    public static boolean isHttpErrorRequest(int status) {
         return status / 100 == 5;
     }
 
