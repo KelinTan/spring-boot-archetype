@@ -21,7 +21,7 @@ public class UserMapperTest extends BaseSpringTest {
         User user = userMapper.findById(1L);
 
         Assert.notNull(user, "");
-        Assert.isTrue(user.getUserName().equals("hehe"), "ID查询失败");
+        Assert.isTrue(user.getUserName().equals("test1"), "ID查询失败");
     }
 
     @Test

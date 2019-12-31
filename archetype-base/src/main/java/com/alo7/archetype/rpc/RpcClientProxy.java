@@ -6,6 +6,7 @@ import com.alo7.archetype.http.HttpClientFactory;
 import com.alo7.archetype.http.HttpUtils;
 import com.alo7.archetype.json.JsonConverter;
 import com.alo7.archetype.log.LogMessageBuilder;
+import com.alo7.archetype.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -41,14 +41,15 @@ import java.util.Objects;
 public class RpcClientProxy implements InvocationHandler {
     private Class<?> clazz;
     private String endpoint;
+    private RpcErrorHandler rpcErrorHandler;
     private Map<Method, String> requestUrlOnMethods = new HashMap<>();
     private Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
     private Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
 
-    RpcClientProxy(Class<?> clazz, String endpoint) {
+    RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         super();
 
-        init(clazz, endpoint);
+        init(clazz, endpoint, rpcErrorHandler);
     }
 
     @Override
@@ -64,34 +65,32 @@ public class RpcClientProxy implements InvocationHandler {
             HttpRequestBase baseRequest = createRequest(url, requestMethod, headerMap, requestBody);
 
             CloseableHttpResponse response = HttpClientFactory.getDefaultHttpClient().execute(baseRequest);
-            if (HttpUtils.isHttpOk(response.getStatusLine().getStatusCode())) {
-                HttpEntity entity = response.getEntity();
+            int status = response.getStatusLine().getStatusCode();
+            HttpEntity entity = response.getEntity();
+            if (HttpUtils.isHttpOk(status)) {
                 if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
                     return JsonConverter.deserialize(EntityUtils.toString(entity), method.getGenericReturnType());
                 } else {
                     EntityUtils.consumeQuietly(entity);
                 }
             } else {
-                log.warn(LogMessageBuilder.builder()
-                        .message("request is not ok")
-                        .parameter("request", url)
-                        .parameter("status", response.getStatusLine().getStatusCode())
-                        .parameter("response", response)
-                        .build());
+                rpcErrorHandler.handle(status, EntityUtils.toString(entity));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(LogMessageBuilder.builder()
                     .message("rpc client proxy invoke error")
                     .parameter("method", method)
                     .parameter("args", args)
-                    .build(), e);
+                    .build());
+            throw RestExceptionFactory.toSystemException();
         }
         return null;
     }
 
-    private void init(Class<?> clazz, String endpoint) {
+    private void init(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         this.clazz = clazz;
         this.endpoint = endpoint;
+        this.rpcErrorHandler = rpcErrorHandler;
         Method[] methods = clazz.getMethods();
         Arrays.stream(methods).forEach(method -> {
             this.requestUrlOnMethods.put(method, getRequestUri(method));
@@ -129,12 +128,11 @@ public class RpcClientProxy implements InvocationHandler {
                 requestBase = put;
                 break;
             default:
-                log.error(LogMessageBuilder.builder()
+                throw new RuntimeException(LogMessageBuilder.builder()
                         .message("UnSupported http Method")
                         .parameter("uri", uri)
                         .parameter("method", method)
                         .build());
-                return null;
         }
 
         headerMap.forEach((key, value) -> requestBase.addHeader(key, value.toString()));
@@ -154,29 +152,22 @@ public class RpcClientProxy implements InvocationHandler {
 
     private RequestMethod getRequestMethod(Method method) {
         HttpMethod annotation = getHttpMethod(method);
-        if (annotation == null) {
-            return null;
-        }
         return annotation.method();
     }
 
     private String getRequestUri(Method method) {
         HttpMethod annotation = getHttpMethod(method);
-        if (annotation == null) {
-            return null;
-        }
         return annotation.value();
     }
 
     private HttpMethod getHttpMethod(Method method) {
         HttpMethod annotation = AnnotationUtils.findAnnotation(method, HttpMethod.class);
         if (annotation == null) {
-            log.error(LogMessageBuilder.builder()
+            throw new RuntimeException(LogMessageBuilder.builder()
                     .message("@RpcClient method 缺少 HttpMethod:")
                     .parameter("clazz", clazz.getName())
                     .parameter("method", method.getName())
                     .build());
-            return null;
         }
         return annotation;
     }

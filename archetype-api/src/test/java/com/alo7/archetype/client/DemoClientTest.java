@@ -5,7 +5,9 @@ package com.alo7.archetype.client;
 import com.alo7.archetype.SpringBootArchetypeServer;
 import com.alo7.archetype.entity.User;
 import com.alo7.archetype.mapper.UserMapper;
+import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.testing.BaseSpringTest;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,68 +31,68 @@ public class DemoClientTest extends BaseSpringTest {
 
     @Test
     public void testRpcInit() {
-        assert demoClient != null;
-        assert Proxy.isProxyClass(demoClient.getClass());
+        Assert.assertNotNull(demoClient);
+        Assert.assertTrue(Proxy.isProxyClass(demoClient.getClass()));
     }
 
     @Test
     public void testRpcDeleteWithPathVariable() {
-        assert userMapper.findById(3L) != null;
+        Assert.assertNotNull(userMapper.findById(3L));
         demoClient.delete(3L);
-        assert userMapper.findById(3L) == null;
+        Assert.assertNull(userMapper.findById(3L));
     }
 
     @Test
     public void testRpcDeleteWithRequestParam() {
-        assert userMapper.findById(4L) != null;
+        Assert.assertNotNull(userMapper.findById(4L));
         demoClient.delete2(4L);
-        assert userMapper.findById(4L) == null;
+        Assert.assertNull(userMapper.findById(4L));
     }
 
     @Test
     public void testRpcGetNoParams() {
-        List<User> users = demoClient.findAll();
-        assert users.get(0).getId() == 1;
+        RestResponse<List<User>> response = demoClient.findAll();
+        Assert.assertEquals(response.getResult().get(0).getId().intValue(), 1);
     }
 
     @Test
     public void testRpcGetByIdWithPathVariable() {
-        User user = demoClient.findUser(1L);
-        assert user != null;
-        assert user.getId() == 1;
-        assert user.getUserName().equals("hehe");
+        RestResponse<User> response = demoClient.findUser(1L);
+        Assert.assertNotNull(response.getResult());
+        Assert.assertEquals(response.getResult().getId().intValue(), 1);
+        Assert.assertEquals(response.getResult().getUserName(), "test1");
     }
 
     @Test
     public void testRpcGetByIdWithRequestParam() {
-        User user = demoClient.findUser2(1L);
-        assert user != null;
-        assert user.getId() == 1;
-        assert user.getUserName().equals("hehe");
+        RestResponse<User> response = demoClient.findUser2(1L);
+        Assert.assertNotNull(response.getResult());
+        Assert.assertEquals(response.getResult().getId().intValue(), 1);
+        Assert.assertEquals(response.getResult().getUserName(), "test1");
     }
 
     @Test
     public void testRpcPostWithRequestParam() {
-        User user = demoClient.save("rpcSave");
-        assert user != null;
-        assert user.getUserName().equals("rpcSave");
+        RestResponse<User> response = demoClient.save("rpcSave");
+        Assert.assertNotNull(response.getResult());
+        Assert.assertEquals(response.getResult().getUserName(), "rpcSave");
     }
 
     @Test
     public void testRpcPostWithRequestBody() {
         User data = new User();
         data.setUserName("rpcSave2");
-        User user = demoClient.save2(data);
-        assert user != null;
-        assert user.getUserName().equals("rpcSave2");
+        RestResponse<User> response = demoClient.save2(data);
+        Assert.assertNotNull(response.getResult());
+        Assert.assertEquals(response.getResult().getUserName(), "rpcSave2");
     }
 
     @Test
     public void testRpcPutWithRequestBody() {
         User data = new User();
         data.setUserName("rpcSave3");
-        User user = demoClient.save3(data);
-        assert user != null;
-        assert user.getUserName().equals("rpcSave3");
+        RestResponse<User> response = demoClient.save3(data);
+        Assert.assertNotNull(response.getResult());
+        Assert.assertEquals(response.getResult().getUserName(), "rpcSave3");
     }
 }

@@ -107,7 +107,7 @@ public class RpcClientRegistrar
 
             String endpoint = this.environment.resolvePlaceholders(target.getAnnotation(RpcClient.class).endpoint());
             return Proxy.newProxyInstance(RpcClient.class.getClassLoader(), new Class[] {target},
-                    new RpcClientProxy(target, endpoint));
+                    new RpcClientProxy(target, endpoint, new DefaultRpcErrorHandler()));
         } catch (ClassNotFoundException e) {
             if (log.isDebugEnabled()) {
                 log.debug(e.getMessage());

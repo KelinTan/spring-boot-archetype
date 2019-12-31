@@ -12,24 +12,30 @@ import com.alo7.archetype.mapper.UserMapper;
 import com.alo7.archetype.testing.BaseMockMvcTest;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 /**
  * @author Kelin Tan
  */
-public class DemoUserControllerMockTest extends BaseMockMvcTest {
-    @MockBean
+public class UserApiControllerMockTestV2 extends BaseMockMvcTest {
+    @Mock
     UserMapper userMapper;
+
+    @InjectMocks
+    @Autowired
+    UserApiController userApiController;
 
     @Test
     public void mockUserMapperTest() throws Exception {
         when(userMapper.findAll()).thenReturn(Lists.newArrayList(new User("mock", 2L)));
 
-        mockMvc.perform(get("/user/findAll").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/user/findAll").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value("1"))
-                .andExpect(jsonPath("$[0].id").value("2"))
-                .andExpect(jsonPath("$[0].userName").value("mock"));
+                .andExpect(jsonPath("$.result.length()").value("1"))
+                .andExpect(jsonPath("$.result[0].id").value("2"))
+                .andExpect(jsonPath("$.result[0].userName").value("mock"));
     }
 }

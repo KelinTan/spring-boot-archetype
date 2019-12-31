@@ -4,8 +4,9 @@ package com.alo7.archetype.controller;
 
 import com.alo7.archetype.entity.User;
 import com.alo7.archetype.mapper.UserMapper;
+import com.alo7.archetype.rest.response.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 import java.util.List;
 
@@ -22,54 +26,68 @@ import java.util.List;
  * @author Kelin Tan
  */
 @RestController
-@RequestMapping("/user")
-public class DemoUserController {
+@RequestMapping("/api/v1/user")
+public class UserApiController {
     @Autowired
     private UserMapper userMapper;
 
     @GetMapping("/findAll")
-    public List<User> findAll() {
-        return userMapper.findAll();
+    public RestResponse<List<User>> findAll() {
+        return RestResponse.<List<User>>builder()
+                .result(userMapper.findAll())
+                .build();
     }
 
     @GetMapping("/{id}")
-    public User findUser(@PathVariable(value = "id") Long id) {
-        return userMapper.findById(id);
+    public RestResponse<User> findUser(@PathVariable(value = "id") Long id) {
+        return RestResponse.<User>builder()
+                .result(userMapper.findById(id))
+                .build();
     }
 
     @GetMapping("/findUser")
-    public User findUser2(@RequestParam(value = "id") Long id) {
-        return userMapper.findById(id);
+    public RestResponse<User> findUser2(@RequestParam(value = "id") Long id) {
+        return RestResponse.<User>builder()
+                .result(userMapper.findById(id))
+                .build();
     }
 
     @PostMapping("/save")
-    public User save(@RequestParam("name") String name) {
+    public RestResponse<User> save(@RequestParam("name") String name) {
         User user = new User();
         user.setUserName(name);
         userMapper.insert(user);
-        return userMapper.findById(user.getId());
+        return RestResponse.<User>builder()
+                .result(userMapper.findById(user.getId()))
+                .build();
     }
 
     @PostMapping("/save2")
-    public User save2(@Validated @RequestBody User user) {
+    public RestResponse<User> save2(@Valid @RequestBody User user) {
         userMapper.insert(user);
 
-        return userMapper.findById(user.getId());
+        return RestResponse.<User>builder()
+                .result(userMapper.findById(user.getId()))
+                .build();
     }
 
     @PutMapping("/save3")
-    public User save3(@RequestBody User user) {
+    public RestResponse<User> save3(@RequestBody User user) {
         userMapper.insert(user);
 
-        return userMapper.findById(user.getId());
+        return RestResponse.<User>builder()
+                .result(userMapper.findById(user.getId()))
+                .build();
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable(value = "id") Long id) {
         userMapper.deleteById(id);
     }
 
     @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete2(@RequestParam(value = "id") Long id) {
         userMapper.deleteById(id);
     }
