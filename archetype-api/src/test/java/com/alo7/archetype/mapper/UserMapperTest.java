@@ -6,11 +6,14 @@ import com.alo7.archetype.entity.User;
 import com.alo7.archetype.testing.BaseSpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.util.Assert;
 
 /**
  * @author Kelin Tan
  */
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class UserMapperTest extends BaseSpringTest {
 
     @Autowired

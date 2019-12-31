@@ -3,7 +3,9 @@
 package com.alo7.archetype.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -17,10 +19,11 @@ import java.util.Map;
  */
 @Slf4j
 public class JsonConverter {
+    private static final ObjectMapper DEFAULT_MAPPER = JsonMapperFactory.defaultMapper();
+
     public static Object deserialize(String json, Type type) {
         try {
-            return JsonMapperFactory.defaultMapper().readValue(json,
-                    JsonMapperFactory.defaultMapper().getTypeFactory().constructType(type));
+            return DEFAULT_MAPPER.readValue(json, DEFAULT_MAPPER.getTypeFactory().constructType(type));
         } catch (IOException e) {
             log.error("json deserialize error", e);
             return null;
@@ -29,7 +32,7 @@ public class JsonConverter {
 
     public static <T> T deserialize(String json, Class<T> clazz) {
         try {
-            return JsonMapperFactory.defaultMapper().readValue(json, clazz);
+            return DEFAULT_MAPPER.readValue(json, clazz);
         } catch (IOException e) {
             log.error("json deserialize error", e);
             return null;
@@ -38,9 +41,8 @@ public class JsonConverter {
 
     public static <T> List<T> deserializeList(String json, Class<T> clazz) {
         try {
-            return JsonMapperFactory.defaultMapper().readValue(json,
-                    JsonMapperFactory.defaultMapper().getTypeFactory().constructCollectionType(
-                            List.class, clazz));
+            return DEFAULT_MAPPER.readValue(json, DEFAULT_MAPPER
+                    .getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (IOException e) {
             log.error("json deserialize error", e);
             return null;
@@ -49,9 +51,17 @@ public class JsonConverter {
 
     public static <T, E> Map<T, E> deserializeMap(String json, Class<T> key, Class<E> value) {
         try {
-            return JsonMapperFactory.defaultMapper().readValue(json,
-                    JsonMapperFactory.defaultMapper().getTypeFactory().constructMapType(
-                            HashMap.class, key, value));
+            return DEFAULT_MAPPER.readValue(json, DEFAULT_MAPPER
+                    .getTypeFactory().constructMapType(HashMap.class, key, value));
+        } catch (IOException e) {
+            log.error("json deserialize error", e);
+            return null;
+        }
+    }
+
+    public static <T> T deserializeGenerics(String json, TypeReference<T> typeReference) {
+        try {
+            return DEFAULT_MAPPER.readValue(json, typeReference);
         } catch (IOException e) {
             log.error("json deserialize error", e);
             return null;
@@ -60,7 +70,7 @@ public class JsonConverter {
 
     public static JsonNode readTree(String json) {
         try {
-            return JsonMapperFactory.defaultMapper().readTree(json);
+            return DEFAULT_MAPPER.readTree(json);
         } catch (IOException e) {
             log.error("json read tree error", e);
             return null;
@@ -69,7 +79,7 @@ public class JsonConverter {
 
     public static <T> String serialize(Class<T> clazz) {
         try {
-            return JsonMapperFactory.defaultMapper().writeValueAsString(clazz);
+            return DEFAULT_MAPPER.writeValueAsString(clazz);
         } catch (JsonProcessingException e) {
             log.error("json serialize error", e);
             return null;
@@ -81,7 +91,7 @@ public class JsonConverter {
             return null;
         }
         try {
-            return JsonMapperFactory.defaultMapper().writeValueAsString(object);
+            return DEFAULT_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             log.error("json serialize error", e);
             return null;
@@ -90,7 +100,7 @@ public class JsonConverter {
 
     public static byte[] serializeAsBytes(Object obj) {
         try {
-            return JsonMapperFactory.defaultMapper().writeValueAsBytes(obj);
+            return DEFAULT_MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
             log.error("json serialize error", e);
             return null;

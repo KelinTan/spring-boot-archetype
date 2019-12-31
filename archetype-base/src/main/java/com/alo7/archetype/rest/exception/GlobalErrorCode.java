@@ -8,7 +8,7 @@ package com.alo7.archetype.rest.exception;
 public class GlobalErrorCode {
     public static final int SYSTEM_ERROR = 9999;
 
-    public static final int RPC_ERROR = 9998;
+    public static final int HTTP_REQUEST_ERROR = 9998;
 
     public static final int BAD_REQUEST_ERROR = 9997;
 }
