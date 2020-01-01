@@ -19,3 +19,5 @@ spring:
 client:
   endpoint:
      demo: http://127.0.0.1:9000
+logging:
+  config: classpath:log4j2-test.xml
