@@ -4,7 +4,6 @@ package com.alo7.archetype.http;
 
 import com.alo7.archetype.json.JsonConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.Getter;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -25,7 +24,6 @@ import java.util.Map;
 /**
  * @author Kelin Tan
  */
-@Getter
 public class HttpRequest {
     private URIBuilder uriBuilder;
     private Map<String, Object> headers = new LinkedHashMap<>();
@@ -104,6 +102,12 @@ public class HttpRequest {
         }
         this.response = HttpUtils.safeExecute(this.request);
         return this;
+    }
+
+    public CloseableHttpResponse response() {
+        Preconditions.checkNotNull(this.response);
+
+        return response;
     }
 
     public <T> T json(Class<T> type) {

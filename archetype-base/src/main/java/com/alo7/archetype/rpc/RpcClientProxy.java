@@ -56,7 +56,7 @@ public class RpcClientProxy implements InvocationHandler {
             String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
             HttpRequest request = createRequest(url, requestMethod, parameterMap, headerMap, requestBody);
 
-            CloseableHttpResponse response = request.execute().getResponse();
+            CloseableHttpResponse response = request.execute().response();
             int status = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
             if (HttpUtils.isHttpOk(status)) {
