@@ -18,6 +18,6 @@ spring:
     platform: h2
 client:
   endpoint:
-     demo: http://127.0.0.1:9000
+     demo: http://127.0.0.1:${server.port}
 logging:
   config: classpath:log4j2-test.xml

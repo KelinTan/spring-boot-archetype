@@ -73,7 +73,7 @@ public class RpcClientProxy implements InvocationHandler {
                     .message("rpc client proxy invoke error")
                     .parameter("method", method)
                     .parameter("args", args)
-                    .build());
+                    .build(), e);
             throw RestExceptionFactory.toSystemException();
         }
         return null;
