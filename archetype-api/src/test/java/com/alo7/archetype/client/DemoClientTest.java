@@ -17,7 +17,7 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 
 /**
- * 启动真实的web容器测试rpc
+ * Defined port webEnvironment for rpc test
  *
  * @author Kelin Tan
  */
@@ -47,12 +47,6 @@ public class DemoClientTest extends BaseSpringTest {
         Assert.assertNotNull(userMapper.findById(4L));
         demoClient.delete2(4L);
         Assert.assertNull(userMapper.findById(4L));
-    }
-
-    @Test
-    public void testRpcGetNoParams() {
-        RestResponse<List<User>> response = demoClient.findAll();
-        Assert.assertEquals(response.getResult().get(0).getId().intValue(), 1);
     }
 
     @Test
@@ -94,5 +88,11 @@ public class DemoClientTest extends BaseSpringTest {
         RestResponse<User> response = demoClient.save3(data);
         Assert.assertNotNull(response.getResult());
         Assert.assertEquals(response.getResult().getUserName(), "rpcSave3");
+    }
+
+    @Test
+    public void testRpcGetNoParams() {
+        RestResponse<List<User>> response = demoClient.findAll();
+        Assert.assertEquals(response.getResult().get(0).getId().intValue(), 1);
     }
 }

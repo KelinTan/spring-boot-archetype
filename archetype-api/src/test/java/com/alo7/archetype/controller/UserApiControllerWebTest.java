@@ -3,49 +3,39 @@
 package com.alo7.archetype.controller;
 
 
-import com.alo7.archetype.SpringBootArchetypeServer;
 import com.alo7.archetype.entity.User;
 import com.alo7.archetype.http.HttpRequest;
 import com.alo7.archetype.mapper.UserMapper;
 import com.alo7.archetype.rest.response.RestResponse;
-import com.alo7.archetype.testing.BaseSpringTest;
+import com.alo7.archetype.testing.BaseSpringWebTest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * @author Kelin Tan
  */
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = SpringBootArchetypeServer.class)
-public class UserApiControllerWebTest extends BaseSpringTest {
-    @LocalServerPort
-    private int serverPort;
-
+public class UserApiControllerWebTest extends BaseSpringWebTest {
     @Autowired
     private UserMapper userMapper;
 
     @Test
     public void testFindAllUsersPerformGet() {
-        RestResponse<List<User>> response = HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/findAll")
+        RestResponse<List<User>> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findAll")
                 .performGet()
                 .json(new TypeReference<RestResponse<List<User>>>() {
                 });
 
-        // Assert.assertEquals(response.getResult().size(), 4);
         Assert.assertEquals(response.getResult().get(0).getId().intValue(), 1);
     }
 
     @Test
     public void testFindUser2PerformGetWithParam() {
-        RestResponse<User> response = HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/1")
+        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/1")
                 .withParam("id", 1)
                 .performGet()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -57,8 +47,7 @@ public class UserApiControllerWebTest extends BaseSpringTest {
 
     @Test
     public void testSaveUserPerformPostWithParam() {
-        RestResponse<User> response = HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/save")
+        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/save")
                 .withParam("name", "performPostWithParam")
                 .performPost()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -69,9 +58,9 @@ public class UserApiControllerWebTest extends BaseSpringTest {
     }
 
     @Test
+    @Transactional
     public void testSaveUser2PerformPostWithContent() {
-        RestResponse<User> response = HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/save2")
+        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/save2")
                 .withContent("{\"userName\":\"performPost\"}")
                 .performPost()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -83,8 +72,7 @@ public class UserApiControllerWebTest extends BaseSpringTest {
 
     @Test
     public void testSaveUser3PerformPut() {
-        RestResponse<User> response = HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/save3")
+        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/save3")
                 .withContent("{\"userName\":\"performPut\"}")
                 .performPut()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -98,8 +86,7 @@ public class UserApiControllerWebTest extends BaseSpringTest {
     public void testDelete() {
         Assert.assertNotNull(userMapper.findById(3L));
 
-        HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/3")
+        HttpRequest.withPath(serverPrefix + "/api/v1/user/3")
                 .performDelete();
 
         Assert.assertNull(userMapper.findById(3L));
@@ -109,8 +96,7 @@ public class UserApiControllerWebTest extends BaseSpringTest {
     public void testDelete2WithParam() {
         Assert.assertNotNull(userMapper.findById(4L));
 
-        HttpRequest.withPath(
-                "http://localhost:" + serverPort + "/api/v1/user/delete")
+        HttpRequest.withPath(serverPrefix + "/api/v1/user/delete")
                 .withParam("id", 4)
                 .performDelete();
 
