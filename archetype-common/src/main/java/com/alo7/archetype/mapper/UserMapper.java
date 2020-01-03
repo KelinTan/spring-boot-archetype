@@ -3,12 +3,14 @@
 package com.alo7.archetype.mapper;
 
 import com.alo7.archetype.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @author Kelin Tan
  */
+@Mapper
 public interface UserMapper {
     List<User> findAll();
 

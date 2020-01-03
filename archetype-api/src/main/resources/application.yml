@@ -2,7 +2,10 @@ server:
   port: 8080
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  config-location:  classpath:mybatis-config.xml
+  type-aliases-package: com.alo7.archetype.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    local-cache-scope: statement
 spring:
   profiles:
     active: dev
