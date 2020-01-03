@@ -112,7 +112,7 @@ public class RpcClientProxy implements InvocationHandler {
                 return request.put();
             default:
                 throw new RuntimeException(LogMessageBuilder.builder()
-                        .message("UnSupported http Method")
+                        .message("UnSupported http method")
                         .parameter("uri", uri)
                         .parameter("method", method)
                         .build());
@@ -138,7 +138,7 @@ public class RpcClientProxy implements InvocationHandler {
         HttpMethod annotation = AnnotationUtils.findAnnotation(method, HttpMethod.class);
         if (annotation == null) {
             throw new RuntimeException(LogMessageBuilder.builder()
-                    .message("@RpcClient method 缺少 HttpMethod:")
+                    .message("RpcClient method need @HttpMethod ")
                     .parameter("clazz", clazz.getName())
                     .parameter("method", method.getName())
                     .build());

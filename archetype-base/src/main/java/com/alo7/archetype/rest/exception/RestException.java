@@ -17,7 +17,7 @@ public class RestException extends RuntimeException {
     @Setter
     private HttpStatus status;
     /**
-     * 错误码
+     * biz errorCode
      */
     @Getter
     @Setter
