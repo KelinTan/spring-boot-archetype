@@ -7,11 +7,14 @@ import com.alo7.archetype.entity.User;
 import com.alo7.archetype.http.HttpRequest;
 import com.alo7.archetype.mapper.UserMapper;
 import com.alo7.archetype.rest.response.RestResponse;
-import com.alo7.archetype.testing.BaseSpringWebTest;
+import com.alo7.archetype.testing.BaseWebTest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +22,9 @@ import java.util.List;
 /**
  * @author Kelin Tan
  */
-public class UserApiControllerWebTest extends BaseSpringWebTest {
+@SqlGroup({@Sql(value = "classpath:reset/user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:data/user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)})
+public class UserApiControllerWebTest extends BaseWebTest {
     @Autowired
     private UserMapper userMapper;
 
@@ -30,6 +35,7 @@ public class UserApiControllerWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<List<User>>>() {
                 });
 
+        Assert.assertEquals(response.getResult().size(), 4);
         Assert.assertEquals(response.getResult().get(0).getId().intValue(), 1);
     }
 

@@ -47,6 +47,8 @@ public class HttpRequest {
     }
 
     public HttpRequest withParams(Map<String, Object> params) {
+        Preconditions.checkNotNull(this.uriBuilder);
+
         this.uriBuilder.addParameters(HttpUtils.buildNameValuePairs(params));
         return this;
     }
