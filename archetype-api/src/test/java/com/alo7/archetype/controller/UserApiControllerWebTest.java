@@ -40,8 +40,20 @@ public class UserApiControllerWebTest extends BaseWebTest {
     }
 
     @Test
+    public void testFindUserWithHeader() {
+        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findUserWithHeader")
+                .withHeader("id", 1)
+                .performGet()
+                .json(new TypeReference<RestResponse<User>>() {
+                });
+
+        Assert.assertNotNull(response.getResult());
+        Assert.assertEquals(response.getResult().getId().intValue(), 1);
+    }
+
+    @Test
     public void testFindUser2PerformGetWithParam() {
-        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/1")
+        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findUser")
                 .withParam("id", 1)
                 .performGet()
                 .json(new TypeReference<RestResponse<User>>() {
