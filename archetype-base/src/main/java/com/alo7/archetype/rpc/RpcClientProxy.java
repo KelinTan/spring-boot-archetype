@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Kelin Tan
@@ -37,6 +38,7 @@ public class RpcClientProxy implements InvocationHandler {
     private Map<Method, String> requestUrlOnMethods = new HashMap<>();
     private Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
     private Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
+    private Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
 
     RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         super();
@@ -47,14 +49,7 @@ public class RpcClientProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         try {
-            RequestMethod requestMethod = requestMethodOnMethods.get(method);
-            Map<String, Object> parameterMap = buildParameterMap(method, args);
-            Map<String, Object> pathParameterMap = buildPathParameterMap(method, args);
-            Map<String, Object> headerMap = buildRequestHeaderMap(method, args);
-            Object requestBody = buildRequestBody(method, args);
-
-            String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
-            HttpRequest request = createRequest(url, requestMethod, parameterMap, headerMap, requestBody);
+            HttpRequest request = getHttpRequest(method, args);
 
             CloseableHttpResponse response = request.execute().response();
             int status = response.getStatusLine().getStatusCode();
@@ -77,6 +72,22 @@ public class RpcClientProxy implements InvocationHandler {
             throw RestExceptionFactory.toSystemException();
         }
         return null;
+    }
+
+    private HttpRequest getHttpRequest(Method method, Object[] args) {
+        if (methodHttpRequestMap.containsKey(method)) {
+            return methodHttpRequestMap.get(method);
+        }
+        RequestMethod requestMethod = requestMethodOnMethods.get(method);
+        Map<String, Object> parameterMap = buildParameterMap(method, args);
+        Map<String, Object> pathParameterMap = buildPathParameterMap(method, args);
+        Map<String, Object> headerMap = buildRequestHeaderMap(method, args);
+        Object requestBody = buildRequestBody(method, args);
+
+        String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
+        HttpRequest request = createRequest(url, requestMethod, parameterMap, headerMap, requestBody);
+        methodHttpRequestMap.putIfAbsent(method, request);
+        return request;
     }
 
     private void init(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {

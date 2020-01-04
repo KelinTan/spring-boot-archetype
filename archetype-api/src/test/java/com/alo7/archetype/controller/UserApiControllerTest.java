@@ -28,6 +28,26 @@ public class UserApiControllerTest extends BaseMockMvcTest {
     }
 
     @Test
+    public void testFindUserWithHeader() throws Exception {
+        mockMvc.perform(get("/api/v1/user/findUserWithHeader")
+                .header("id", 1)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.id").value("1"))
+                .andExpect(jsonPath("$.result.userName").value("test1"));
+    }
+
+    @Test
+    public void testFindUserWithParam() throws Exception {
+        mockMvc.perform(get("/api/v1/user/findUser")
+                .param("id", "1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.id").value("1"))
+                .andExpect(jsonPath("$.result.userName").value("test1"));
+    }
+
+    @Test
     public void testSaveUser() throws Exception {
         mockMvc.perform(post("/api/v1/user/save").param("name", "a boy").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
