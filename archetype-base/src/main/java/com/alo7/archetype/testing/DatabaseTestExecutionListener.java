@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class DatabaseTestExecutionListener extends AbstractTestExecutionListener {
-    private volatile boolean initialized;
+    private volatile boolean initializedSchema;
 
     @Override
     public final int getOrder() {
@@ -37,16 +37,16 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
     public void beforeTestClass(TestContext testContext) {
         Set<MockDatabase> sqlAnnotations = AnnotatedElementUtils.getMergedRepeatableAnnotations(
                 testContext.getTestClass(), MockDatabase.class, MockDatabases.class);
-        if (sqlAnnotations.isEmpty() || initialized) {
+        if (sqlAnnotations.isEmpty() || initializedSchema) {
             return;
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
             DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(
                     testContext, mockDatabase.dataSource());
-            loadScripts(dataSource, mockDatabase.schema());
+            loadScripts(dataSource, mockDatabase.schema(), new String[] {});
         });
-        this.initialized = true;
+        this.initializedSchema = true;
     }
 
     @Override
@@ -65,9 +65,15 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
             try {
                 Resource[] resources = resolver.getResources(mockDatabase.data());
                 JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-                JdbcTestUtils.deleteFromTables(jdbcTemplate, Arrays.stream(resources)
-                        .map(resource -> FilenameUtils.removeExtension(resource.getFilename())).collect(
-                                Collectors.joining(",")));
+
+                //truncate specific table or all
+                if (mockDatabase.table().length != 0) {
+                    JdbcTestUtils.deleteFromTables(jdbcTemplate, mockDatabase.table());
+                } else {
+                    JdbcTestUtils.deleteFromTables(jdbcTemplate, Arrays.stream(resources)
+                            .map(resource -> FilenameUtils.removeExtension(resource.getFilename())).collect(
+                                    Collectors.joining(",")));
+                }
             } catch (IOException e) {
                 log.error("load resource error:", e);
             }
@@ -85,19 +91,32 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         sqlAnnotations.forEach(mockDatabase -> {
             DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(
                     testContext, mockDatabase.dataSource());
-            loadScripts(dataSource, mockDatabase.data());
+            loadScripts(dataSource, mockDatabase.data(), mockDatabase.table());
         });
     }
 
-    private void loadScripts(DataSource dataSource, String path) {
+    private void loadScripts(DataSource dataSource, String path, String[] table) {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
             Resource[] resources = resolver.getResources(path);
-            ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-            databasePopulator.setScripts(resources);
-            databasePopulator.execute(dataSource);
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+            resourceDatabasePopulator.setScripts(filterResource(resources, table));
+            resourceDatabasePopulator.execute(dataSource);
         } catch (IOException e) {
             log.error("load resource error:", e);
         }
+    }
+
+    private Resource[] filterResource(Resource[] resources, String[] table) {
+        return Arrays.stream(resources).filter(s -> checkResourceLoad(s, table))
+                .toArray(Resource[]::new);
+    }
+
+    /**
+     * load all or specific resource
+     */
+    private boolean checkResourceLoad(Resource resource, String[] table) {
+        return table.length == 0 || Arrays.stream(table).anyMatch(
+                s -> s.equals(FilenameUtils.removeExtension(resource.getFilename())));
     }
 }

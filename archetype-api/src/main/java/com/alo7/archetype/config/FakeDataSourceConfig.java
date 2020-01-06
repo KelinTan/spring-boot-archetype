@@ -29,7 +29,6 @@ public class FakeDataSourceConfig {
     private HikariDataSource buildFakeDataSource() {
         return DataSourceBuilder.create()
                 .url("jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false")
-                .driverClassName("org.h2.Driver")
                 .type(HikariDataSource.class)
                 .build();
     }

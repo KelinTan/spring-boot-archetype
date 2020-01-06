@@ -4,9 +4,7 @@ spring:
       username: root
       password: 123456
       jdbc-url: jdbc:mysql://127.0.0.1:3306/spring-boot-archetype?useUnicode=true&characterEncoding=utf8&useSSL=false
-      driver-class-name: com.mysql.jdbc.Driver
     biz:
       username: root
       password: 123456
       jdbc-url: jdbc:mysql://127.0.0.1:3306/spring-boot-biz?useUnicode=true&characterEncoding=utf8&useSSL=false
-      driver-class-name: com.mysql.jdbc.Driver
