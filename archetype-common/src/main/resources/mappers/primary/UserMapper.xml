@@ -2,38 +2,38 @@
 <!-- Copyright 2018 Alo7 Inc. All rights reserved. -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.alo7.archetype.mapper.UserMapper">
+<mapper namespace="com.alo7.archetype.persistence.mapper.primary.UserMapper">
 
     <sql id="columns">
         id,user_name
     </sql>
 
-    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.alo7.archetype.persistence.entity.primary.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            t_user(user_name)
+            user(user_name)
         VALUES
             (#{userName})
     </insert>
 
     <delete id="deleteById">
         DELETE FROM
-            t_user
+            user
         WHERE
             id = #{id}
     </delete>
 
-    <select id="findAll" resultType="User">
+    <select id="findAll" resultType="com.alo7.archetype.persistence.entity.primary.User">
         SELECT
             <include refid="columns"/>
         FROM
-            t_user
+            user
     </select>
 
-    <select id="findById" resultType="User">
+    <select id="findById" resultType="com.alo7.archetype.persistence.entity.primary.User">
         SELECT
             <include refid="columns"/>
         FROM
-            t_user
+            user
         WHERE
             id = #{id}
     </select>

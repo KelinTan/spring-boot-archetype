@@ -1,9 +1,12 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.mapper;
+package com.alo7.archetype.persistence.primary.mapper;
 
-import com.alo7.archetype.entity.User;
+import com.alo7.archetype.SpringBootArchetypeServer;
+import com.alo7.archetype.persistence.entity.primary.User;
+import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.testing.BaseSpringTest;
+import com.alo7.archetype.testing.MockDatabase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +16,9 @@ import org.springframework.util.Assert;
 /**
  * @author Kelin Tan
  */
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
+@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql", table = {
+        "user"})
 public class UserMapperTest extends BaseSpringTest {
 
     @Autowired

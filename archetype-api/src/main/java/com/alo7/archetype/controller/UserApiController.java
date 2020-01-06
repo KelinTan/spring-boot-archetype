@@ -2,8 +2,8 @@
 
 package com.alo7.archetype.controller;
 
-import com.alo7.archetype.entity.User;
-import com.alo7.archetype.mapper.UserMapper;
+import com.alo7.archetype.persistence.entity.primary.User;
+import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.rest.response.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

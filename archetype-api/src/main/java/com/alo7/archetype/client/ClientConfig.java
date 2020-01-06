@@ -11,5 +11,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "client.endpoint")
 @Data
 public class ClientConfig {
-    private String demo;
+    private String user;
 }

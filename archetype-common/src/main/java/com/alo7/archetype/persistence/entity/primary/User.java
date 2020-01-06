@@ -1,6 +1,6 @@
 // Copyright 2018 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.entity;
+package com.alo7.archetype.persistence.entity.primary;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

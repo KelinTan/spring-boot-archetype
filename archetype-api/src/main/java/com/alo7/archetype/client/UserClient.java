@@ -2,7 +2,7 @@
 
 package com.alo7.archetype.client;
 
-import com.alo7.archetype.entity.User;
+import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.rpc.HttpMethod;
 import com.alo7.archetype.rpc.RpcClient;
@@ -16,8 +16,8 @@ import java.util.List;
 /**
  * @author Kelin Tan
  */
-@RpcClient(endpoint = "${client.endpoint.demo}")
-public interface DemoClient {
+@RpcClient(endpoint = "${client.endpoint.user}")
+public interface UserClient {
     @HttpMethod(value = "/api/v1/user/findAll", method = RequestMethod.GET)
     RestResponse<List<User>> findAll();
 

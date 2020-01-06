@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2018 Alo7 Inc. All rights reserved. -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alo7.archetype.persistence.mapper.biz.BizAccountMapper">
+
+    <sql id="columns">
+        id,account,password,token
+    </sql>
+
+    <select id="findAll" resultType="com.alo7.archetype.persistence.entity.biz.BizAccount">
+        SELECT
+            <include refid="columns"/>
+        FROM
+            biz_account
+    </select>
+</mapper>
