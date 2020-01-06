@@ -11,12 +11,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.alo7.archetype.rest.exception.GlobalErrorCode;
 import com.alo7.archetype.testing.BaseMockMvcTest;
+import com.alo7.archetype.testing.MockDatabase;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kelin Tan
  */
+@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql")
 public class UserApiControllerTest extends BaseMockMvcTest {
     @Test
     public void testFindAllUsers() throws Exception {

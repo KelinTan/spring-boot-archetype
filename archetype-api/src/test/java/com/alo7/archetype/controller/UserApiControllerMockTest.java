@@ -7,18 +7,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.alo7.archetype.entity.User;
-import com.alo7.archetype.mapper.UserMapper;
+import com.alo7.archetype.persistence.entity.primary.User;
+import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.rest.exception.RestExceptionFactory;
 import com.alo7.archetype.testing.BaseMockMvcTest;
+import com.alo7.archetype.testing.MockDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kelin Tan
  */
+@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql")
 public class UserApiControllerMockTest extends BaseMockMvcTest {
     @MockBean
     UserMapper userMapper;

@@ -3,17 +3,8 @@ server:
 spring:
   profiles:
     active: test
-  datasource:
-    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
-    driver-class-name: org.h2.Driver
-    username: test
-    password: test
-    schema: classpath:schema/*.sql
-    data: classpath:data/*.sql
-    initialization-mode: always
-    platform: h2
 client:
   endpoint:
-    demo: http://127.0.0.1:${server.port}
+    user: http://127.0.0.1:${server.port}
 logging:
   config: classpath:log4j2-test.xml
