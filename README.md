@@ -18,3 +18,7 @@
 # v3.0
 
 2019-12-31 support RestResponse && RestException
+
+# v4.0
+
+2020-01-06 support multiple databse && @MockDatabase to db test
