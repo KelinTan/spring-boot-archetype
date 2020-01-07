@@ -2,7 +2,6 @@
 
 package com.alo7.archetype.controller;
 
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,7 +13,6 @@ import com.alo7.archetype.testing.BaseMockMvcTest;
 import com.alo7.archetype.testing.MockDatabase;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kelin Tan

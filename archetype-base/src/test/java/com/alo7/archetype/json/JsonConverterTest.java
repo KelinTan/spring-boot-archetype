@@ -1,3 +1,5 @@
+// Copyright 2019 Alo7 Inc. All rights reserved.
+
 package com.alo7.archetype.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
