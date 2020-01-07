@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Repeatable(value = MockDatabases.class)
 public @interface MockDatabase {
-    String dataSource();
+    String dataSource() default "";
 
     String schema() default "";
 

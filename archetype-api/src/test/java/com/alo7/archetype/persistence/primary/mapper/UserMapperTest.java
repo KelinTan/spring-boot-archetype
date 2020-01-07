@@ -17,8 +17,7 @@ import org.springframework.util.Assert;
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
-@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql", table = {
-        "user"})
+@MockDatabase(schema = "schema/primary/*.sql", data = "data/primary/*.sql", table = {"user"})
 public class UserMapperTest extends BaseSpringTest {
     @Autowired
     private UserMapper userMapper;
