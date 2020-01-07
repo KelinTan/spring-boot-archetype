@@ -16,8 +16,8 @@
         </RollingFile>
     </appenders>
     <loggers>
-        <logger name="org.springframework" level="WARN"/>
-        <logger name="org.mybatis" level="WARN"/>
+        <logger name="org.springframework" level="info"/>
+        <logger name="org.mybatis" level="info"/>
         <root level="all">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileLog"/>
