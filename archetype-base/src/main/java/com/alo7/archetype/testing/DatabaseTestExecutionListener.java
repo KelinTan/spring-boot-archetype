@@ -2,6 +2,7 @@
 
 package com.alo7.archetype.testing;
 
+import com.alo7.archetype.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -18,7 +19,9 @@ import javax.sql.DataSource;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +29,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class DatabaseTestExecutionListener extends AbstractTestExecutionListener {
-    private volatile boolean initializedSchema;
+    private static Map<String, Boolean> dataSourceSchemaInitialized = new ConcurrentHashMap<>();
 
     @Override
     public final int getOrder() {
@@ -37,16 +40,28 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
     public void beforeTestClass(TestContext testContext) {
         Set<MockDatabase> sqlAnnotations = AnnotatedElementUtils.getMergedRepeatableAnnotations(
                 testContext.getTestClass(), MockDatabase.class, MockDatabases.class);
-        if (sqlAnnotations.isEmpty() || initializedSchema) {
+        if (sqlAnnotations.isEmpty()) {
             return;
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(
-                    testContext, mockDatabase.dataSource());
+            DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext,
+                    mockDatabase.dataSource());
+            if (dataSource == null) {
+                throw new RuntimeException(LogMessageBuilder.builder()
+                        .message("Invalid data source :")
+                        .parameter("dataSource", mockDatabase.dataSource())
+                        .build());
+            }
+            if (dataSourceSchemaInitialized.getOrDefault(mockDatabase.dataSource(), false)) {
+                return;
+            }
             loadScripts(dataSource, mockDatabase.schema(), new String[] {});
+            if (log.isDebugEnabled()) {
+                log.debug("initialize dataSource schema: " + dataSource);
+            }
+            dataSourceSchemaInitialized.putIfAbsent(mockDatabase.dataSource(), true);
         });
-        this.initializedSchema = true;
     }
 
     @Override
