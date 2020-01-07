@@ -21,7 +21,6 @@ import java.util.List;
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
 @MockDatabase(dataSource = "bizDataSource", schema = "schema/biz/*.sql", data = "data/biz/*.sql")
 public class BizAccountMapperTest extends BaseSpringTest {
-
     @Autowired
     private BizAccountMapper bizAccountMapper;
 

@@ -2,7 +2,6 @@
 
 package com.alo7.archetype.controller;
 
-
 import com.alo7.archetype.http.HttpRequest;
 import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;

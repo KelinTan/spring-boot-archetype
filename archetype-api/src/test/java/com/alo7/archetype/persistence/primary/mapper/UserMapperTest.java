@@ -20,7 +20,6 @@ import org.springframework.util.Assert;
 @MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql", table = {
         "user"})
 public class UserMapperTest extends BaseSpringTest {
-
     @Autowired
     private UserMapper userMapper;
 
