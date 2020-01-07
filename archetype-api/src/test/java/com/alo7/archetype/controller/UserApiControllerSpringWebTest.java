@@ -3,15 +3,19 @@
 package com.alo7.archetype.controller;
 
 import com.alo7.archetype.http.HttpRequest;
+import com.alo7.archetype.http.HttpUtils;
 import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.testing.BaseSpringWebTest;
 import com.alo7.archetype.testing.MockDatabase;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,6 +27,21 @@ import java.util.List;
 public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
     @Autowired
     private UserMapper userMapper;
+
+    @Test
+    public void testCorsOptions() {
+        CloseableHttpResponse response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findAll")
+                .withHeader(HttpHeaders.ORIGIN, "*")
+                .withHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
+                .performOptions().response();
+
+        Assert.assertTrue(HttpUtils.isHttpOk(response.getStatusLine().getStatusCode()));
+        Assert.assertEquals(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN).getValue(), "*");
+        Assert.assertTrue(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS).getValue()
+                .contains("GET"));
+        Assert.assertTrue(BooleanUtils
+                .toBoolean(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS).getValue()));
+    }
 
     @Test
     public void testFindAllUsersPerformGet() {
@@ -45,6 +64,11 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
         Assert.assertNotNull(response.getResult());
         Assert.assertEquals(response.getResult().getId().intValue(), 1);
+    }
+
+    @Test
+    public void testFindUser2PerformGetBadRequest() {
+        Assert.assertTrue(HttpRequest.withPath(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest());
     }
 
     @Test

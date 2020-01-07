@@ -8,6 +8,9 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -96,6 +99,25 @@ public class HttpRequest {
         return this;
     }
 
+    public HttpRequest patch() {
+        HttpPatch patch = new HttpPatch(build());
+
+        buildEntity(patch);
+
+        this.request = patch;
+        return this;
+    }
+
+    public HttpRequest options() {
+        this.request = new HttpOptions(build());
+        return this;
+    }
+
+    public HttpRequest header() {
+        this.request = new HttpHead(build());
+        return this;
+    }
+
     public HttpRequest execute() {
         Preconditions.checkNotNull(this.request);
 
@@ -110,6 +132,30 @@ public class HttpRequest {
         Preconditions.checkNotNull(this.response);
 
         return response;
+    }
+
+    public int status() {
+        Preconditions.checkNotNull(this.response);
+
+        return response.getStatusLine().getStatusCode();
+    }
+
+    public boolean isOk() {
+        Preconditions.checkNotNull(this.response);
+
+        return HttpUtils.isHttpOk(status());
+    }
+
+    public boolean isBadRequest() {
+        Preconditions.checkNotNull(this.response);
+
+        return HttpUtils.isHttpBadRequest(status());
+    }
+
+    public boolean isErrorRequest() {
+        Preconditions.checkNotNull(this.response);
+
+        return HttpUtils.isHttpErrorRequest(status());
     }
 
     public <T> T json(Class<T> type) {
@@ -151,6 +197,18 @@ public class HttpRequest {
 
     public HttpRequest performDelete() {
         return delete().execute();
+    }
+
+    public HttpRequest performHeader() {
+        return header().execute();
+    }
+
+    public HttpRequest performOptions() {
+        return options().execute();
+    }
+
+    public HttpRequest performPatch() {
+        return patch().execute();
     }
 
     private void buildEntity(HttpEntityEnclosingRequestBase entityRequest) {
