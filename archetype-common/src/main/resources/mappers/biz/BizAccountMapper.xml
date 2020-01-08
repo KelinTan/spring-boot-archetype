@@ -8,10 +8,28 @@
         id,account,password,token
     </sql>
 
+    <update id="updateToken">
+        UPDATE
+            biz_account
+        SET
+            token = #{token}
+        WHERE
+            id = #{id}
+    </update>
+
     <select id="findAll" resultType="com.alo7.archetype.persistence.entity.biz.BizAccount">
         SELECT
             <include refid="columns"/>
         FROM
             biz_account
+    </select>
+
+    <select id="findByAccount" resultType="com.alo7.archetype.persistence.entity.biz.BizAccount">
+        SELECT
+            <include refid="columns"/>
+        FROM
+            biz_account
+        WHERE
+            account = #{account}
     </select>
 </mapper>

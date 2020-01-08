@@ -1,22 +1,22 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.persistence.entity.biz;
+package com.alo7.archetype.model.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author Kelin Tan
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BizAccount {
-    private Long id;
+public class LoginRequest {
+    @NotBlank
     private String account;
+    @NotBlank
     private String password;
-    private String token;
 }

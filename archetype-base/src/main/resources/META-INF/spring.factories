@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.alo7.archetype.jwt.CustomRSAKeyProvider,\
+  com.alo7.archetype.jwt.JwtManager
+
