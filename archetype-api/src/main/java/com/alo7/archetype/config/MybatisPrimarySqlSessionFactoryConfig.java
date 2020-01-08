@@ -26,7 +26,7 @@ import javax.sql.DataSource;
         "primarySqlSessionFactory")
 public class MybatisPrimarySqlSessionFactoryConfig {
     @Autowired
-    @Qualifier("primaryDataSource")
+    @Qualifier(DataSourceConfig.PRIMARY)
     private DataSource dataSource;
 
     @Bean

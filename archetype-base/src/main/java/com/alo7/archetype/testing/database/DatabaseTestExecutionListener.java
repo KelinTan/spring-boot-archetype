@@ -48,7 +48,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
             if (dataSourceSchemaInitialized.getOrDefault(mockDatabase.name(), false)) {
                 return;
             }
-            DataSourceConfig config = getDataSourceConfig(testContext, mockDatabase);
+            DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
             loadScripts(config.getDataSource(), config.getSchemaLocation(), new String[] {});
             if (log.isDebugEnabled()) {
                 log.debug("initialize name schema: " + mockDatabase.name());
@@ -66,7 +66,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSourceConfig config = getDataSourceConfig(testContext, mockDatabase);
+            DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
             try {
                 Resource[] resources = resolver.getResources(config.getDataLocation());
@@ -95,25 +95,25 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSourceConfig config = getDataSourceConfig(testContext, mockDatabase);
+            DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
             loadScripts(config.getDataSource(), config.getDataLocation(), mockDatabase.table());
         });
     }
 
-    private DataSourceConfig getDataSourceConfig(TestContext testContext, MockDatabase mockDatabase) {
+    private DataSourceInformation getDataSourceConfig(TestContext testContext, MockDatabase mockDatabase) {
         DataSource dataSource = checkDataSource(testContext, mockDatabase);
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setDataSource(dataSource);
+        DataSourceInformation dataSourceInformation = new DataSourceInformation();
+        dataSourceInformation.setDataSource(dataSource);
         if (dataSource instanceof FakeDataSource) {
             FakeDataSource fakeDataSource = (FakeDataSource) dataSource;
-            dataSourceConfig.setSchemaLocation(fakeDataSource.getSchemaLocation());
-            dataSourceConfig.setDataLocation(fakeDataSource.getDataLocation());
+            dataSourceInformation.setSchemaLocation(fakeDataSource.getSchemaLocation());
+            dataSourceInformation.setDataLocation(fakeDataSource.getDataLocation());
         } else {
-            dataSourceConfig.setSchemaLocation(mockDatabase.schema());
-            dataSourceConfig.setDataLocation(mockDatabase.data());
+            dataSourceInformation.setSchemaLocation(mockDatabase.schema());
+            dataSourceInformation.setDataLocation(mockDatabase.data());
         }
 
-        return dataSourceConfig;
+        return dataSourceInformation;
     }
 
     private DataSource checkDataSource(TestContext testContext, MockDatabase mockDatabase) {

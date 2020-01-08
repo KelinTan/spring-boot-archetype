@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.alo7.archetype.config.DataSourceConfig;
 import com.alo7.archetype.testing.BaseMockMvcTest;
 import com.alo7.archetype.testing.database.MockDatabase;
 import com.alo7.archetype.testing.database.MockDatabases;
@@ -16,8 +17,8 @@ import org.springframework.http.MediaType;
  * @author Kelin Tan
  */
 @MockDatabases
-        ({@MockDatabase(name = "bizDataSource", table = "user"),
-                @MockDatabase(name = "primaryDataSource", table = "user")})
+        ({@MockDatabase(name = DataSourceConfig.PRIMARY, table = "user"),
+                @MockDatabase(name = DataSourceConfig.BIZ, table = "biz_account")})
 public class UserApiAuthControllerTest extends BaseMockMvcTest {
     @Test
     public void testFakeAuth() throws Exception {

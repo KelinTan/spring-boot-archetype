@@ -16,7 +16,10 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class DataSourceConfig {
-    @Bean("primaryDataSource")
+    public static final String PRIMARY = "primaryDataSource";
+    public static final String BIZ = "bizDataSource";
+
+    @Bean(PRIMARY)
     @ConfigurationProperties(prefix = "spring.datasource.primary")
     @Primary
     public DataSource primaryDataSource() {
@@ -25,7 +28,7 @@ public class DataSourceConfig {
                 .build();
     }
 
-    @Bean("bizDataSource")
+    @Bean(BIZ)
     @ConfigurationProperties(prefix = "spring.datasource.biz")
     public DataSource bizDataSource() {
         return DataSourceBuilder.create()
