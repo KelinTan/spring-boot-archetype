@@ -7,7 +7,7 @@ import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.testing.BaseSpringTest;
-import com.alo7.archetype.testing.MockDatabase;
+import com.alo7.archetype.testing.database.MockDatabase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = SpringBootArchetypeServer.class)
-@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql")
+@MockDatabase
 public class UserClientTest extends BaseSpringTest {
     @Autowired
     UserClient userClient;

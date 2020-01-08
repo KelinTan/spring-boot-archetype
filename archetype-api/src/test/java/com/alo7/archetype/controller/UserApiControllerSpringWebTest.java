@@ -8,7 +8,7 @@ import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.testing.BaseSpringWebTest;
-import com.alo7.archetype.testing.MockDatabase;
+import com.alo7.archetype.testing.database.MockDatabase;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Kelin Tan
  */
-@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql")
+@MockDatabase
 public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
     @Autowired
     private UserMapper userMapper;

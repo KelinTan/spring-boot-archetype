@@ -2,6 +2,7 @@
 
 package com.alo7.archetype.testing;
 
+import com.alo7.archetype.testing.database.DatabaseTestExecutionListener;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;

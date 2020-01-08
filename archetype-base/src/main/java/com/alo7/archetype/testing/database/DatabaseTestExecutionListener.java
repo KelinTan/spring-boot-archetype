@@ -1,6 +1,6 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.testing;
+package com.alo7.archetype.testing.database;
 
 import com.alo7.archetype.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -45,22 +45,15 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext,
-                    mockDatabase.dataSource());
-            if (dataSource == null) {
-                throw new RuntimeException(LogMessageBuilder.builder()
-                        .message("Invalid data source :")
-                        .parameter("dataSource", mockDatabase.dataSource())
-                        .build());
-            }
-            if (dataSourceSchemaInitialized.getOrDefault(mockDatabase.dataSource(), false)) {
+            if (dataSourceSchemaInitialized.getOrDefault(mockDatabase.name(), false)) {
                 return;
             }
-            loadScripts(dataSource, mockDatabase.schema(), new String[] {});
+            DataSourceConfig config = getDataSourceConfig(testContext, mockDatabase);
+            loadScripts(config.getDataSource(), config.getSchemaLocation(), new String[] {});
             if (log.isDebugEnabled()) {
-                log.debug("initialize dataSource schema: " + dataSource);
+                log.debug("initialize name schema: " + mockDatabase.name());
             }
-            dataSourceSchemaInitialized.putIfAbsent(mockDatabase.dataSource(), true);
+            dataSourceSchemaInitialized.putIfAbsent(mockDatabase.name(), true);
         });
     }
 
@@ -73,13 +66,11 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(
-                    testContext, mockDatabase.dataSource());
-            PathMatchingResourcePatternResolver resolver =
-                    new PathMatchingResourcePatternResolver();
+            DataSourceConfig config = getDataSourceConfig(testContext, mockDatabase);
+            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
             try {
-                Resource[] resources = resolver.getResources(mockDatabase.data());
-                JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                Resource[] resources = resolver.getResources(config.getDataLocation());
+                JdbcTemplate jdbcTemplate = new JdbcTemplate(config.getDataSource());
 
                 //truncate specific table or all
                 if (mockDatabase.table().length != 0) {
@@ -104,10 +95,37 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(
-                    testContext, mockDatabase.dataSource());
-            loadScripts(dataSource, mockDatabase.data(), mockDatabase.table());
+            DataSourceConfig config = getDataSourceConfig(testContext, mockDatabase);
+            loadScripts(config.getDataSource(), config.getDataLocation(), mockDatabase.table());
         });
+    }
+
+    private DataSourceConfig getDataSourceConfig(TestContext testContext, MockDatabase mockDatabase) {
+        DataSource dataSource = checkDataSource(testContext, mockDatabase);
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDataSource(dataSource);
+        if (dataSource instanceof FakeDataSource) {
+            FakeDataSource fakeDataSource = (FakeDataSource) dataSource;
+            dataSourceConfig.setSchemaLocation(fakeDataSource.getSchemaLocation());
+            dataSourceConfig.setDataLocation(fakeDataSource.getDataLocation());
+        } else {
+            dataSourceConfig.setSchemaLocation(mockDatabase.schema());
+            dataSourceConfig.setDataLocation(mockDatabase.data());
+        }
+
+        return dataSourceConfig;
+    }
+
+    private DataSource checkDataSource(TestContext testContext, MockDatabase mockDatabase) {
+        DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext,
+                mockDatabase.name());
+        if (dataSource == null) {
+            throw new RuntimeException(LogMessageBuilder.builder()
+                    .message("Invalid data source :")
+                    .parameter("name", mockDatabase.name())
+                    .build());
+        }
+        return dataSource;
     }
 
     private void loadScripts(DataSource dataSource, String path, String[] table) {
