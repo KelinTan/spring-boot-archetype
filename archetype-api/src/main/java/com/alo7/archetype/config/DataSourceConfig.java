@@ -8,7 +8,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
@@ -16,7 +15,6 @@ import javax.sql.DataSource;
  * @author Kelin Tan
  */
 @Configuration
-@Profile({"dev", "staging", "prod"})
 public class DataSourceConfig {
     @Bean("primaryDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.primary")

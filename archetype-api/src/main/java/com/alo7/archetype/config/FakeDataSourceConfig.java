@@ -16,6 +16,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @Profile("test")
+@Primary
 public class FakeDataSourceConfig {
     @Bean("primaryDataSource")
     @Primary

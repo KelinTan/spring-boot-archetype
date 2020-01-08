@@ -9,6 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * to mock db in test
+ *
  * @author Kelin Tan
  */
 @Retention(RetentionPolicy.RUNTIME)
