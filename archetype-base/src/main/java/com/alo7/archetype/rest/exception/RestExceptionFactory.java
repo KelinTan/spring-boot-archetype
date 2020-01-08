@@ -2,7 +2,7 @@
 
 package com.alo7.archetype.rest.exception;
 
-import org.assertj.core.util.Preconditions;
+import com.google.common.base.Preconditions;
 import org.springframework.http.HttpStatus;
 
 /**
