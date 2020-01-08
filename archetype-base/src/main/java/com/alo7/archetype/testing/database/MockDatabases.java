@@ -1,6 +1,6 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.testing;
+package com.alo7.archetype.testing.database;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

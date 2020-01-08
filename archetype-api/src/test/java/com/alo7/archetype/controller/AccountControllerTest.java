@@ -11,7 +11,7 @@ import com.alo7.archetype.model.constant.BizErrorCode;
 import com.alo7.archetype.model.request.LoginRequest;
 import com.alo7.archetype.rest.exception.GlobalErrorCode;
 import com.alo7.archetype.testing.BaseMockMvcTest;
-import com.alo7.archetype.testing.MockDatabase;
+import com.alo7.archetype.testing.database.MockDatabase;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 /**
  * @author Kelin Tan
  */
-@MockDatabase(dataSource = "bizDataSource", schema = "schema/biz/*.sql", data = "data/biz/*.sql")
+@MockDatabase(name = "bizDataSource")
 public class AccountControllerTest extends BaseMockMvcTest {
     @Test
     public void testLoginBadRequest() throws Exception {

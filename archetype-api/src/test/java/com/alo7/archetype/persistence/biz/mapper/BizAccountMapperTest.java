@@ -6,7 +6,7 @@ import com.alo7.archetype.SpringBootArchetypeServer;
 import com.alo7.archetype.persistence.entity.biz.BizAccount;
 import com.alo7.archetype.persistence.mapper.biz.BizAccountMapper;
 import com.alo7.archetype.testing.BaseSpringTest;
-import com.alo7.archetype.testing.MockDatabase;
+import com.alo7.archetype.testing.database.MockDatabase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
-@MockDatabase(dataSource = "bizDataSource", schema = "schema/biz/*.sql", data = "data/biz/*.sql")
+@MockDatabase(name = "bizDataSource")
 public class BizAccountMapperTest extends BaseSpringTest {
     @Autowired
     private BizAccountMapper bizAccountMapper;

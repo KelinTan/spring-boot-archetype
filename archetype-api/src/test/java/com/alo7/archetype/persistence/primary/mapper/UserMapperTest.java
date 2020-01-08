@@ -6,7 +6,7 @@ import com.alo7.archetype.SpringBootArchetypeServer;
 import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.testing.BaseSpringTest;
-import com.alo7.archetype.testing.MockDatabase;
+import com.alo7.archetype.testing.database.MockDatabase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
-@MockDatabase(schema = "schema/primary/*.sql", data = "data/primary/*.sql", table = {"user"})
+@MockDatabase
 public class UserMapperTest extends BaseSpringTest {
     @Autowired
     private UserMapper userMapper;

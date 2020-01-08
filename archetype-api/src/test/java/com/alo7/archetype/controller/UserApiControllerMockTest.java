@@ -11,7 +11,7 @@ import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.rest.exception.RestExceptionFactory;
 import com.alo7.archetype.testing.BaseMockMvcTest;
-import com.alo7.archetype.testing.MockDatabase;
+import com.alo7.archetype.testing.database.MockDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,7 +20,7 @@ import org.springframework.http.MediaType;
 /**
  * @author Kelin Tan
  */
-@MockDatabase(dataSource = "primaryDataSource", schema = "schema/primary/*.sql", data = "data/primary/*.sql")
+@MockDatabase
 public class UserApiControllerMockTest extends BaseMockMvcTest {
     @MockBean
     UserMapper userMapper;

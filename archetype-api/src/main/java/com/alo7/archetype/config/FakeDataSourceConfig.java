@@ -2,8 +2,7 @@
 
 package com.alo7.archetype.config;
 
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import com.alo7.archetype.testing.database.FakeDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,18 +20,11 @@ public class FakeDataSourceConfig {
     @Bean("primaryDataSource")
     @Primary
     public DataSource primaryDataSource() {
-        return buildFakeDataSource();
+        return new FakeDataSource("schema/primary/*.sql", "data/primary/*.sql");
     }
 
     @Bean("bizDataSource")
     public DataSource bizDataSource() {
-        return buildFakeDataSource();
-    }
-
-    private HikariDataSource buildFakeDataSource() {
-        return DataSourceBuilder.create()
-                .url("jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false")
-                .type(HikariDataSource.class)
-                .build();
+        return new FakeDataSource("schema/biz/*.sql", "data/biz/*.sql");
     }
 }
