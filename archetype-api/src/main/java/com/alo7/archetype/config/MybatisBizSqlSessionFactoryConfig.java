@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "com.alo7.archetype.persistence.mapper.biz", sqlSessionFactoryRef = "bizSqlSessionFactory")
 public class MybatisBizSqlSessionFactoryConfig {
     @Autowired
-    @Qualifier("bizDataSource")
+    @Qualifier(DataSourceConfig.BIZ)
     private DataSource dataSource;
 
     @Bean

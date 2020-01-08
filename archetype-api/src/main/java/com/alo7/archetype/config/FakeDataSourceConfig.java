@@ -17,13 +17,13 @@ import javax.sql.DataSource;
 @Profile("test")
 @Primary
 public class FakeDataSourceConfig {
-    @Bean("primaryDataSource")
+    @Bean(DataSourceConfig.PRIMARY)
     @Primary
     public DataSource primaryDataSource() {
         return new FakeDataSource("schema/primary/*.sql", "data/primary/*.sql");
     }
 
-    @Bean("bizDataSource")
+    @Bean(DataSourceConfig.BIZ)
     public DataSource bizDataSource() {
         return new FakeDataSource("schema/biz/*.sql", "data/biz/*.sql");
     }

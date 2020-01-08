@@ -3,6 +3,7 @@
 package com.alo7.archetype.persistence.biz.mapper;
 
 import com.alo7.archetype.SpringBootArchetypeServer;
+import com.alo7.archetype.config.DataSourceConfig;
 import com.alo7.archetype.persistence.entity.biz.BizAccount;
 import com.alo7.archetype.persistence.mapper.biz.BizAccountMapper;
 import com.alo7.archetype.testing.BaseSpringTest;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
-@MockDatabase(name = "bizDataSource")
+@MockDatabase(name = DataSourceConfig.BIZ)
 public class BizAccountMapperTest extends BaseSpringTest {
     @Autowired
     private BizAccountMapper bizAccountMapper;

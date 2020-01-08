@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.alo7.archetype.config.DataSourceConfig;
 import com.alo7.archetype.json.JsonConverter;
 import com.alo7.archetype.model.constant.BizErrorCode;
 import com.alo7.archetype.model.request.LoginRequest;
@@ -19,7 +20,7 @@ import org.springframework.http.MediaType;
 /**
  * @author Kelin Tan
  */
-@MockDatabase(name = "bizDataSource")
+@MockDatabase(name = DataSourceConfig.BIZ)
 public class AccountControllerTest extends BaseMockMvcTest {
     @Test
     public void testLoginBadRequest() throws Exception {
