@@ -18,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -37,15 +39,26 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Assert.assertEquals(1, account.getId().intValue());
         Assert.assertEquals("test1", account.getAccount());
         Assert.assertEquals("password1", account.getPassword());
-        Assert.assertEquals("token1", account.getToken());
+        Assert.assertEquals(10, account.getAge().intValue());
+        Assert.assertEquals(20, account.getHeight().longValue());
+        Assert.assertEquals(100, account.getMoney().intValue());
+        Assert.assertEquals(LocalDateTime.of(2020, 1, 10, 15, 34, 27), account.getBirthDate());
+        Assert.assertTrue(account.getVerify());
     }
 
     @Test
     public void testBasicInsert() {
+        LocalDateTime now = LocalDateTime.now();
+
         BizAccount insertEntity = BizAccount.builder()
                 .account("testInsert")
                 .password("testPwd")
                 .token("testToken")
+                .age(10)
+                .height(10L)
+                .money(BigDecimal.valueOf(15.55))
+                .birthDate(now)
+                .verify(false)
                 .build();
         accountMapper.insert(insertEntity);
         BizAccount account = accountMapper.findOne(insertEntity.getId());
@@ -54,13 +67,25 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Assert.assertEquals("testInsert", account.getAccount());
         Assert.assertEquals("testPwd", account.getPassword());
         Assert.assertEquals("testToken", account.getToken());
+        Assert.assertEquals(10, account.getAge().intValue());
+        Assert.assertEquals(10, account.getHeight().longValue());
+        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
+        Assert.assertTrue(account.getBirthDate().isEqual(now));
+        Assert.assertFalse(account.getVerify());
     }
 
     @Test
     public void testBasicInsertSelective() {
+        LocalDateTime now = LocalDateTime.now();
+
         BizAccount insertEntity = BizAccount.builder()
                 .account("testInsertSelective")
                 .password("testPwd")
+                .age(10)
+                .height(10L)
+                .money(BigDecimal.valueOf(15.55))
+                .birthDate(now)
+                .verify(false)
                 .build();
         accountMapper.insertSelective(insertEntity);
         BizAccount account = accountMapper.findOne(insertEntity.getId());
@@ -69,14 +94,26 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Assert.assertEquals("testInsertSelective", account.getAccount());
         Assert.assertEquals("testPwd", account.getPassword());
         Assert.assertTrue(StringUtils.isBlank(account.getToken()));
+        Assert.assertEquals(10, account.getAge().intValue());
+        Assert.assertEquals(10, account.getHeight().longValue());
+        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
+        Assert.assertTrue(account.getBirthDate().isEqual(now));
+        Assert.assertFalse(account.getVerify());
     }
 
     @Test
     public void testBasicUpdate() {
+        LocalDateTime now = LocalDateTime.now();
+
         BizAccount updateEntity = BizAccount.builder()
                 .account("testUpdate")
                 .password("update")
                 .token("update")
+                .age(10)
+                .height(10L)
+                .money(BigDecimal.valueOf(15.55))
+                .birthDate(now)
+                .verify(true)
                 .build();
         updateEntity.setId(1L);
         accountMapper.update(updateEntity);
@@ -85,12 +122,24 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Assert.assertEquals("testUpdate", account.getAccount());
         Assert.assertEquals("update", account.getPassword());
         Assert.assertEquals("update", account.getToken());
+        Assert.assertEquals(10, account.getAge().intValue());
+        Assert.assertEquals(10, account.getHeight().longValue());
+        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
+        Assert.assertTrue(account.getBirthDate().isEqual(now));
+        Assert.assertTrue(account.getVerify());
     }
 
     @Test
     public void testBasicUpdateSelective() {
+        LocalDateTime now = LocalDateTime.now();
+
         BizAccount updateEntity = BizAccount.builder()
                 .token("updateSelective")
+                .age(10)
+                .height(10L)
+                .money(BigDecimal.valueOf(15.55))
+                .birthDate(now)
+                .verify(true)
                 .build();
         updateEntity.setId(1L);
         accountMapper.updateSelective(updateEntity);
@@ -99,6 +148,11 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Assert.assertEquals("test1", account.getAccount());
         Assert.assertEquals("password1", account.getPassword());
         Assert.assertEquals("updateSelective", account.getToken());
+        Assert.assertEquals(10, account.getAge().intValue());
+        Assert.assertEquals(10, account.getHeight().longValue());
+        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
+        Assert.assertTrue(account.getBirthDate().isEqual(now));
+        Assert.assertTrue(account.getVerify());
     }
 
     @Test

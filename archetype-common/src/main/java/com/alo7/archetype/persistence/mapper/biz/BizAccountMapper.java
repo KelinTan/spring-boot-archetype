@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * @author Kelin Tan
  */
-@MapperTable(value = "biz_account", columns = "id,account,password,token")
+@MapperTable(value = "biz_account", columns = "id,account,password,token,age,height,money,birth_date,verify")
 public interface BizAccountMapper extends BasicCrudMapper<BizAccount> {
     BizAccount findByAccount(String account);
 
