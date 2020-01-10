@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.alo7.archetype.config.DataSourceConfig;
+import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.testing.BaseMockMvcTest;
 import com.alo7.archetype.testing.database.MockDatabase;
 import com.alo7.archetype.testing.database.MockDatabases;
@@ -17,16 +18,31 @@ import org.springframework.http.MediaType;
  * @author Kelin Tan
  */
 @MockDatabases
-        ({@MockDatabase(name = DataSourceConfig.PRIMARY, table = "user"),
-                @MockDatabase(name = DataSourceConfig.BIZ, table = "biz_account")})
+        ({@MockDatabase(name = DataSourceConfig.PRIMARY, mappers = UserMapper.class),
+                @MockDatabase(name = DataSourceConfig.BIZ, tables = "biz_account")})
 public class UserApiAuthControllerTest extends BaseMockMvcTest {
     @Test
-    public void testFakeAuth() throws Exception {
+    public void testAuthFindAll() throws Exception {
         mockMvc.perform(get("/api/v1/user/auth/findAll")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.length()").value("4"))
                 .andExpect(jsonPath("$.result[0].id").value("1"))
                 .andExpect(jsonPath("$.result[0].userName").value("test1"));
+    }
+
+    @Test
+    public void testAuthFindPage() throws Exception {
+        mockMvc.perform(get("/api/v1/user/auth/findPage")
+                .param("pageNo", "0")
+                .param("pageSize", "2")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results.length()").value("2"))
+                .andExpect(jsonPath("$.results[0].id").value("1"))
+                .andExpect(jsonPath("$.results[0].userName").value("test1"))
+                .andExpect(jsonPath("$.results[1].id").value("2"))
+                .andExpect(jsonPath("$.results[1].userName").value("test2"))
+        ;
     }
 }

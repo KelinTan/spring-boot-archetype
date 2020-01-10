@@ -2,22 +2,24 @@
 
 package com.alo7.archetype.persistence.entity.primary;
 
+import com.alo7.archetype.mybatis.crud.BasicEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author archetype on 2018/9/30.
+ * @author Kelin Tan
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BasicEntity {
     @NotBlank
     private String userName;
-    private Long id;
 }

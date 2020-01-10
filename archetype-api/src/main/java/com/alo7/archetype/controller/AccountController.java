@@ -8,6 +8,7 @@ import com.alo7.archetype.model.response.AccountResponse;
 import com.alo7.archetype.persistence.entity.biz.BizAccount;
 import com.alo7.archetype.persistence.mapper.biz.BizAccountMapper;
 import com.alo7.archetype.rest.response.RestResponse;
+import com.alo7.archetype.rest.response.RestResponseFactory;
 import com.alo7.archetype.session.SessionExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,6 @@ public class AccountController {
         //may store jwt id and find jwt token by jwt id in redis
         accountMapper.updateToken(account.getId(), token);
 
-        return RestResponse.<AccountResponse>builder()
-                .result(new AccountResponse(account.getAccount(), token))
-                .build();
+        return RestResponseFactory.success(new AccountResponse(account.getAccount(), token));
     }
 }

@@ -33,7 +33,13 @@ public @interface MockDatabase {
     String data() default "";
 
     /**
-     * specific table to migrate data,default migrate all table in data config
+     * specific tables to migrate data,default migrate all tables in data config
      */
-    String[] table() default {};
+    String[] tables() default {};
+
+    /**
+     * specific tables {@link com.alo7.archetype.mybatis.crud.MapperTable} to migrate data,default migrate all tables in
+     * data config
+     */
+    Class<?>[] mappers() default {};
 }

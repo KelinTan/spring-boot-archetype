@@ -3,6 +3,7 @@
 package com.alo7.archetype.rest.exception;
 
 import com.alo7.archetype.rest.response.RestErrorResponse;
+import com.alo7.archetype.rest.response.RestResponseFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,6 @@ public class RestExceptionHandler {
     private RestErrorResponse handleException(Exception e, int errorCode) {
         log.error("Handle Exception : ", e);
 
-        return RestErrorResponse.builder()
-                .errorCode(errorCode)
-                .errorMessage(e.getLocalizedMessage())
-                .build();
+        return RestResponseFactory.error(errorCode, e.getLocalizedMessage());
     }
 }

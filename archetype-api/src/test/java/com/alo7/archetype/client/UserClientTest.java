@@ -39,16 +39,16 @@ public class UserClientTest extends BaseSpringTest {
 
     @Test
     public void testRpcDeleteWithPathVariable() {
-        Assert.assertNotNull(userMapper.findById(3L));
+        Assert.assertNotNull(userMapper.findOne(3L));
         userClient.delete(3L);
-        Assert.assertNull(userMapper.findById(3L));
+        Assert.assertNull(userMapper.findOne(3L));
     }
 
     @Test
     public void testRpcDeleteWithRequestParam() {
-        Assert.assertNotNull(userMapper.findById(4L));
+        Assert.assertNotNull(userMapper.findOne(4L));
         userClient.delete2(4L);
-        Assert.assertNull(userMapper.findById(4L));
+        Assert.assertNull(userMapper.findOne(4L));
     }
 
     @Test

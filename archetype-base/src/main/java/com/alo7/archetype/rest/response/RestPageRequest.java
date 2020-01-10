@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author Kelin Tan
  */
@@ -16,9 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestPageResponse<T> {
-    private List<T> results;
+public class RestPageRequest {
     private int pageNo;
     private int pageSize;
-    private long totalCount;
 }

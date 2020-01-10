@@ -32,7 +32,10 @@ public class UserApiControllerMockTestV3 extends BaseMockTest {
 
     @Test
     public void mockUserMapperTest() {
-        when(userMapper.findAll()).thenReturn(Lists.newArrayList(new User("mock", 2L)));
+        User mockUser = new User();
+        mockUser.setUserName("mock");
+        mockUser.setId(2L);
+        when(userMapper.findAll()).thenReturn(Lists.newArrayList(mockUser));
 
         RestResponse<List<User>> response = userApiController.findAll();
         Assert.assertEquals(1, response.getResult().size());
