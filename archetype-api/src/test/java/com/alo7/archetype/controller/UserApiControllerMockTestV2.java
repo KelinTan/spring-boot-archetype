@@ -32,7 +32,10 @@ public class UserApiControllerMockTestV2 extends BaseMockMvcTest {
 
     @Test
     public void mockUserMapperTest() throws Exception {
-        when(userMapper.findAll()).thenReturn(Lists.newArrayList(new User("mock", 2L)));
+        User mockUser = new User();
+        mockUser.setUserName("mock");
+        mockUser.setId(2L);
+        when(userMapper.findAll()).thenReturn(Lists.newArrayList(mockUser));
 
         mockMvc.perform(get("/api/v1/user/findAll").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

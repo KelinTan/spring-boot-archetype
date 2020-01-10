@@ -2,6 +2,8 @@
 
 package com.alo7.archetype.rest.response;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 /**
@@ -28,7 +30,11 @@ public class RestResponseFactory {
                 .build();
     }
 
-    public static <T> RestPageResponse<T> success(int pageNo, int pageSize, int totalCount, List<T> results) {
+    public static <T> RestPageResponse<T> successPage(Page<T> page) {
+        return successPage(page.getNumber(), page.getSize(), page.getTotalElements(), page.getContent());
+    }
+
+    public static <T> RestPageResponse<T> successPage(int pageNo, int pageSize, long totalCount, List<T> results) {
         return RestPageResponse.<T>builder()
                 .pageNo(pageNo)
                 .pageSize(pageSize)

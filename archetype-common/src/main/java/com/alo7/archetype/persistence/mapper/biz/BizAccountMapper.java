@@ -2,17 +2,16 @@
 
 package com.alo7.archetype.persistence.mapper.biz;
 
+import com.alo7.archetype.mybatis.crud.BasicCrudMapper;
+import com.alo7.archetype.mybatis.crud.MapperTable;
 import com.alo7.archetype.persistence.entity.biz.BizAccount;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @author Kelin Tan
  */
-public interface BizAccountMapper {
-    List<BizAccount> findAll();
-
+@MapperTable(value = "biz_account", columns = "id,account,password,token")
+public interface BizAccountMapper extends BasicCrudMapper<BizAccount> {
     BizAccount findByAccount(String account);
 
     void updateToken(@Param("id") Long id, @Param("token") String token);

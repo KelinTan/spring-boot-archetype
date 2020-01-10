@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 public class FakeSessionService implements SessionService {
     @Override
     public BizAccount getCurrentAccount(HttpServletRequest request) {
-        return BizAccount.builder()
-                .account("fake")
-                .password("fake")
-                .id(1L)
-                .build();
+        BizAccount bizAccount = new BizAccount();
+        bizAccount.setId(999L);
+        bizAccount.setAccount("fake");
+        bizAccount.setPassword("fake");
+        return bizAccount;
     }
 }

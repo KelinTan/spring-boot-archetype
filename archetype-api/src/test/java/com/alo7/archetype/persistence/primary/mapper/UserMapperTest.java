@@ -3,47 +3,33 @@
 package com.alo7.archetype.persistence.primary.mapper;
 
 import com.alo7.archetype.SpringBootArchetypeServer;
+import com.alo7.archetype.config.DataSourceConfig;
 import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
 import com.alo7.archetype.testing.BaseSpringTest;
 import com.alo7.archetype.testing.database.MockDatabase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
-@MockDatabase
+@MockDatabase(name = DataSourceConfig.PRIMARY)
 public class UserMapperTest extends BaseSpringTest {
     @Autowired
     private UserMapper userMapper;
 
     @Test
-    public void testFindById() {
-        User user = userMapper.findById(1L);
+    public void testFindUserByName() {
+        List<User> list = userMapper.findByName("test1");
 
-        Assert.notNull(user, "");
-        Assert.isTrue(user.getUserName().equals("test1"), "ID查询失败");
-    }
-
-    @Test
-    public void testInsert() {
-        User user = new User();
-        user.setUserName("test");
-        userMapper.insert(user);
-        User insert = userMapper.findById(user.getId());
-
-        Assert.isTrue(insert.getUserName().equals("test"), "数据插入失败");
-    }
-
-    @Test
-    public void testDelete() {
-        userMapper.deleteById(3L);
-
-        Assert.isNull(userMapper.findById(3L), "数据删除失败");
+        Assert.assertEquals("test1", list.get(0).getUserName());
+        Assert.assertEquals(1, list.get(0).getId().intValue());
     }
 }

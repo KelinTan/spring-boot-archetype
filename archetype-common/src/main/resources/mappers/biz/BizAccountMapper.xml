@@ -17,13 +17,6 @@
             id = #{id}
     </update>
 
-    <select id="findAll" resultType="com.alo7.archetype.persistence.entity.biz.BizAccount">
-        SELECT
-            <include refid="columns"/>
-        FROM
-            biz_account
-    </select>
-
     <select id="findByAccount" resultType="com.alo7.archetype.persistence.entity.biz.BizAccount">
         SELECT
             <include refid="columns"/>

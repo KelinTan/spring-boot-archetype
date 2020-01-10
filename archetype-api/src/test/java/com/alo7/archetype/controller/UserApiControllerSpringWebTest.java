@@ -122,22 +122,22 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testDelete() {
-        Assert.assertNotNull(userMapper.findById(3L));
+        Assert.assertNotNull(userMapper.findOne(3L));
 
         HttpRequest.withPath(serverPrefix + "/api/v1/user/3")
                 .performDelete();
 
-        Assert.assertNull(userMapper.findById(3L));
+        Assert.assertNull(userMapper.findOne(3L));
     }
 
     @Test
     public void testDelete2WithParam() {
-        Assert.assertNotNull(userMapper.findById(4L));
+        Assert.assertNotNull(userMapper.findOne(4L));
 
         HttpRequest.withPath(serverPrefix + "/api/v1/user/delete")
                 .withParam("id", 4)
                 .performDelete();
 
-        Assert.assertNull(userMapper.findById(4L));
+        Assert.assertNull(userMapper.findOne(4L));
     }
 }

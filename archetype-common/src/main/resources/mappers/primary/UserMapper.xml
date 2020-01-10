@@ -8,33 +8,12 @@
         id,user_name
     </sql>
 
-    <insert id="insert" parameterType="com.alo7.archetype.persistence.entity.primary.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO
-            user(user_name)
-        VALUES
-            (#{userName})
-    </insert>
-
-    <delete id="deleteById">
-        DELETE FROM
-            user
-        WHERE
-            id = #{id}
-    </delete>
-
-    <select id="findAll" resultType="com.alo7.archetype.persistence.entity.primary.User">
-        SELECT
-            <include refid="columns"/>
-        FROM
-            user
-    </select>
-
-    <select id="findById" resultType="com.alo7.archetype.persistence.entity.primary.User">
+    <select id="findByName" resultType="com.alo7.archetype.persistence.entity.primary.User">
         SELECT
             <include refid="columns"/>
         FROM
             user
         WHERE
-            id = #{id}
+            user_name = #{name}
     </select>
 </mapper>

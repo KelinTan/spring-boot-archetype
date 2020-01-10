@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-import java.util.List;
-
 /**
  * @author Kelin Tan
  */
@@ -26,12 +24,20 @@ public class BizAccountMapperTest extends BaseSpringTest {
     private BizAccountMapper bizAccountMapper;
 
     @Test
-    public void testFindAll() {
-        List<BizAccount> accounts = bizAccountMapper.findAll();
+    public void testFindByAccount() {
+        Assert.assertNull(bizAccountMapper.findByAccount("noAccount"));
+        BizAccount account = bizAccountMapper.findByAccount("test1");
 
-        Assert.assertEquals(accounts.size(), 2);
-        Assert.assertEquals(accounts.get(0).getId().intValue(), 1);
-        Assert.assertEquals(accounts.get(0).getAccount(), "test1");
-        Assert.assertEquals(accounts.get(0).getToken(), "token1");
+        Assert.assertNotNull(account);
+        Assert.assertEquals("test1", account.getAccount());
+        Assert.assertEquals("password1", account.getPassword());
+        Assert.assertEquals("token1", account.getToken());
+    }
+
+    @Test
+    public void testUpdateToken() {
+        bizAccountMapper.updateToken(1L, "updateToken");
+
+        Assert.assertEquals("updateToken", bizAccountMapper.findOne(1L).getToken());
     }
 }

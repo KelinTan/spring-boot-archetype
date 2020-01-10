@@ -3,6 +3,7 @@
 package com.alo7.archetype.testing.database;
 
 import com.alo7.archetype.log.LogMessageBuilder;
+import com.alo7.archetype.mybatis.crud.MapperTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -18,11 +19,14 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import javax.sql.DataSource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Kelin Tan
@@ -72,9 +76,10 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
                 Resource[] resources = resolver.getResources(config.getDataLocation());
                 JdbcTemplate jdbcTemplate = new JdbcTemplate(config.getDataSource());
 
-                //truncate specific table or all
-                if (mockDatabase.table().length != 0) {
-                    JdbcTestUtils.deleteFromTables(jdbcTemplate, mockDatabase.table());
+                //truncate specific tables or all
+                String[] mergeTables = mergeTables(mockDatabase);
+                if (mergeTables.length != 0) {
+                    JdbcTestUtils.deleteFromTables(jdbcTemplate, mergeTables);
                 } else {
                     JdbcTestUtils.deleteFromTables(jdbcTemplate, Arrays.stream(resources)
                             .map(resource -> FilenameUtils.removeExtension(resource.getFilename())).collect(
@@ -96,8 +101,24 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
 
         sqlAnnotations.forEach(mockDatabase -> {
             DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
-            loadScripts(config.getDataSource(), config.getDataLocation(), mockDatabase.table());
+            String[] mergeTables = mergeTables(mockDatabase);
+
+            loadScripts(config.getDataSource(), config.getDataLocation(), mergeTables);
         });
+    }
+
+    private String[] mergeTables(MockDatabase mockDatabase) {
+        String[] annotationTables = mockDatabase.tables();
+        String[] mapperTables = Stream.of(mockDatabase.mappers())
+                .filter(clazz -> clazz.isAnnotationPresent(MapperTable.class))
+                .map(clazz -> clazz.getAnnotation(MapperTable.class).value())
+                .toArray(String[]::new);
+
+        List<String> mergeTables = new ArrayList<>();
+        mergeTables.addAll(Arrays.asList(annotationTables));
+        mergeTables.addAll(Arrays.asList(mapperTables));
+
+        return mergeTables.stream().distinct().toArray(String[]::new);
     }
 
     private DataSourceInformation getDataSourceConfig(TestContext testContext, MockDatabase mockDatabase) {
