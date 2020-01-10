@@ -22,3 +22,7 @@
 # v4.0
 
 2020-01-06 support multiple databse && @MockDatabase to db test
+
+# v5.0
+
+2020-01-10 support mybatis BasicCrudMapper
