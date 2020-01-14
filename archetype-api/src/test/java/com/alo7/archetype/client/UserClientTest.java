@@ -5,6 +5,7 @@ package com.alo7.archetype.client;
 import com.alo7.archetype.SpringBootArchetypeServer;
 import com.alo7.archetype.persistence.entity.primary.User;
 import com.alo7.archetype.persistence.mapper.primary.UserMapper;
+import com.alo7.archetype.rest.exception.RestException;
 import com.alo7.archetype.rest.response.RestResponse;
 import com.alo7.archetype.testing.BaseSpringTest;
 import com.alo7.archetype.testing.database.MockDatabase;
@@ -35,6 +36,11 @@ public class UserClientTest extends BaseSpringTest {
     public void testRpcInit() {
         Assert.assertNotNull(userClient);
         Assert.assertTrue(Proxy.isProxyClass(userClient.getClass()));
+    }
+
+    @Test(expected = RestException.class)
+    public void testRpcError() {
+        userClient.findAllError();
     }
 
     @Test

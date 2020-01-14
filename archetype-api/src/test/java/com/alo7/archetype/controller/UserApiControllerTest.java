@@ -8,9 +8,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.alo7.archetype.rest.exception.GlobalErrorCode;
 import com.alo7.archetype.testing.BaseMockMvcTest;
 import com.alo7.archetype.testing.database.MockDatabase;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -19,6 +19,14 @@ import org.springframework.http.MediaType;
  */
 @MockDatabase
 public class UserApiControllerTest extends BaseMockMvcTest {
+    @Test
+    public void testNotFound() throws Exception {
+        mockMvc.perform(get("/api/v1/user/test/no")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
     @Test
     public void testFindAllUsers() throws Exception {
         mockMvc.perform(get("/api/v1/user/findAll").accept(MediaType.APPLICATION_JSON))
@@ -59,7 +67,7 @@ public class UserApiControllerTest extends BaseMockMvcTest {
     public void testFindUser2MissingParameter() throws Exception {
         mockMvc.perform(get("/api/v1/user/findUser2").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value(GlobalErrorCode.BAD_REQUEST_ERROR));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.SC_BAD_REQUEST));
     }
 
     @Test
@@ -69,7 +77,7 @@ public class UserApiControllerTest extends BaseMockMvcTest {
                 .content("{}")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value(GlobalErrorCode.BAD_REQUEST_ERROR));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.SC_BAD_REQUEST));
     }
 
     @Test
@@ -78,7 +86,7 @@ public class UserApiControllerTest extends BaseMockMvcTest {
                 .content("{}")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value(GlobalErrorCode.BAD_REQUEST_ERROR));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.SC_BAD_REQUEST));
     }
 
     @Test
@@ -87,7 +95,7 @@ public class UserApiControllerTest extends BaseMockMvcTest {
                 .content("{}")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isMethodNotAllowed())
-                .andExpect(jsonPath("$.errorCode").value(GlobalErrorCode.BAD_REQUEST_ERROR));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.SC_METHOD_NOT_ALLOWED));
     }
 
     @Test

@@ -178,6 +178,7 @@
                         <exclude>**/*Entity.class</exclude>
                         <exclude>**/*Config.class</exclude>
                         <exclude>**/*Exception.class</exclude>
+                        <exclude>**/*Server.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>

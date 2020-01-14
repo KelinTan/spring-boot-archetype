@@ -36,11 +36,6 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
     private static Map<String, Boolean> dataSourceSchemaInitialized = new ConcurrentHashMap<>();
 
     @Override
-    public final int getOrder() {
-        return 5000;
-    }
-
-    @Override
     public void beforeTestClass(TestContext testContext) {
         Set<MockDatabase> sqlAnnotations = AnnotatedElementUtils.getMergedRepeatableAnnotations(
                 testContext.getTestClass(), MockDatabase.class, MockDatabases.class);

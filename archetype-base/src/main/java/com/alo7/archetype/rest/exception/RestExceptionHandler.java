@@ -39,20 +39,20 @@ public class RestExceptionHandler {
             HttpMediaTypeNotSupportedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrorResponse handleBadRequestException(Exception e) {
-        return handleException(e, GlobalErrorCode.BAD_REQUEST_ERROR);
+        return handleException(e, HttpStatus.BAD_REQUEST.value());
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public RestErrorResponse handleMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
-        return handleException(e, GlobalErrorCode.BAD_REQUEST_ERROR);
+        return handleException(e, HttpStatus.METHOD_NOT_ALLOWED.value());
     }
 
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestErrorResponse defaultExceptionHandler(Exception e) {
-        return handleException(e, GlobalErrorCode.SYSTEM_ERROR);
+        return handleException(e, HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     private RestErrorResponse handleException(Exception e, int errorCode) {

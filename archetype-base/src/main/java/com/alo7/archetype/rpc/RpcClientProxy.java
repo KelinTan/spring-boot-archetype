@@ -6,6 +6,7 @@ import com.alo7.archetype.http.HttpRequest;
 import com.alo7.archetype.http.HttpUtils;
 import com.alo7.archetype.json.JsonConverter;
 import com.alo7.archetype.log.LogMessageBuilder;
+import com.alo7.archetype.rest.exception.RestException;
 import com.alo7.archetype.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +64,8 @@ public class RpcClientProxy implements InvocationHandler {
             } else {
                 rpcErrorHandler.handle(status, EntityUtils.toString(entity));
             }
+        } catch (RestException e) {
+            throw e;
         } catch (Exception e) {
             log.error(LogMessageBuilder.builder()
                     .message("rpc client proxy invoke error")

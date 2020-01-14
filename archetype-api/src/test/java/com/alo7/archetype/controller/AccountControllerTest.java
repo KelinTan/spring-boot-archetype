@@ -10,7 +10,6 @@ import com.alo7.archetype.config.DataSourceConfig;
 import com.alo7.archetype.json.JsonConverter;
 import com.alo7.archetype.model.constant.BizErrorCode;
 import com.alo7.archetype.model.request.LoginRequest;
-import com.alo7.archetype.rest.exception.GlobalErrorCode;
 import com.alo7.archetype.testing.BaseMockMvcTest;
 import com.alo7.archetype.testing.database.MockDatabase;
 import org.apache.http.HttpStatus;
@@ -29,7 +28,7 @@ public class AccountControllerTest extends BaseMockMvcTest {
                 .content("{}")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value(GlobalErrorCode.BAD_REQUEST_ERROR));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.SC_BAD_REQUEST));
     }
 
     @Test
