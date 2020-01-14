@@ -10,7 +10,7 @@ import javax.sql.DataSource;
  * @author Kelin Tan
  */
 @Data
-public class DataSourceInformation {
+public class MockDatabaseConfig {
     private DataSource dataSource;
     private String schemaLocation;
     private String dataLocation;
