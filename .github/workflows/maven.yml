@@ -23,9 +23,9 @@ jobs:
         mvn -B package --file pom.xml
     - name: Build Jacoco Report
       run: mvn jacoco:report-aggregate
-      if: github.ref == 'master' || github.base_ref == 'master'
+      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
     - uses: codecov/codecov-action@v1
-      if: github.ref == 'master' || github.base_ref == 'master'
+      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
         file: ./archetype-report/target/site/jacoco-aggregate/jacoco.xml #optional
