@@ -3,7 +3,6 @@
 package com.alo7.archetype.rest.exception;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -14,13 +13,11 @@ public class RestException extends RuntimeException {
      * http status {@link org.springframework.http.HttpStatus}
      */
     @Getter
-    @Setter
     private HttpStatus status;
     /**
      * biz errorCode
      */
     @Getter
-    @Setter
     private int errorCode;
 
     public RestException(HttpStatus httpStatus) {

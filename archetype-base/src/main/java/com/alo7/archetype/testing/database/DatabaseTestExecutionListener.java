@@ -52,7 +52,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
             if (dataSourceSchemaInitialized.getOrDefault(mockDatabase.name(), false)) {
                 return;
             }
-            DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
+            MockDatabaseConfig config = getDataSourceConfig(testContext, mockDatabase);
             loadScripts(config.getDataSource(), config.getSchemaLocation(), new String[] {});
             if (log.isDebugEnabled()) {
                 log.debug("initialize name schema: " + mockDatabase.name());
@@ -70,7 +70,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
+            MockDatabaseConfig config = getDataSourceConfig(testContext, mockDatabase);
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
             try {
                 Resource[] resources = resolver.getResources(config.getDataLocation());
@@ -100,7 +100,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            DataSourceInformation config = getDataSourceConfig(testContext, mockDatabase);
+            MockDatabaseConfig config = getDataSourceConfig(testContext, mockDatabase);
             String[] mergeTables = mergeTables(mockDatabase);
 
             loadScripts(config.getDataSource(), config.getDataLocation(), mergeTables);
@@ -121,20 +121,20 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         return mergeTables.stream().distinct().toArray(String[]::new);
     }
 
-    private DataSourceInformation getDataSourceConfig(TestContext testContext, MockDatabase mockDatabase) {
+    private MockDatabaseConfig getDataSourceConfig(TestContext testContext, MockDatabase mockDatabase) {
         DataSource dataSource = checkDataSource(testContext, mockDatabase);
-        DataSourceInformation dataSourceInformation = new DataSourceInformation();
-        dataSourceInformation.setDataSource(dataSource);
+        MockDatabaseConfig mockDatabaseConfig = new MockDatabaseConfig();
+        mockDatabaseConfig.setDataSource(dataSource);
         if (dataSource instanceof FakeDataSource) {
             FakeDataSource fakeDataSource = (FakeDataSource) dataSource;
-            dataSourceInformation.setSchemaLocation(fakeDataSource.getSchemaLocation());
-            dataSourceInformation.setDataLocation(fakeDataSource.getDataLocation());
+            mockDatabaseConfig.setSchemaLocation(fakeDataSource.getSchemaLocation());
+            mockDatabaseConfig.setDataLocation(fakeDataSource.getDataLocation());
         } else {
-            dataSourceInformation.setSchemaLocation(mockDatabase.schema());
-            dataSourceInformation.setDataLocation(mockDatabase.data());
+            mockDatabaseConfig.setSchemaLocation(mockDatabase.schema());
+            mockDatabaseConfig.setDataLocation(mockDatabase.data());
         }
 
-        return dataSourceInformation;
+        return mockDatabaseConfig;
     }
 
     private DataSource checkDataSource(TestContext testContext, MockDatabase mockDatabase) {

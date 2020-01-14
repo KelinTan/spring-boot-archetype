@@ -4,7 +4,6 @@ package com.alo7.archetype.testing.database;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * FakeDataSource use H2 db and extends HikariDataSource
@@ -13,10 +12,8 @@ import lombok.Setter;
  */
 public class FakeDataSource extends HikariDataSource {
     @Getter
-    @Setter
     private String schemaLocation;
     @Getter
-    @Setter
     private String dataLocation;
 
     public FakeDataSource(String schemaLocation, String dataLocation) {

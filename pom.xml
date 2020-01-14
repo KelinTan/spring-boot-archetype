@@ -12,6 +12,7 @@
         <module>archetype-base</module>
         <module>archetype-common</module>
         <module>archetype-api</module>
+        <module>archetype-report</module>
     </modules>
 
     <name>spring-boot-archetype</name>
@@ -34,12 +35,22 @@
             <dependency>
                 <groupId>com.alo7.kelin</groupId>
                 <artifactId>archetype-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alo7.kelin</groupId>
                 <artifactId>archetype-base</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alo7.kelin</groupId>
+                <artifactId>archetype-report</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alo7.kelin</groupId>
+                <artifactId>archetype-api</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -153,35 +164,27 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
-            </plugin>
-            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.7.201606060606</version>
                 <configuration>
-                    <destFile>target/coverage-reports/jacoco-unit.exec</destFile>
-                    <dataFile>target/coverage-reports/jacoco-unit.exec</dataFile>
-                    <includes>
-                        <include>com/alo7/archetype/controller/*</include>
-                        <include>com/alo7/archetype/service/*</include>
-                        <include>com/alo7/archetype/mapper/*</include>
-                    </includes>
+                    <excludes>
+                        <exclude>**/model/**</exclude>
+                        <exclude>**/entity/**</exclude>
+                        <exclude>**/request/**</exclude>
+                        <exclude>**/response/**</exclude>
+                        <exclude>**/config/**</exclude>
+                        <exclude>**/*Bean.class</exclude>
+                        <exclude>**/*Entity.class</exclude>
+                        <exclude>**/*Config.class</exclude>
+                        <exclude>**/*Exception.class</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
                         <id>jacoco-initialize</id>
                         <goals>
                             <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
