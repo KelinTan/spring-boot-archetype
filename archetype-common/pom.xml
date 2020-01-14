@@ -10,4 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>archetype-common</artifactId>
     <name>archetype-common</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alo7.kelin</groupId>
+            <artifactId>archetype-base</artifactId>
+        </dependency>
+    </dependencies>
 </project>
