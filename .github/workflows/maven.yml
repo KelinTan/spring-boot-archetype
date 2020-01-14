@@ -1,12 +1,12 @@
 name: Java CI
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Set up JDK 1.8
@@ -23,7 +23,9 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Build Jacoco Report
       run: mvn jacoco:report-aggregate
+      if: github.ref == 'master'
     - uses: codecov/codecov-action@v1
+      if: github.ref == 'master'
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
         file: ./archetype-report/target/site/jacoco-aggregate/jacoco.xml #optional
