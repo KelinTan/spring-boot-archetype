@@ -63,6 +63,17 @@ public class JsonConverterTest {
         Assert.assertEquals(map.get("name"), "test");
     }
 
+    @Test
+    public void testSerializeAsBytes() {
+        TestObject object = TestObject.builder()
+                .id(1)
+                .name("test")
+                .build();
+        byte[] bytes = JsonConverter.serializeAsBytes(object);
+
+        Assert.assertTrue(bytes != null && bytes.length > 0);
+    }
+
     @Data
     @Builder
     @NoArgsConstructor

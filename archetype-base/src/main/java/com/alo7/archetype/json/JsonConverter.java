@@ -77,15 +77,6 @@ public class JsonConverter {
         }
     }
 
-    public static <T> String serialize(Class<T> clazz) {
-        try {
-            return DEFAULT_MAPPER.writeValueAsString(clazz);
-        } catch (JsonProcessingException e) {
-            log.error("json serialize error", e);
-            return null;
-        }
-    }
-
     public static String serialize(Object object) {
         if (object == null) {
             return null;

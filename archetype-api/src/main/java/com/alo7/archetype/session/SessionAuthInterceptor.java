@@ -2,6 +2,7 @@
 
 package com.alo7.archetype.session;
 
+import com.alo7.archetype.persistence.entity.biz.BizAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,12 +22,15 @@ public class SessionAuthInterceptor implements HandlerInterceptor {
     }
 
     @Override
-
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (handler instanceof HandlerMethod && SessionCache.ACCOUNT.get() == null) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             if (handlerMethod.hasMethodAnnotation(SessionAuth.class)) {
-                SessionCache.ACCOUNT.set(sessionService.getCurrentAccount(request));
+                BizAccount account = sessionService.getCurrentAccount(request);
+                if (account == null) {
+                    throw SessionExceptionFactory.toAccountSessionExpired();
+                }
+                SessionCache.ACCOUNT.set(account);
             }
         }
         return true;

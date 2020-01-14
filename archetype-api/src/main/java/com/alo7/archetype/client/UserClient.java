@@ -18,6 +18,9 @@ import java.util.List;
  */
 @RpcClient(endpoint = "${client.endpoint.user}")
 public interface UserClient {
+    @HttpMethod(value = "/api/v1/user/findAll/error", method = RequestMethod.GET)
+    RestResponse<List<User>> findAllError();
+
     @HttpMethod(value = "/api/v1/user/findAll", method = RequestMethod.GET)
     RestResponse<List<User>> findAll();
 

@@ -19,12 +19,51 @@ import javax.servlet.http.HttpServletRequest;
 @Primary
 @RequiredArgsConstructor
 public class FakeSessionService implements SessionService {
+    private BizAccount fakeAccount;
+    private boolean mockUpdate = false;
+
     @Override
     public BizAccount getCurrentAccount(HttpServletRequest request) {
-        BizAccount bizAccount = new BizAccount();
-        bizAccount.setId(999L);
-        bizAccount.setAccount("fake");
-        bizAccount.setPassword("fake");
-        return bizAccount;
+        if (mockUpdate) {
+            if (fakeAccount == null) {
+                clear();
+                return null;
+            } else {
+                BizAccount account = new BizAccount();
+                account.setId(fakeAccount.getId());
+                account.setAccount(fakeAccount.getAccount());
+                clear();
+                return fakeAccount;
+            }
+        }
+        if (fakeAccount == null) {
+            clear();
+        }
+        return fakeAccount;
+    }
+
+    public void setFakeId(Long fakeId) {
+        if (this.fakeAccount != null) {
+            this.fakeAccount.setId(fakeId);
+        }
+        this.mockUpdate = true;
+    }
+
+    public void setFakeAccountName(String fakeAccountName) {
+        if (this.fakeAccount != null) {
+            this.fakeAccount.setAccount(fakeAccountName);
+        }
+        this.mockUpdate = true;
+    }
+
+    public void setFakeAccount(BizAccount fakeAccount) {
+        this.fakeAccount = fakeAccount;
+        this.mockUpdate = true;
+    }
+
+    private void clear() {
+        fakeAccount = new BizAccount();
+        fakeAccount.setId(999L);
+        fakeAccount.setAccount("Fake");
     }
 }

@@ -73,7 +73,8 @@ public class RestExceptionFactory {
     }
 
     public static RestException toRpcException() {
-        return toException(HttpStatus.INTERNAL_SERVER_ERROR, GlobalErrorCode.HTTP_REQUEST_ERROR, "Rpc Request Error");
+        return toException(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Rpc Request Error");
     }
 
     public static RestException toException(int errorCode, HttpStatus httpStatus) {
