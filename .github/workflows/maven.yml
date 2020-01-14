@@ -29,5 +29,6 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
         file: ./archetype-report/target/site/jacoco-aggregate/jacoco.xml #optional
+        yml: ./codecov.yml #optional
         flags: unittests #optional
         name: codecov-jacoco #optional
