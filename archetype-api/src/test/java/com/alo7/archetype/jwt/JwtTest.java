@@ -2,11 +2,13 @@
 
 package com.alo7.archetype.jwt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.alo7.archetype.api.SpringBootArchetypeServer;
 import com.alo7.archetype.base.jwt.JwtManager;
 import com.alo7.archetype.base.testing.BaseSpringTest;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,12 +25,12 @@ public class JwtTest extends BaseSpringTest {
     @Test
     public void testJwtManagerVerify() {
         String token = jwtManager.generateToken("test");
-        Assert.assertNotNull(token);
+        assertNotNull(token);
 
         DecodedJWT jwt = jwtManager.verify(token);
 
-        Assert.assertNotNull(jwt);
-        Assert.assertEquals(jwt.getSubject(), "test");
-        Assert.assertEquals(jwt.getIssuer(), "archetype.boot");
+        assertNotNull(jwt);
+        assertEquals(jwt.getSubject(), "test");
+        assertEquals(jwt.getIssuer(), "archetype.boot");
     }
 }

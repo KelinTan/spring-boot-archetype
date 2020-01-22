@@ -2,8 +2,8 @@
 
 package com.alo7.archetype.base.testing.database;
 
-import com.alo7.archetype.base.crud.MapperTable;
 import com.alo7.archetype.base.log.LogMessageBuilder;
+import com.alo7.archetype.base.mybatis.crud.MapperTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;

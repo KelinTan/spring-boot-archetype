@@ -1,6 +1,6 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.base.crud;
+package com.alo7.archetype.base.mybatis.crud;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -2,7 +2,7 @@
 
 package com.alo7.archetype.common.entity.biz;
 
-import com.alo7.archetype.base.crud.BasicEntity;
+import com.alo7.archetype.base.mybatis.crud.BasicEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

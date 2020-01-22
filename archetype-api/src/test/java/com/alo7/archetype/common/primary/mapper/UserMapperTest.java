@@ -2,13 +2,14 @@
 
 package com.alo7.archetype.common.primary.mapper;
 
+import static org.junit.Assert.assertEquals;
+
 import com.alo7.archetype.api.SpringBootArchetypeServer;
 import com.alo7.archetype.api.config.DataSourceConfig;
 import com.alo7.archetype.base.testing.BaseSpringTest;
 import com.alo7.archetype.base.testing.database.MockDatabase;
 import com.alo7.archetype.common.entity.primary.User;
 import com.alo7.archetype.common.mapper.primary.UserMapper;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +30,7 @@ public class UserMapperTest extends BaseSpringTest {
     public void testFindUserByName() {
         List<User> list = userMapper.findByName("test1");
 
-        Assert.assertEquals("test1", list.get(0).getUserName());
-        Assert.assertEquals(1, list.get(0).getId().intValue());
+        assertEquals("test1", list.get(0).getUserName());
+        assertEquals(1, list.get(0).getId().intValue());
     }
 }

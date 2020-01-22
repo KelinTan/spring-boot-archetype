@@ -2,7 +2,8 @@
 
 package com.alo7.archetype.base.utils;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -24,6 +25,6 @@ public class RsaUtilTest {
 
         String decrypt = RsaUtil.decrypt(encrypt, privateKey);
 
-        Assert.assertEquals(decrypt, src);
+        assertEquals(decrypt, src);
     }
 }
