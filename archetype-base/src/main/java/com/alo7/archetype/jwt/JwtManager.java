@@ -7,6 +7,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -18,9 +19,10 @@ import java.util.UUID;
  * @author Kelin Tan
  */
 @Component
+@ConditionalOnExpression(value = "${jwt.enable}")
 @RequiredArgsConstructor
 public class JwtManager {
-    private final CustomRSAKeyProvider rsaKeyProvider;
+    private final JwtRSAKeyProvider rsaKeyProvider;
 
     private static final String ISSUER = "archetype.boot";
     private static final String AUDIENCE = "user";
