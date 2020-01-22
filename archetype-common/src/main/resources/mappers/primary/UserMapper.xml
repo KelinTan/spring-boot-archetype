@@ -2,13 +2,13 @@
 <!-- Copyright 2018 Alo7 Inc. All rights reserved. -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.alo7.archetype.persistence.mapper.primary.UserMapper">
+<mapper namespace="com.alo7.archetype.common.mapper.primary.UserMapper">
 
     <sql id="columns">
         id,user_name
     </sql>
 
-    <select id="findByName" resultType="com.alo7.archetype.persistence.entity.primary.User">
+    <select id="findByName" resultType="com.alo7.archetype.common.entity.primary.User">
         SELECT
             <include refid="columns"/>
         FROM
