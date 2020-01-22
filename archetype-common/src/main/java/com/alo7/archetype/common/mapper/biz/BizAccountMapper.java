@@ -2,8 +2,8 @@
 
 package com.alo7.archetype.common.mapper.biz;
 
-import com.alo7.archetype.base.crud.BasicCrudMapper;
-import com.alo7.archetype.base.crud.MapperTable;
+import com.alo7.archetype.base.mybatis.crud.BasicCrudMapper;
+import com.alo7.archetype.base.mybatis.crud.MapperTable;
 import com.alo7.archetype.common.entity.biz.BizAccount;
 import org.apache.ibatis.annotations.Param;
 

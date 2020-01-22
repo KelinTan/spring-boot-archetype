@@ -2,15 +2,21 @@
 
 package com.alo7.archetype.common;
 
+// import static org.junit.Assert.assertEquals;
+// import static org.junit.Assert.assertFalse;
+// import static org.junit.Assert.assertNull;
+// import static org.junit.Assert.assertThat;
+// import static org.junit.Assert.assertTrue;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+
 import com.alo7.archetype.api.SpringBootArchetypeServer;
 import com.alo7.archetype.api.config.DataSourceConfig;
 import com.alo7.archetype.base.testing.BaseSpringTest;
 import com.alo7.archetype.base.testing.database.MockDatabase;
-import com.alo7.archetype.base.testing.database.MockDatabases;
 import com.alo7.archetype.common.entity.biz.BizAccount;
 import com.alo7.archetype.common.mapper.biz.BizAccountMapper;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,8 +32,7 @@ import java.util.List;
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = SpringBootArchetypeServer.class)
-@MockDatabases
-        (@MockDatabase(name = DataSourceConfig.BIZ, tables = "biz_account"))
+@MockDatabase(name = DataSourceConfig.BIZ, tables = "biz_account")
 public class BasicCrudMapperTest extends BaseSpringTest {
     @Autowired
     private BizAccountMapper accountMapper;
@@ -36,14 +41,16 @@ public class BasicCrudMapperTest extends BaseSpringTest {
     public void testBasicFindOne() {
         BizAccount account = accountMapper.findOne(1L);
 
-        Assert.assertEquals(1, account.getId().intValue());
-        Assert.assertEquals("test1", account.getAccount());
-        Assert.assertEquals("password1", account.getPassword());
-        Assert.assertEquals(10, account.getAge().intValue());
-        Assert.assertEquals(20, account.getHeight().longValue());
-        Assert.assertEquals(100, account.getMoney().intValue());
-        Assert.assertEquals(LocalDateTime.of(2020, 1, 10, 15, 34, 27), account.getBirthDate());
-        Assert.assertTrue(account.getVerify());
+        BizAccount expect = BizAccount.builder()
+                .account("test1")
+                .password("password1")
+                .age(10)
+                .height(20L)
+                .money(new BigDecimal("100.00"))
+                .birthDate(LocalDateTime.of(2020, 1, 10, 15, 34, 27))
+                .verify(true)
+                .build();
+        assertThat(account).isEqualToIgnoringNullFields(expect);
     }
 
     @Test
@@ -63,15 +70,7 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         accountMapper.insert(insertEntity);
         BizAccount account = accountMapper.findOne(insertEntity.getId());
 
-        Assert.assertTrue(account.getId() > 1);
-        Assert.assertEquals("testInsert", account.getAccount());
-        Assert.assertEquals("testPwd", account.getPassword());
-        Assert.assertEquals("testToken", account.getToken());
-        Assert.assertEquals(10, account.getAge().intValue());
-        Assert.assertEquals(10, account.getHeight().longValue());
-        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
-        Assert.assertTrue(account.getBirthDate().isEqual(now));
-        Assert.assertFalse(account.getVerify());
+        assertThat(account).isEqualToIgnoringNullFields(insertEntity);
     }
 
     @Test
@@ -90,15 +89,7 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         accountMapper.insertSelective(insertEntity);
         BizAccount account = accountMapper.findOne(insertEntity.getId());
 
-        Assert.assertTrue(account.getId() > 1);
-        Assert.assertEquals("testInsertSelective", account.getAccount());
-        Assert.assertEquals("testPwd", account.getPassword());
-        Assert.assertTrue(StringUtils.isBlank(account.getToken()));
-        Assert.assertEquals(10, account.getAge().intValue());
-        Assert.assertEquals(10, account.getHeight().longValue());
-        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
-        Assert.assertTrue(account.getBirthDate().isEqual(now));
-        Assert.assertFalse(account.getVerify());
+        assertThat(account).isEqualToIgnoringNullFields(insertEntity);
     }
 
     @Test
@@ -119,14 +110,7 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         accountMapper.update(updateEntity);
         BizAccount account = accountMapper.findOne(updateEntity.getId());
 
-        Assert.assertEquals("testUpdate", account.getAccount());
-        Assert.assertEquals("update", account.getPassword());
-        Assert.assertEquals("update", account.getToken());
-        Assert.assertEquals(10, account.getAge().intValue());
-        Assert.assertEquals(10, account.getHeight().longValue());
-        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
-        Assert.assertTrue(account.getBirthDate().isEqual(now));
-        Assert.assertTrue(account.getVerify());
+        assertThat(account).isEqualToIgnoringNullFields(updateEntity);
     }
 
     @Test
@@ -145,33 +129,25 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         accountMapper.updateSelective(updateEntity);
         BizAccount account = accountMapper.findOne(updateEntity.getId());
 
-        Assert.assertEquals("test1", account.getAccount());
-        Assert.assertEquals("password1", account.getPassword());
-        Assert.assertEquals("updateSelective", account.getToken());
-        Assert.assertEquals(10, account.getAge().intValue());
-        Assert.assertEquals(10, account.getHeight().longValue());
-        Assert.assertEquals(BigDecimal.valueOf(15.55), account.getMoney());
-        Assert.assertTrue(account.getBirthDate().isEqual(now));
-        Assert.assertTrue(account.getVerify());
+        assertThat(account).isEqualToIgnoringNullFields(updateEntity);
     }
 
     @Test
     public void testBasicDelete() {
         accountMapper.delete(3L);
 
-        Assert.assertNull(accountMapper.findOne(3L));
+        assertThat(accountMapper.findOne(3L)).isNull();
     }
 
     @Test
     public void testBasicFindAll() {
         List<BizAccount> list = accountMapper.findAll();
-        BizAccount account = list.get(0);
-
-        Assert.assertEquals(2, list.size());
-        Assert.assertEquals(1, account.getId().intValue());
-        Assert.assertEquals("test1", account.getAccount());
-        Assert.assertEquals("password1", account.getPassword());
-        Assert.assertEquals("token1", account.getToken());
+        assertThat(list).hasSize(2);
+        assertThat(list.get(0)).isEqualToIgnoringNullFields(BizAccount.builder()
+                .account("test1")
+                .password("password1")
+                .token("token1")
+                .build());
     }
 
     @Test
@@ -181,11 +157,11 @@ public class BasicCrudMapperTest extends BaseSpringTest {
                 .build();
         List<BizAccount> list = accountMapper.findByEntity(account);
 
-        Assert.assertEquals(1, list.size());
-        Assert.assertEquals(1, list.get(0).getId().intValue());
-        Assert.assertEquals("test1", list.get(0).getAccount());
-        Assert.assertEquals("password1", list.get(0).getPassword());
-        Assert.assertEquals("token1", list.get(0).getToken());
+        assertEquals(1, list.size());
+        assertEquals(1, list.get(0).getId().intValue());
+        assertEquals("test1", list.get(0).getAccount());
+        assertEquals("password1", list.get(0).getPassword());
+        assertEquals("token1", list.get(0).getToken());
     }
 
     @Test
@@ -194,11 +170,11 @@ public class BasicCrudMapperTest extends BaseSpringTest {
                 .build();
         List<BizAccount> list = accountMapper.findByEntityWithPage(account, PageRequest.of(0, 1));
 
-        Assert.assertEquals(1, list.size());
-        Assert.assertEquals(1, list.get(0).getId().intValue());
-        Assert.assertEquals("test1", list.get(0).getAccount());
-        Assert.assertEquals("password1", list.get(0).getPassword());
-        Assert.assertEquals("token1", list.get(0).getToken());
+        assertEquals(1, list.size());
+        assertEquals(1, list.get(0).getId().intValue());
+        assertEquals("test1", list.get(0).getAccount());
+        assertEquals("password1", list.get(0).getPassword());
+        assertEquals("token1", list.get(0).getToken());
     }
 
     @Test
@@ -208,11 +184,11 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Page<BizAccount> page = accountMapper.findPage(account, PageRequest.of(0, 1));
 
         List<BizAccount> list = page.getContent();
-        Assert.assertEquals(2, page.getTotalElements());
-        Assert.assertEquals(1, list.size());
-        Assert.assertEquals(1, list.get(0).getId().intValue());
-        Assert.assertEquals("test1", list.get(0).getAccount());
-        Assert.assertEquals("password1", list.get(0).getPassword());
-        Assert.assertEquals("token1", list.get(0).getToken());
+        assertEquals(2, page.getTotalElements());
+        assertEquals(1, list.size());
+        assertEquals(1, list.get(0).getId().intValue());
+        assertEquals("test1", list.get(0).getAccount());
+        assertEquals("password1", list.get(0).getPassword());
+        assertEquals("token1", list.get(0).getToken());
     }
 }

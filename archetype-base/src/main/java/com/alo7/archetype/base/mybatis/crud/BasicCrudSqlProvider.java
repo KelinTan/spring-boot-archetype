@@ -1,6 +1,6 @@
 // Copyright 2019 Alo7 Inc. All rights reserved.
 
-package com.alo7.archetype.base.crud;
+package com.alo7.archetype.base.mybatis.crud;
 
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;

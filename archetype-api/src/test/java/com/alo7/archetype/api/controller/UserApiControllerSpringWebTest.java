@@ -2,6 +2,11 @@
 
 package com.alo7.archetype.api.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import com.alo7.archetype.base.http.HttpRequest;
 import com.alo7.archetype.base.http.HttpUtils;
 import com.alo7.archetype.base.rest.response.RestResponse;
@@ -12,7 +17,6 @@ import com.alo7.archetype.common.mapper.primary.UserMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,11 +39,11 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .withHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
                 .performOptions().response();
 
-        Assert.assertTrue(HttpUtils.isHttpOk(response.getStatusLine().getStatusCode()));
-        Assert.assertEquals(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN).getValue(), "*");
-        Assert.assertTrue(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS).getValue()
+        assertTrue(HttpUtils.isHttpOk(response.getStatusLine().getStatusCode()));
+        assertEquals(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN).getValue(), "*");
+        assertTrue(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS).getValue()
                 .contains("GET"));
-        Assert.assertTrue(BooleanUtils
+        assertTrue(BooleanUtils
                 .toBoolean(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS).getValue()));
     }
 
@@ -50,8 +54,8 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<List<User>>>() {
                 });
 
-        Assert.assertEquals(response.getResult().size(), 4);
-        Assert.assertEquals(response.getResult().get(0).getId().intValue(), 1);
+        assertEquals(response.getResult().size(), 4);
+        assertEquals(response.getResult().get(0).getId().intValue(), 1);
     }
 
     @Test
@@ -62,13 +66,13 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<User>>() {
                 });
 
-        Assert.assertNotNull(response.getResult());
-        Assert.assertEquals(response.getResult().getId().intValue(), 1);
+        assertNotNull(response.getResult());
+        assertEquals(response.getResult().getId().intValue(), 1);
     }
 
     @Test
     public void testFindUser2PerformGetBadRequest() {
-        Assert.assertTrue(HttpRequest.withPath(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest());
+        assertTrue(HttpRequest.withPath(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest());
     }
 
     @Test
@@ -79,8 +83,8 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<User>>() {
                 });
 
-        Assert.assertNotNull(response.getResult());
-        Assert.assertEquals(response.getResult().getId().intValue(), 1);
+        assertNotNull(response.getResult());
+        assertEquals(response.getResult().getId().intValue(), 1);
     }
 
     @Test
@@ -91,8 +95,8 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<User>>() {
                 });
 
-        Assert.assertNotNull(response.getResult());
-        Assert.assertEquals(response.getResult().getUserName(), "performPostWithParam");
+        assertNotNull(response.getResult());
+        assertEquals(response.getResult().getUserName(), "performPostWithParam");
     }
 
     @Test
@@ -104,8 +108,8 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<User>>() {
                 });
 
-        Assert.assertNotNull(response.getResult());
-        Assert.assertEquals(response.getResult().getUserName(), "performPost");
+        assertNotNull(response.getResult());
+        assertEquals(response.getResult().getUserName(), "performPost");
     }
 
     @Test
@@ -116,28 +120,28 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
                 .json(new TypeReference<RestResponse<User>>() {
                 });
 
-        Assert.assertNotNull(response.getResult());
-        Assert.assertEquals(response.getResult().getUserName(), "performPut");
+        assertNotNull(response.getResult());
+        assertEquals(response.getResult().getUserName(), "performPut");
     }
 
     @Test
     public void testDelete() {
-        Assert.assertNotNull(userMapper.findOne(3L));
+        assertNotNull(userMapper.findOne(3L));
 
         HttpRequest.withPath(serverPrefix + "/api/v1/user/3")
                 .performDelete();
 
-        Assert.assertNull(userMapper.findOne(3L));
+        assertNull(userMapper.findOne(3L));
     }
 
     @Test
     public void testDelete2WithParam() {
-        Assert.assertNotNull(userMapper.findOne(4L));
+        assertNotNull(userMapper.findOne(4L));
 
         HttpRequest.withPath(serverPrefix + "/api/v1/user/delete")
                 .withParam("id", 4)
                 .performDelete();
 
-        Assert.assertNull(userMapper.findOne(4L));
+        assertNull(userMapper.findOne(4L));
     }
 }

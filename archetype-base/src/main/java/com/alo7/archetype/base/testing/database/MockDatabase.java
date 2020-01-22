@@ -2,6 +2,8 @@
 
 package com.alo7.archetype.base.testing.database;
 
+import com.alo7.archetype.base.mybatis.crud.MapperTable;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -38,8 +40,7 @@ public @interface MockDatabase {
     String[] tables() default {};
 
     /**
-     * specific tables {@link com.alo7.archetype.base.crud.MapperTable} to migrate data,default migrate all tables in
-     * data config
+     * specific tables {@link MapperTable} to migrate data,default migrate all tables in data config
      */
     Class<?>[] mappers() default {};
 }
