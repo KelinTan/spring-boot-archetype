@@ -2,8 +2,9 @@
 
 package com.alo7.archetype.base.testing
 
+import com.alo7.archetype.base.http.HttpRequest
+import com.alo7.archetype.base.http.HttpUtils
 import com.alo7.archetype.base.json.JsonConverter
-import com.fasterxml.jackson.databind.JsonNode
 import org.junit.Assert.assertArrayEquals
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -11,6 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 /**
  * Test utilities using Kotlin.
@@ -108,7 +110,6 @@ interface KtTestUtils {
         return this
     }
 
-
     fun <T> List<T>?.item(i: Int, f: T.() -> Unit) {
         this!![i].f()
     }
@@ -125,23 +126,20 @@ interface KtTestUtils {
         this!!.subList(i.first, i.last + 1).forEach { it.f() }
     }
 
-    fun JsonNode.item(index: Int, f: JsonNode.() -> Unit) {
-        return item(index).f()
+    fun HttpRequest.json(): JsonNodeWrapper {
+        val entity = HttpUtils.safeEntityToString(this.response().entity)
+        return JsonNodeWrapper(JsonConverter.readTree(entity))
     }
 
-    fun JsonNode.item(index: Int): JsonNode {
-        return this.get(index)
-    }
-
-    infix fun JsonNode.verify(f: JsonNode.() -> Unit) {
+    infix fun JsonNodeWrapper.verify(f: JsonNodeWrapper.() -> Unit) {
         this.f()
     }
 
-    operator fun JsonNode.invoke(f: JsonNode.() -> Unit) {
+    operator fun JsonNodeWrapper.invoke(f: JsonNodeWrapper.() -> Unit) {
         f()
     }
 
-    infix fun <T> JsonNode.eq(value: T) {
+    infix fun <T> JsonNodeWrapper.eq(value: T) {
         when (value) {
             is Boolean -> asBoolean() eq value
             is Int -> asInt() eq value
@@ -150,32 +148,24 @@ interface KtTestUtils {
             is Byte -> asInt() eq value.toInt()
             is Float -> asDouble() eq value.toDouble()
             is Double -> asDouble() eq value
-            is BigDecimal -> BigDecimal(asText()) eq value
+            is BigDecimal -> asBigDecimal() eq value
             is String -> asText() eq value
-            else -> kotlin.test.fail("Cannot verify values for unsupported type.")
+            else -> fail("Cannot verify values for unsupported type.")
         }
     }
 
-    infix fun <T> JsonNode.eq(value: List<T>) {
-        assertEquals(value.size, this.size())
+    infix fun <T> JsonNodeWrapper.eq(value: List<T>) {
+        assertEquals(value.size, jsonNode.size())
         for (i in value.indices) {
-            this[i].eq(value[i])
+            JsonNodeWrapper(jsonNode[i]).eq(value[i])
         }
     }
 
-    infix fun JsonNode.startsWith(value: String) {
+    infix fun JsonNodeWrapper.startsWith(value: String) {
         asText().startsWith(value) eq true
     }
 
-    infix fun JsonNode.endsWith(value: String) {
+    infix fun JsonNodeWrapper.endsWith(value: String) {
         asText().endsWith(value) eq true
     }
-
-//    operator fun String.unaryMinus(): JsonNode {
-//        return
-//    }
-//
-//    operator fun String.unaryPlus(): JsonNode {
-//        return JsonConverter.readTree(this)
-//    }
 }

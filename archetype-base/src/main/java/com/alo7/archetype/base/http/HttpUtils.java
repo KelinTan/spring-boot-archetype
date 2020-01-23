@@ -117,7 +117,7 @@ public class HttpUtils {
         }
     }
 
-    static String safeEntityToString(HttpEntity httpEntity) {
+    public static String safeEntityToString(HttpEntity httpEntity) {
         if (httpEntity == null) {
             return null;
         }

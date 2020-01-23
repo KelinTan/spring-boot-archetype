@@ -28,7 +28,7 @@ import java.util.List;
  * @author Kelin Tan
  */
 @MockDatabase
-public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
+public class UserApiControllerWebTest extends BaseSpringWebTest {
     @Autowired
     private UserMapper userMapper;
 

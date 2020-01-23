@@ -14,10 +14,10 @@ open class KtBaseSpringWebTest : KtBaseSpringTest() {
     @LocalServerPort
     var serverPort = 0
 
-    private val serverPrefix: String
+    private val host: String
         get() = "http://localhost:$serverPort"
 
     @Suppress("PropertyName")
-    val Request: HttpRequest
-        get() = HttpRequest(serverPrefix)
+    val Http: HttpRequest
+        get() = HttpRequest(host)
 }

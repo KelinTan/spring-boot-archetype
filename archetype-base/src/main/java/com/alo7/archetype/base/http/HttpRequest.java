@@ -4,7 +4,6 @@ package com.alo7.archetype.base.http;
 
 import com.alo7.archetype.base.json.JsonConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -164,13 +163,6 @@ public class HttpRequest {
         Preconditions.checkNotNull(this.response);
 
         return HttpUtils.isHttpErrorRequest(status());
-    }
-
-    public JsonNode json() {
-        Preconditions.checkNotNull(this.response);
-
-        String entity = HttpUtils.safeEntityToString(this.response.getEntity());
-        return JsonConverter.readTree(entity);
     }
 
     public <T> T json(Class<T> type) {
