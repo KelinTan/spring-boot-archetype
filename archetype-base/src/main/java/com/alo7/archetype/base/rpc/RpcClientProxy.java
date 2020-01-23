@@ -109,7 +109,7 @@ public class RpcClientProxy implements InvocationHandler {
             Map<String, Object> headerMap,
             Object requestBody) {
         HttpRequest request = HttpRequest
-                .withPath(uri)
+                .host(uri)
                 .withParams(paramsMap)
                 .withHeaders(headerMap);
         if (requestBody != null) {

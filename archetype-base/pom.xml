@@ -78,8 +78,7 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
-            <scope>test</scope>
+            <artifactId>kotlin-test-junit</artifactId>
         </dependency>
     </dependencies>
 </project>
