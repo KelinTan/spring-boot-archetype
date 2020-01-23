@@ -3,7 +3,6 @@
 package com.alo7.archetype.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
 import com.alo7.archetype.api.SpringBootArchetypeServer;
 import com.alo7.archetype.api.config.DataSourceConfig;
@@ -151,11 +150,12 @@ public class BasicCrudMapperTest extends BaseSpringTest {
                 .build();
         List<BizAccount> list = accountMapper.findByEntity(account);
 
-        assertEquals(1, list.size());
-        assertEquals(1, list.get(0).getId().intValue());
-        assertEquals("test1", list.get(0).getAccount());
-        assertEquals("password1", list.get(0).getPassword());
-        assertEquals("token1", list.get(0).getToken());
+        assertThat(list).hasSize(1).first().isEqualToIgnoringNullFields(BizAccount
+                .builder()
+                .account("test1")
+                .password("password1")
+                .token("token1")
+                .build());
     }
 
     @Test
@@ -164,11 +164,12 @@ public class BasicCrudMapperTest extends BaseSpringTest {
                 .build();
         List<BizAccount> list = accountMapper.findByEntityWithPage(account, PageRequest.of(0, 1));
 
-        assertEquals(1, list.size());
-        assertEquals(1, list.get(0).getId().intValue());
-        assertEquals("test1", list.get(0).getAccount());
-        assertEquals("password1", list.get(0).getPassword());
-        assertEquals("token1", list.get(0).getToken());
+        assertThat(list).hasSize(1).first().isEqualToIgnoringNullFields(BizAccount
+                .builder()
+                .account("test1")
+                .password("password1")
+                .token("token1")
+                .build());
     }
 
     @Test
@@ -178,11 +179,13 @@ public class BasicCrudMapperTest extends BaseSpringTest {
         Page<BizAccount> page = accountMapper.findPage(account, PageRequest.of(0, 1));
 
         List<BizAccount> list = page.getContent();
-        assertEquals(2, page.getTotalElements());
-        assertEquals(1, list.size());
-        assertEquals(1, list.get(0).getId().intValue());
-        assertEquals("test1", list.get(0).getAccount());
-        assertEquals("password1", list.get(0).getPassword());
-        assertEquals("token1", list.get(0).getToken());
+
+        assertThat(page.getTotalElements()).isEqualTo(2);
+        assertThat(list).hasSize(1).first().isEqualToIgnoringNullFields(BizAccount
+                .builder()
+                .account("test1")
+                .password("password1")
+                .token("token1")
+                .build());
     }
 }
