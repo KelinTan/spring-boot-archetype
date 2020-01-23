@@ -33,7 +33,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
     private UserMapper userMapper;
 
     @Test
-    public void testCorsOptions() {
+    public void testCrossOriginOptions() {
         CloseableHttpResponse response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findAll")
                 .withHeader(HttpHeaders.ORIGIN, "*")
                 .withHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
