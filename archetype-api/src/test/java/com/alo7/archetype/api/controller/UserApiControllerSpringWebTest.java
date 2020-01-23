@@ -34,7 +34,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testCrossOriginOptions() {
-        CloseableHttpResponse response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findAll")
+        CloseableHttpResponse response = HttpRequest.host(serverPrefix + "/api/v1/user/findAll")
                 .withHeader(HttpHeaders.ORIGIN, "*")
                 .withHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
                 .performOptions().response();
@@ -49,7 +49,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testFindAllUsersPerformGet() {
-        RestResponse<List<User>> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findAll")
+        RestResponse<List<User>> response = HttpRequest.host(serverPrefix + "/api/v1/user/findAll")
                 .performGet()
                 .json(new TypeReference<RestResponse<List<User>>>() {
                 });
@@ -60,7 +60,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testFindUserWithHeader() {
-        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findUserWithHeader")
+        RestResponse<User> response = HttpRequest.host(serverPrefix + "/api/v1/user/findUserWithHeader")
                 .withHeader("id", 1)
                 .performGet()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -72,12 +72,12 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testFindUser2PerformGetBadRequest() {
-        assertTrue(HttpRequest.withPath(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest());
+        assertTrue(HttpRequest.host(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest());
     }
 
     @Test
     public void testFindUser2PerformGetWithParam() {
-        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/findUser")
+        RestResponse<User> response = HttpRequest.host(serverPrefix + "/api/v1/user/findUser")
                 .withParam("id", 1)
                 .performGet()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -89,7 +89,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testSaveUserPerformPostWithParam() {
-        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/save")
+        RestResponse<User> response = HttpRequest.host(serverPrefix + "/api/v1/user/save")
                 .withParam("name", "performPostWithParam")
                 .performPost()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -102,7 +102,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
     @Test
     @Transactional
     public void testSaveUser2PerformPostWithContent() {
-        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/save2")
+        RestResponse<User> response = HttpRequest.host(serverPrefix + "/api/v1/user/save2")
                 .withContent("{\"userName\":\"performPost\"}")
                 .performPost()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -114,7 +114,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
 
     @Test
     public void testSaveUser3PerformPut() {
-        RestResponse<User> response = HttpRequest.withPath(serverPrefix + "/api/v1/user/save3")
+        RestResponse<User> response = HttpRequest.host(serverPrefix + "/api/v1/user/save3")
                 .withContent("{\"userName\":\"performPut\"}")
                 .performPut()
                 .json(new TypeReference<RestResponse<User>>() {
@@ -128,7 +128,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
     public void testDelete() {
         assertNotNull(userMapper.findOne(3L));
 
-        HttpRequest.withPath(serverPrefix + "/api/v1/user/3")
+        HttpRequest.host(serverPrefix + "/api/v1/user/3")
                 .performDelete();
 
         assertNull(userMapper.findOne(3L));
@@ -138,7 +138,7 @@ public class UserApiControllerSpringWebTest extends BaseSpringWebTest {
     public void testDelete2WithParam() {
         assertNotNull(userMapper.findOne(4L));
 
-        HttpRequest.withPath(serverPrefix + "/api/v1/user/delete")
+        HttpRequest.host(serverPrefix + "/api/v1/user/delete")
                 .withParam("id", 4)
                 .performDelete();
 

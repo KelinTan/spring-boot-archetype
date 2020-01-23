@@ -35,8 +35,19 @@ public class HttpRequest {
     private HttpRequestBase request;
     private CloseableHttpResponse response;
 
-    private HttpRequest(String path) {
-        this.uriBuilder = HttpUtils.safeURIBuilder(path);
+    public HttpRequest(String host) {
+        this.uriBuilder = HttpUtils.safeURIBuilder(host);
+    }
+
+    public static HttpRequest host(String host) {
+        return new HttpRequest(host);
+    }
+
+    public HttpRequest withPath(String path) {
+        Preconditions.checkNotNull(uriBuilder);
+
+        this.uriBuilder.setPath(path);
+        return this;
     }
 
     public HttpRequest withParam(String param, Object value) {

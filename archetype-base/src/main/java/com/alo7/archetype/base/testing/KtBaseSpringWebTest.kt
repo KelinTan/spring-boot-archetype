@@ -2,6 +2,7 @@
 
 package com.alo7.archetype.base.testing
 
+import com.alo7.archetype.base.http.HttpRequest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 
@@ -13,6 +14,10 @@ open class KtBaseSpringWebTest : KtBaseSpringTest() {
     @LocalServerPort
     var serverPort = 0
 
-    val serverPrefix: String
+    private val serverPrefix: String
         get() = "http://localhost:$serverPort"
+
+    @Suppress("PropertyName")
+    val Request: HttpRequest
+        get() = HttpRequest(serverPrefix)
 }
