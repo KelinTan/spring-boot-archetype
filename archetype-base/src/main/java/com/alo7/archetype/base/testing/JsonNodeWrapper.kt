@@ -27,23 +27,6 @@ class JsonNodeWrapper(val jsonNode: JsonNode) {
             }
         }
 
-    val Int.node: JsonNodeWrapper
-        get() = item(this)
-
-    operator fun String.invoke(f: JsonNodeWrapper.() -> Unit) {
-        val wrapper = node
-        wrapper.f()
-    }
-
-    operator fun Int.invoke(f: JsonNodeWrapper.() -> Unit) {
-        val wrapper = node
-        wrapper.f()
-    }
-
-    fun item(index: Int, f: JsonNodeWrapper.() -> Unit) {
-        return item(index).f()
-    }
-
     fun item(index: Int): JsonNodeWrapper {
         val subNode = jsonNode.get(index)
         return JsonNodeWrapper(subNode)
