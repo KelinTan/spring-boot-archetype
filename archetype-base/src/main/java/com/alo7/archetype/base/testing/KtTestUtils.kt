@@ -135,10 +135,6 @@ interface KtTestUtils {
         this.f()
     }
 
-    operator fun JsonNodeWrapper.invoke(f: JsonNodeWrapper.() -> Unit) {
-        f()
-    }
-
     infix fun <T> JsonNodeWrapper.eq(value: T) {
         when (value) {
             is Boolean -> asBoolean() eq value
