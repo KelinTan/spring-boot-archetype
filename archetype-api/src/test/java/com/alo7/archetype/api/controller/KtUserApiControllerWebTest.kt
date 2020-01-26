@@ -21,6 +21,10 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
                 size eq 4
                 item(0) verify {
                     -"id" eq 1
+                    -"id" not 2
+                    "nId".node.isNullOrNone
+                    +"userName" startsWith "test"
+                    -"userName" endsWith "1"
                 }
             }
         }

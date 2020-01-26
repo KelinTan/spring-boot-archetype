@@ -29,6 +29,8 @@ class KtBasicCrudMapperTest : KtBaseSpringTest() {
     fun `test basic find one`() {
         accountMapper.findOne(1L) verify {
             id eq 1
+            id greater 0
+            id less 2
             account eq "test1"
             password eq "password1"
             age eq 10
