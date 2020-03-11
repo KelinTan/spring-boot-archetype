@@ -21,3 +21,5 @@
 
 10.Support RestResponse && RestErrorResponse
 
+11.Support efficient kotlin test
+
