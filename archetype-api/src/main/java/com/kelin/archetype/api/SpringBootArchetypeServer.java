@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@RpcClientScan("com.Kelin.archetype.api.client")
+@RpcClientScan("com.kelin.archetype.api.client")
 public class SpringBootArchetypeServer {
     public static void main(String[] args) {
         SpringApplication.run(SpringBootArchetypeServer.class, args);
