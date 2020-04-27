@@ -33,7 +33,7 @@ public class MybatisBizSqlSessionFactoryConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappers/biz/*.xml"));
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.Kelin.archetype.common.entity.biz");
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.kelin.archetype.common.entity.biz");
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
