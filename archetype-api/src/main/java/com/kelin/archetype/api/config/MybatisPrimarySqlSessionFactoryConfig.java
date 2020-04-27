@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  * @author Kelin Tan
  */
 @Configuration
-@MapperScan(basePackages = "com.Kelin.archetype.common.mapper.primary", sqlSessionFactoryRef =
+@MapperScan(basePackages = "com.kelin.archetype.common.mapper.primary", sqlSessionFactoryRef =
         "primarySqlSessionFactory")
 public class MybatisPrimarySqlSessionFactoryConfig {
     @Autowired

@@ -21,7 +21,7 @@ import javax.sql.DataSource;
  * @author Kelin Tan
  */
 @Configuration
-@MapperScan(basePackages = "com.Kelin.archetype.common.mapper.biz", sqlSessionFactoryRef = "bizSqlSessionFactory")
+@MapperScan(basePackages = "com.kelin.archetype.common.mapper.biz", sqlSessionFactoryRef = "bizSqlSessionFactory")
 public class MybatisBizSqlSessionFactoryConfig {
     @Autowired
     @Qualifier(DataSourceConfig.BIZ)
