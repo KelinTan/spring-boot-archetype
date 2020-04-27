@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.alo7.kelin</groupId>
+    <groupId>com.github.kelin</groupId>
     <artifactId>spring-boot-archetype</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -34,22 +34,22 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.alo7.kelin</groupId>
+                <groupId>com.github.kelin</groupId>
                 <artifactId>archetype-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alo7.kelin</groupId>
+                <groupId>com.github.kelin</groupId>
                 <artifactId>archetype-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alo7.kelin</groupId>
+                <groupId>com.github.kelin</groupId>
                 <artifactId>archetype-report</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alo7.kelin</groupId>
+                <groupId>com.github.kelin</groupId>
                 <artifactId>archetype-api</artifactId>
                 <version>${project.version}</version>
             </dependency>

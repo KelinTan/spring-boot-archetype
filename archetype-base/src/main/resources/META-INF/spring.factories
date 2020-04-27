@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.alo7.archetype.base.jwt.JwtRSAKeyProvider,\
-  com.alo7.archetype.base.jwt.JwtManager,\
-  com.alo7.archetype.base.rest.exception.RestExceptionHandler
+  com.kelin.archetype.base.jwt.JwtRSAKeyProvider,\
+  com.kelin.archetype.base.jwt.JwtManager,\
+  com.kelin.archetype.base.rest.exception.RestExceptionHandler
 
