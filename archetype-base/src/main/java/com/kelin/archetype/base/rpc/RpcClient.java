@@ -14,4 +14,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface RpcClient {
     String endpoint();
+
+    Class<? extends RpcErrorHandler> errorHandler() default DefaultRpcErrorHandler.class;
 }

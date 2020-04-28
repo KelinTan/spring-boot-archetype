@@ -6,8 +6,6 @@ import com.kelin.archetype.base.http.HttpRequest;
 import com.kelin.archetype.base.http.HttpUtils;
 import com.kelin.archetype.base.json.JsonConverter;
 import com.kelin.archetype.base.log.LogMessageBuilder;
-import com.kelin.archetype.base.rest.exception.RestException;
-import com.kelin.archetype.base.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -49,31 +47,21 @@ public class RpcClientProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        try {
-            HttpRequest request = getHttpRequest(method, args);
+        HttpRequest request = getHttpRequest(method, args);
 
-            CloseableHttpResponse response = request.execute().response();
-            int status = response.getStatusLine().getStatusCode();
-            HttpEntity entity = response.getEntity();
-            if (HttpUtils.isHttpOk(status)) {
-                if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
-                    return JsonConverter.deserialize(EntityUtils.toString(entity), method.getGenericReturnType());
-                } else {
-                    EntityUtils.consumeQuietly(entity);
-                }
+        CloseableHttpResponse response = request.execute().response();
+        int status = response.getStatusLine().getStatusCode();
+        HttpEntity entity = response.getEntity();
+        if (HttpUtils.isHttpOk(status)) {
+            if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
+                return JsonConverter.deserialize(HttpUtils.safeEntityToString(entity), method.getGenericReturnType());
             } else {
-                rpcErrorHandler.handle(status, EntityUtils.toString(entity));
+                EntityUtils.consumeQuietly(entity);
             }
-        } catch (RestException e) {
-            throw e;
-        } catch (Exception e) {
-            log.error(LogMessageBuilder.builder()
-                    .message("rpc client proxy invoke error")
-                    .parameter("method", method)
-                    .parameter("args", args)
-                    .build(), e);
-            throw RestExceptionFactory.toSystemException();
+        } else {
+            rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
         }
+
         return null;
     }
 
