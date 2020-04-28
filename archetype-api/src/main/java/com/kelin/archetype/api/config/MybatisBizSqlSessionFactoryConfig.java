@@ -2,6 +2,9 @@
 
 package com.kelin.archetype.api.config;
 
+import static com.kelin.archetype.api.model.constant.Constants.BIZ_ALIAS_PACKAGE;
+import static com.kelin.archetype.api.model.constant.Constants.BIZ_MAPPER_PACKAGE;
+
 import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -21,7 +24,7 @@ import javax.sql.DataSource;
  * @author Kelin Tan
  */
 @Configuration
-@MapperScan(basePackages = "com.kelin.archetype.common.mapper.biz", sqlSessionFactoryRef = "bizSqlSessionFactory")
+@MapperScan(basePackages = BIZ_MAPPER_PACKAGE, sqlSessionFactoryRef = "bizSqlSessionFactory")
 public class MybatisBizSqlSessionFactoryConfig {
     @Autowired
     @Qualifier(DataSourceConfig.BIZ)
@@ -33,7 +36,7 @@ public class MybatisBizSqlSessionFactoryConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappers/biz/*.xml"));
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.kelin.archetype.common.entity.biz");
+        sqlSessionFactoryBean.setTypeAliasesPackage(BIZ_ALIAS_PACKAGE);
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
