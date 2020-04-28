@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.api.config;
 
+import com.kelin.archetype.api.model.constant.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,7 +22,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.Kelin.archetype.api.controller"))
+                .apis(RequestHandlerSelectors.basePackage(Constants.SWAGGER_API_PACKAGE))
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
                         .title("Swagger")
