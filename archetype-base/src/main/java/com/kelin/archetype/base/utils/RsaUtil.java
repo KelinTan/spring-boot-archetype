@@ -3,11 +3,11 @@
 package com.kelin.archetype.base.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.Charsets;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -58,7 +58,7 @@ public class RsaUtil {
     public static String encrypt(String src, PublicKey publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        return Base64.getEncoder().encodeToString(cipher.doFinal(src.getBytes(Charsets.UTF_8)));
+        return Base64.getEncoder().encodeToString(cipher.doFinal(src.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static String decrypt(String encryptContent, String privateKeyString) throws Exception {
@@ -69,7 +69,7 @@ public class RsaUtil {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
-        return StringUtils.toEncodedString(cipher.doFinal(base64decode(encryptContent)), Charsets.UTF_8);
+        return StringUtils.toEncodedString(cipher.doFinal(base64decode(encryptContent)), StandardCharsets.UTF_8);
     }
 
     private static byte[] base64decode(String src) {

@@ -1,0 +1,6 @@
+description = 'archetype-report'
+dependencies {
+    compile project(':archetype-common')
+    compile project(':archetype-base')
+    compile project(':archetype-api')
+}

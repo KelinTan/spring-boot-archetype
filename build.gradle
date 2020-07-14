@@ -1,0 +1,24 @@
+buildscript {
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:1.3.72"
+    }
+
+    repositories {
+        mavenLocal()
+
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "http://repo.maven.apache.org/maven2" }
+    }
+}
+
+allprojects {
+    group = 'com.github.kelin'
+    version = '1.0-SNAPSHOT'
+}
+
+subprojects {
+    apply from: rootProject.file("gradle/default_project_config.gradle")
+}
+
+defaultTasks("checkcode", "test")
