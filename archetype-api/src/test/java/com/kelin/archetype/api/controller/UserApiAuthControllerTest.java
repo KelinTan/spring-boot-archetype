@@ -12,6 +12,7 @@ import com.kelin.archetype.api.session.testing.FakeSessionService;
 import com.kelin.archetype.base.testing.BaseMockMvcTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
 import com.kelin.archetype.base.testing.database.MockDatabases;
+import com.kelin.archetype.common.mapper.biz.BizAccountMapper;
 import com.kelin.archetype.common.mapper.primary.UserMapper;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import org.springframework.http.MediaType;
  */
 @MockDatabases
         ({@MockDatabase(name = DataSourceConfig.PRIMARY, mappers = UserMapper.class),
-                @MockDatabase(name = DataSourceConfig.BIZ, tables = "biz_account")})
+                @MockDatabase(name = DataSourceConfig.BIZ, tables = BizAccountMapper.TABLE)})
 public class UserApiAuthControllerTest extends BaseMockMvcTest {
     @Autowired
     FakeSessionService fakeSessionService;

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -34,8 +33,8 @@ public class MybatisBizSqlSessionFactoryConfig {
     public SqlSessionFactory bizSqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappers/biz/*.xml"));
+        // PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        // sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappers/biz/*.xml"));
         sqlSessionFactoryBean.setTypeAliasesPackage(BIZ_ALIAS_PACKAGE);
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
