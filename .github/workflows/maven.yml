@@ -19,7 +19,6 @@ jobs:
           ${{ runner.os }}-gradle-
     - name: Build with Gradle
       run: ./gradlew
-      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
     - uses: codecov/codecov-action@v1
       if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
