@@ -20,13 +20,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew
     - name: Build Jacoco Report
-      run: mvn jacoco:report-aggregate
       if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
     - uses: codecov/codecov-action@v1
       if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
-        file: ./archetype-report/target/site/jacoco-aggregate/jacoco.xml #optional
+        file: ./archetype-api/build/reports/jacoco/test/html/index.html #optional
         yml: ./codecov.yml #optional
         flags: unittests #optional
         name: codecov-jacoco #optional

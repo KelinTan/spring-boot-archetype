@@ -7,7 +7,8 @@ import org.apache.ibatis.jdbc.SQL;
 import org.springframework.data.domain.Pageable;
 
 import java.lang.reflect.Field;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Kelin Tan
@@ -56,8 +57,7 @@ public class BasicCrudSqlProvider extends SqlProviderSupport {
         return new SQL()
                 .SELECT(columns(context))
                 .FROM(table(context))
-                .WHERE(Stream.of(fields(entity))
-                        .filter(field -> value(entity, field) != null)
+                .WHERE(fields(entity).stream().filter(field -> value(entity, field) != null)
                         .map(field -> columnName(field) + " = " + bindParameter(field)).toArray(String[]::new))
                 .toString();
     }
@@ -66,8 +66,7 @@ public class BasicCrudSqlProvider extends SqlProviderSupport {
         String sql = new SQL()
                 .SELECT(columns(context))
                 .FROM(table(context))
-                .WHERE(Stream.of(fields(entity))
-                        .filter(field -> value(entity, field) != null)
+                .WHERE(fields(entity).stream().filter(field -> value(entity, field) != null)
                         .map(field -> columnName(field) + " = " + bindParameter(field)).toArray(String[]::new))
                 .toString();
         if (page != null) {
@@ -81,35 +80,34 @@ public class BasicCrudSqlProvider extends SqlProviderSupport {
         return new SQL()
                 .SELECT("count(*)")
                 .FROM(table(context))
-                .WHERE(Stream.of(fields(entity))
-                        .filter(field -> value(entity, field) != null)
+                .WHERE(fields(entity).stream().filter(field -> value(entity, field) != null)
                         .map(field -> columnName(field) + " = " + bindParameter(field)).toArray(String[]::new))
                 .toString();
     }
 
     private String doUpdate(Object entity, ProviderContext context, boolean selective) {
-        Field[] fields = filterFields(selective, entity);
+        List<Field> fields = filterFields(selective, entity);
         return new SQL()
                 .UPDATE(table(context))
-                .SET(Stream.of(fields)
-                        .map(field -> columnName(field) + " = " + bindParameter(field)).toArray(String[]::new))
+                .SET(fields.stream().map(field -> columnName(field) + " = " + bindParameter(field))
+                        .toArray(String[]::new))
                 .WHERE("id = #{id}")
                 .toString();
     }
 
     private String doInsert(Object entity, ProviderContext context, boolean selective) {
-        Field[] fields = filterFields(selective, entity);
+        List<Field> fields = filterFields(selective, entity);
         return new SQL()
                 .INSERT_INTO(table(context))
                 .INTO_COLUMNS(columns(fields))
-                .INTO_VALUES(Stream.of(fields).map(this::bindParameter).toArray(String[]::new))
+                .INTO_VALUES(fields.stream().map(this::bindParameter).toArray(String[]::new))
                 .toString();
     }
 
-    private Field[] filterFields(boolean selective, Object entity) {
-        Field[] fields = fields(entity);
+    private List<Field> filterFields(boolean selective, Object entity) {
+        List<Field> fields = fields(entity);
         if (selective) {
-            fields = Stream.of(fields).filter(field -> value(entity, field) != null).toArray(Field[]::new);
+            fields = fields.stream().filter(field -> value(entity, field) != null).collect(Collectors.toList());
         }
         return fields;
     }

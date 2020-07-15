@@ -7,7 +7,9 @@ import com.kelin.archetype.base.log.LogMessageBuilder;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.Field;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Kelin Tan
@@ -25,8 +27,8 @@ public abstract class SqlProviderSupport {
         return getMapperAnnotation(context).columns();
     }
 
-    protected String[] columns(Field[] fields) {
-        return Stream.of(fields).map(this::columnName).toArray(String[]::new);
+    protected String[] columns(List<Field> fields) {
+        return fields.stream().map(this::columnName).toArray(String[]::new);
     }
 
     protected String columnName(Field field) {
@@ -37,8 +39,21 @@ public abstract class SqlProviderSupport {
         return "#{" + field.getName() + "}";
     }
 
-    protected Field[] fields(Object entity) {
-        return entity == null ? EMPTY_FIELDS : entity.getClass().getDeclaredFields();
+    protected List<Field> fields(Object entity) {
+        if (entity == null) {
+            return Collections.emptyList();
+        }
+        Field[] declaredFields = entity.getClass().getDeclaredFields();
+        List<Field> filterFields = new ArrayList<>(declaredFields.length);
+
+        //fix jacoco https://www.eclemma.org/jacoco/trunk/doc/faq.html
+        for (Field field : declaredFields) {
+            if (!field.isSynthetic()) {
+                filterFields.add(field);
+            }
+        }
+
+        return filterFields;
     }
 
     protected Object value(Object entity, Field field) {
