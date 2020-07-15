@@ -22,3 +22,9 @@ subprojects {
 }
 
 defaultTasks("checkcode", "test")
+
+task jacocoMerge(type: JacocoMerge) {
+    subprojects.each { subproject ->
+        executionData subproject.tasks.withType(Test)
+    }
+} 

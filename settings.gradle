@@ -2,9 +2,7 @@ rootProject.name = 'spring-boot-archetype'
 include ':archetype-base'
 include ':archetype-common'
 include ':archetype-api'
-include ':archetype-report'
 
 project(':archetype-base').projectDir = "$rootDir/archetype-base" as File
 project(':archetype-common').projectDir = "$rootDir/archetype-common" as File
 project(':archetype-api').projectDir = "$rootDir/archetype-api" as File
-project(':archetype-report').projectDir = "$rootDir/archetype-report" as File
