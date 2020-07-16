@@ -28,7 +28,7 @@ public class UserApiControllerMockTestV2 extends BaseMockMvcTest {
 
     @InjectMocks
     @Autowired
-    UserApiController userApiController;
+    UserApiControllerV2 userApiController;
 
     @Test
     public void mockUserMapperTest() throws Exception {
@@ -37,7 +37,7 @@ public class UserApiControllerMockTestV2 extends BaseMockMvcTest {
         mockUser.setId(2L);
         when(userMapper.findAll()).thenReturn(Lists.newArrayList(mockUser));
 
-        mockMvc.perform(get("/api/v1/user/findAll").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v2/user/findAll").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.length()").value("1"))
                 .andExpect(jsonPath("$.result[0].id").value("2"))
