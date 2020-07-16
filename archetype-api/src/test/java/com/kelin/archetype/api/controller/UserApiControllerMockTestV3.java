@@ -28,7 +28,7 @@ public class UserApiControllerMockTestV3 extends BaseMockTest {
 
     @InjectMocks
     @Autowired
-    UserApiController userApiController;
+    UserApiControllerV2 userApiController;
 
     @Test
     public void mockUserMapperTest() {

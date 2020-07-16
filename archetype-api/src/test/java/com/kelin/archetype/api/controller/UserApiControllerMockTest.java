@@ -32,7 +32,7 @@ public class UserApiControllerMockTest extends BaseMockMvcTest {
         mockUser.setId(2L);
         when(userMapper.findAll()).thenReturn(Lists.newArrayList(mockUser));
 
-        mockMvc.perform(get("/api/v1/user/findAll").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v2/user/findAll").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.length()").value("1"))
                 .andExpect(jsonPath("$.result[0].id").value("2"))
@@ -43,7 +43,7 @@ public class UserApiControllerMockTest extends BaseMockMvcTest {
     public void mockUserMapperException() throws Exception {
         when(userMapper.findAll()).thenThrow(RestExceptionFactory.toBadRequestException(1000, "Mock Bad Request"));
 
-        mockMvc.perform(get("/api/v1/user/findAll").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v2/user/findAll").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorCode").value(1000))
                 .andExpect(jsonPath("$.errorMessage").value("Mock Bad Request"));
