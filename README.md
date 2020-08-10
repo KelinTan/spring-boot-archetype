@@ -17,7 +17,7 @@
 
 6.Support jwt 
 
-9.Support BasicCrudMapper to crud with single table
+9.Support BasicCrudMapper to CRUD with single table
 
 10.Support RestResponse && RestErrorResponse
 
