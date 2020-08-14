@@ -9,6 +9,7 @@ import com.kelin.archetype.base.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -37,6 +38,7 @@ public class RpcClientProxy implements InvocationHandler {
     private Map<Method, String> requestUrlOnMethods = new HashMap<>();
     private Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
     private Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
+    private Map<Method, RequestConfig> requestConfigOnMethods = new HashMap<>();
     private Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
 
     RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
@@ -76,7 +78,8 @@ public class RpcClientProxy implements InvocationHandler {
         Object requestBody = buildRequestBody(method, args);
 
         String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
-        HttpRequest request = createRequest(url, requestMethod, parameterMap, headerMap, requestBody);
+        HttpRequest request = createRequest(url, requestMethod, requestConfigOnMethods.get(method), parameterMap,
+                headerMap, requestBody);
         methodHttpRequestMap.putIfAbsent(method, request);
         return request;
     }
@@ -87,17 +90,24 @@ public class RpcClientProxy implements InvocationHandler {
         this.rpcErrorHandler = rpcErrorHandler;
         Method[] methods = clazz.getMethods();
         Arrays.stream(methods).forEach(method -> {
-            this.requestUrlOnMethods.put(method, getRequestUri(method));
+            HttpMethod httpMethod = getHttpMethod(method);
+            this.requestUrlOnMethods.put(method, httpMethod.value());
             this.methodParameterAnnotations.put(method, method.getParameterAnnotations());
-            this.requestMethodOnMethods.put(method, getRequestMethod(method));
+            this.requestMethodOnMethods.put(method, httpMethod.method());
+            this.requestConfigOnMethods.put(method, RequestConfig.custom()
+                    .setConnectTimeout(httpMethod.connectionTimeout())
+                    .setSocketTimeout(httpMethod.readTimeout())
+                    .build());
         });
     }
 
-    private HttpRequest createRequest(String uri, RequestMethod method, Map<String, Object> paramsMap,
+    private HttpRequest createRequest(String uri, RequestMethod method, RequestConfig config,
+            Map<String, Object> paramsMap,
             Map<String, Object> headerMap,
             Object requestBody) {
         HttpRequest request = HttpRequest
                 .host(uri)
+                .withConfig(config)
                 .withParams(paramsMap)
                 .withHeaders(headerMap);
         if (requestBody != null) {
@@ -124,16 +134,6 @@ public class RpcClientProxy implements InvocationHandler {
     private String buildUrl(String endpoint, String requestUrlOnMethod, Map<String, Object> pathParameterMap) {
         String url = HttpUtils.concatPath(endpoint, requestUrlOnMethod);
         return HttpUtils.formatUrlWithPathParams(url, pathParameterMap);
-    }
-
-    private RequestMethod getRequestMethod(Method method) {
-        HttpMethod annotation = getHttpMethod(method);
-        return annotation.method();
-    }
-
-    private String getRequestUri(Method method) {
-        HttpMethod annotation = getHttpMethod(method);
-        return annotation.value();
     }
 
     private HttpMethod getHttpMethod(Method method) {

@@ -18,13 +18,13 @@ import java.util.List;
  */
 @RpcClient(endpoint = "${client.endpoint.user}")
 public interface UserClient {
-    @HttpMethod(value = "/api/v1/user/findAll/error", method = RequestMethod.GET)
+    @HttpMethod(value = "/api/v1/user/findAll/error")
     RestResponse<List<User>> findAllError();
 
-    @HttpMethod(value = "/api/v1/user/findAll", method = RequestMethod.GET)
+    @HttpMethod(value = "/api/v1/user/findAll")
     RestResponse<List<User>> findAll();
 
-    @HttpMethod(value = "/api/v1/user/{id}", method = RequestMethod.GET)
+    @HttpMethod(value = "/api/v1/user/{id}")
     RestResponse<User> findUser(@PathVariable(value = "id") Long id);
 
     @HttpMethod(value = "/api/v1/user/findUser", method = RequestMethod.GET)

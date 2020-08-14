@@ -18,4 +18,8 @@ public @interface HttpMethod {
     String value();
 
     RequestMethod method() default RequestMethod.GET;
+
+    int connectionTimeout() default 2000;
+
+    int readTimeout() default 5000;
 }
