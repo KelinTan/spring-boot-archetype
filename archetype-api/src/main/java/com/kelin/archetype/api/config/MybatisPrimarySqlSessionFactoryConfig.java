@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -26,6 +29,8 @@ import javax.sql.DataSource;
 @Configuration
 @MapperScan(basePackages = PRIMARY_MAPPER_PACKAGE, sqlSessionFactoryRef = "primarySqlSessionFactory")
 public class MybatisPrimarySqlSessionFactoryConfig {
+    private static final String PRIMARY_MAPPER_PATH = "classpath:mappers/primary/*.xml";
+
     @Autowired
     @Qualifier(DataSourceConfig.PRIMARY)
     private DataSource dataSource;
@@ -35,8 +40,14 @@ public class MybatisPrimarySqlSessionFactoryConfig {
     public SqlSessionFactory primarySqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        // PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        // sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappers/primary/*.xml"));
+
+        ClassPathResource classPathResource = new ClassPathResource(PRIMARY_MAPPER_PATH);
+        if (classPathResource.exists()) {
+            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+            Resource[] resources = resolver.getResources(PRIMARY_MAPPER_PATH);
+            sqlSessionFactoryBean.setMapperLocations(resources);
+        }
+
         sqlSessionFactoryBean.setTypeAliasesPackage(PRIMARY_ALIAS_PACKAGE);
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
