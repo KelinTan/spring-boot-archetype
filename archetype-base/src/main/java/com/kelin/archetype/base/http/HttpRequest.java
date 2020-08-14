@@ -4,6 +4,7 @@ package com.kelin.archetype.base.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kelin.archetype.base.json.JsonConverter;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -31,6 +32,7 @@ public class HttpRequest {
     private URIBuilder uriBuilder;
     private Map<String, Object> headers = new LinkedHashMap<>();
     private String content;
+    private RequestConfig config;
     private HttpRequestBase request;
     private CloseableHttpResponse response;
 
@@ -75,6 +77,11 @@ public class HttpRequest {
 
     public HttpRequest withContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    public HttpRequest withConfig(RequestConfig config) {
+        this.config = config;
         return this;
     }
 
@@ -130,6 +137,9 @@ public class HttpRequest {
 
         if (!headers.isEmpty()) {
             headers.forEach((header, value) -> request.addHeader(header, value.toString()));
+        }
+        if (config != null) {
+            request.setConfig(config);
         }
         this.response = HttpUtils.safeExecute(this.request);
         return this;
