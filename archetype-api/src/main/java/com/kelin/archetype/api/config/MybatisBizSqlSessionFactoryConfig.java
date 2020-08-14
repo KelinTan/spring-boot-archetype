@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -25,6 +28,8 @@ import javax.sql.DataSource;
 @Configuration
 @MapperScan(basePackages = BIZ_MAPPER_PACKAGE, sqlSessionFactoryRef = "bizSqlSessionFactory")
 public class MybatisBizSqlSessionFactoryConfig {
+    private static final String BIZ_MAPPER_PATH = "classpath:mappers/biz/*.xml";
+
     @Autowired
     @Qualifier(DataSourceConfig.BIZ)
     private DataSource dataSource;
@@ -33,8 +38,13 @@ public class MybatisBizSqlSessionFactoryConfig {
     public SqlSessionFactory bizSqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        // PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        // sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappers/biz/*.xml"));
+
+        ClassPathResource classPathResource = new ClassPathResource(BIZ_MAPPER_PATH);
+        if (classPathResource.exists()) {
+            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+            Resource[] resources = resolver.getResources(BIZ_MAPPER_PATH);
+            sqlSessionFactoryBean.setMapperLocations(resources);
+        }
         sqlSessionFactoryBean.setTypeAliasesPackage(BIZ_ALIAS_PACKAGE);
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
