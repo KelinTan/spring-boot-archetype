@@ -1,4 +1,4 @@
-// Copyright 2020 Alo7 Inc. All rights reserved.
+// Copyright 2020 Kelin Inc. All rights reserved.
 
 package com.kelin.archetype.base.consants;
 
