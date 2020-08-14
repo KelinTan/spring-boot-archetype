@@ -2,6 +2,8 @@
 
 package com.kelin.archetype.api.session.testing;
 
+import static com.kelin.archetype.base.consants.Profile.PROFILE_TEST;
+
 import com.kelin.archetype.api.session.SessionService;
 import com.kelin.archetype.common.entity.biz.BizAccount;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kelin Tan
  */
-@Profile("test")
+@Profile(PROFILE_TEST)
 @Service
 @Primary
 @RequiredArgsConstructor

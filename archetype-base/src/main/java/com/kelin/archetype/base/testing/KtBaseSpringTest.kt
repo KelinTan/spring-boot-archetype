@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.base.testing
 
+import com.kelin.archetype.base.consants.Profile.PROFILE_TEST
 import com.kelin.archetype.base.testing.database.DatabaseTestExecutionListener
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,7 +21,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener
  */
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles(PROFILE_TEST)
 @TestExecutionListeners(
     ServletTestExecutionListener::class,
     DirtiesContextBeforeModesTestExecutionListener::class,
