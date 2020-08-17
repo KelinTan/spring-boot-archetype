@@ -35,11 +35,11 @@ public class RpcClientProxy implements InvocationHandler {
     private Class<?> clazz;
     private String endpoint;
     private RpcErrorHandler rpcErrorHandler;
-    private Map<Method, String> requestUrlOnMethods = new HashMap<>();
-    private Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
-    private Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
-    private Map<Method, RequestConfig> requestConfigOnMethods = new HashMap<>();
-    private Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
+    private final Map<Method, String> requestUrlOnMethods = new HashMap<>();
+    private final Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
+    private final Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
+    private final Map<Method, RequestConfig> requestConfigOnMethods = new HashMap<>();
+    private final Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
 
     RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         super();

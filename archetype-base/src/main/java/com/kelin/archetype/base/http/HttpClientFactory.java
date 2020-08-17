@@ -10,7 +10,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  * @author Kelin Tan
  */
 public class HttpClientFactory {
-    private static CloseableHttpClient defaultHttpClient;
+    private static final CloseableHttpClient defaultHttpClient;
 
     static {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();

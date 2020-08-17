@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
  * @author Kelin Tan
  */
 public class JsonMapperFactory {
-    private static ObjectMapper defaultMapper = new ObjectMapper();
+    private static final ObjectMapper defaultMapper = new ObjectMapper();
 
     static {
         defaultMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)

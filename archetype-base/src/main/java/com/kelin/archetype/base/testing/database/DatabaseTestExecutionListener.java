@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  */
 @Slf4j
 public class DatabaseTestExecutionListener extends AbstractTestExecutionListener {
-    private static Map<String, Boolean> dataSourceSchemaInitialized = new ConcurrentHashMap<>();
+    private static final Map<String, Boolean> dataSourceSchemaInitialized = new ConcurrentHashMap<>();
 
     @Override
     public void beforeTestClass(TestContext testContext) {

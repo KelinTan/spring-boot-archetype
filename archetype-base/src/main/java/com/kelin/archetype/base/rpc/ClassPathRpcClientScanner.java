@@ -22,7 +22,7 @@ import java.util.Set;
  */
 @Slf4j
 public class ClassPathRpcClientScanner extends ClassPathScanningCandidateComponentProvider {
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     public ClassPathRpcClientScanner(Environment environment, ClassLoader classLoader, ResourceLoader resourceLoader) {
         super(false, environment);
