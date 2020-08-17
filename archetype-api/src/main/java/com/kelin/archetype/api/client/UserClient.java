@@ -5,7 +5,7 @@ package com.kelin.archetype.api.client;
 import com.kelin.archetype.base.rest.response.RestResponse;
 import com.kelin.archetype.base.rpc.HttpMethod;
 import com.kelin.archetype.base.rpc.RpcClient;
-import com.kelin.archetype.common.entity.primary.User;
+import com.kelin.archetype.database.entity.primary.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;

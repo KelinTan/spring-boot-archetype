@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.session;
 
-import com.kelin.archetype.common.entity.biz.BizAccount;
+import com.kelin.archetype.database.entity.biz.BizAccount;
 
 import javax.servlet.http.HttpServletRequest;
 

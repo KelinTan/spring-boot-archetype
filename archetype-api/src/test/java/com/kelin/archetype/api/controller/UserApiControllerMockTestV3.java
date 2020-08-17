@@ -5,16 +5,18 @@ package com.kelin.archetype.api.controller;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.base.rest.response.RestResponse;
 import com.kelin.archetype.base.testing.BaseMockTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
-import com.kelin.archetype.common.entity.primary.User;
-import com.kelin.archetype.common.mapper.primary.UserMapper;
+import com.kelin.archetype.database.entity.primary.User;
+import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ import java.util.List;
  * @author Kelin Tan
  */
 @MockDatabase
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringBootArchetypeServer.class
+)
 public class UserApiControllerMockTestV3 extends BaseMockTest {
     @Mock
     UserMapper userMapper;

@@ -6,17 +6,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.kelin.archetype.api.config.DataSourceConfig;
+import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.session.testing.FakeSessionService;
 import com.kelin.archetype.base.testing.BaseMockMvcTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
 import com.kelin.archetype.base.testing.database.MockDatabases;
-import com.kelin.archetype.common.mapper.biz.BizAccountMapper;
-import com.kelin.archetype.common.mapper.primary.UserMapper;
+import com.kelin.archetype.database.config.DataSourceConfig;
+import com.kelin.archetype.database.mapper.biz.BizAccountMapper;
+import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 /**
@@ -25,6 +27,10 @@ import org.springframework.http.MediaType;
 @MockDatabases
         ({@MockDatabase(name = DataSourceConfig.PRIMARY, mappers = UserMapper.class),
                 @MockDatabase(name = DataSourceConfig.BIZ, tables = BizAccountMapper.TABLE)})
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringBootArchetypeServer.class
+)
 public class UserApiAuthControllerTest extends BaseMockMvcTest {
     @Autowired
     FakeSessionService fakeSessionService;

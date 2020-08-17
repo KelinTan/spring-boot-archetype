@@ -7,21 +7,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.base.testing.BaseMockMvcTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
-import com.kelin.archetype.common.entity.primary.User;
-import com.kelin.archetype.common.mapper.primary.UserMapper;
+import com.kelin.archetype.database.entity.primary.User;
+import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 /**
  * @author Kelin Tan
  */
 @MockDatabase
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringBootArchetypeServer.class
+)
 public class UserApiControllerMockTestV2 extends BaseMockMvcTest {
     @Mock
     UserMapper userMapper;

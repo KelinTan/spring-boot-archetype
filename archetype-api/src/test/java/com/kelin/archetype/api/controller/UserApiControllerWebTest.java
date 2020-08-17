@@ -8,17 +8,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.base.http.HttpRequest;
 import com.kelin.archetype.base.http.HttpUtils;
 import com.kelin.archetype.base.rest.response.RestResponse;
 import com.kelin.archetype.base.testing.BaseSpringWebTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
-import com.kelin.archetype.common.entity.primary.User;
-import com.kelin.archetype.common.mapper.primary.UserMapper;
+import com.kelin.archetype.database.entity.primary.User;
+import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,10 @@ import java.util.List;
  * @author Kelin Tan
  */
 @MockDatabase
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringBootArchetypeServer.class
+)
 public class UserApiControllerWebTest extends BaseSpringWebTest {
     @Autowired
     private UserMapper userMapper;

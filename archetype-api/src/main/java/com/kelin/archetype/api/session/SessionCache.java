@@ -3,7 +3,7 @@
 package com.kelin.archetype.api.session;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.kelin.archetype.common.entity.biz.BizAccount;
+import com.kelin.archetype.database.entity.biz.BizAccount;
 
 /**
  * @author Kelin Tan
