@@ -8,16 +8,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.base.testing.BaseMockMvcTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 /**
  * @author Kelin Tan
  */
 @MockDatabase
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringBootArchetypeServer.class
+)
 public class UserApiControllerTest extends BaseMockMvcTest {
     @Test
     public void testNotFound() throws Exception {

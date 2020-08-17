@@ -5,9 +5,9 @@ package com.kelin.archetype.base.testing
 import com.kelin.archetype.base.consants.Profile.PROFILE_TEST
 import com.kelin.archetype.base.testing.database.DatabaseTestExecutionListener
 import org.junit.runner.RunWith
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener
 import org.springframework.test.context.junit4.SpringRunner
@@ -20,7 +20,6 @@ import org.springframework.test.context.web.ServletTestExecutionListener
  * @author Kelin Tan
  */
 @RunWith(SpringRunner::class)
-@SpringBootTest
 @ActiveProfiles(PROFILE_TEST)
 @TestExecutionListeners(
     ServletTestExecutionListener::class,
@@ -31,4 +30,5 @@ import org.springframework.test.context.web.ServletTestExecutionListener
     SqlScriptsTestExecutionListener::class,
     DatabaseTestExecutionListener::class
 )
+@ContextConfiguration(classes = [DefaultTestConfiguration::class])
 open class KtBaseSpringTest : KtTestUtils

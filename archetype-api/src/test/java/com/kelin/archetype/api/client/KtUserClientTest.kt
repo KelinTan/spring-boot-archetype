@@ -3,10 +3,11 @@
 package com.kelin.archetype.api.client
 
 import com.kelin.archetype.api.SpringBootArchetypeServer
+import com.kelin.archetype.base.rest.exception.RestException
 import com.kelin.archetype.base.testing.KtBaseSpringTest
 import com.kelin.archetype.base.testing.database.MockDatabase
-import com.kelin.archetype.common.entity.primary.User
-import com.kelin.archetype.common.mapper.primary.UserMapper
+import com.kelin.archetype.database.entity.primary.User
+import com.kelin.archetype.database.mapper.primary.UserMapper
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -23,6 +24,11 @@ class KtUserClientTest : KtBaseSpringTest() {
 
     @Autowired
     lateinit var userMapper: UserMapper
+
+    @Test(expected = RestException::class)
+    fun testRpcError() {
+        userClient.findAllError()
+    }
 
     @Test
     fun testRpcDeleteWithPathVariable() {

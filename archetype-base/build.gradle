@@ -1,12 +1,9 @@
 description = 'archetype-base'
 dependencies {
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.5.RELEASE') {
-//        exclude(module: 'spring-boot-starter-tomcat')
         exclude(module: 'spring-boot-starter-logging')
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
-//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.0.5.RELEASE'
-//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: '2.0.5.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '2.0.5.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.5.RELEASE'
     compile group: 'com.h2database', name: 'h2', version: '1.4.196'
@@ -20,4 +17,5 @@ dependencies {
     compile group: 'org.springframework.data', name: 'spring-data-commons', version: '2.0.7.RELEASE'
     compile group: 'org.assertj', name: 'assertj-core', version: '3.12.1'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
 }

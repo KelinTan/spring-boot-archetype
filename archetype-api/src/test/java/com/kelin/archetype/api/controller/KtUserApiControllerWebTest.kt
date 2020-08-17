@@ -2,15 +2,21 @@
 
 package com.kelin.archetype.api.controller
 
+import com.kelin.archetype.api.SpringBootArchetypeServer
 import com.kelin.archetype.base.testing.KtBaseSpringWebTest
 import com.kelin.archetype.base.testing.database.MockDatabase
 import org.apache.http.HttpStatus
 import org.junit.Test
+import org.springframework.boot.test.context.SpringBootTest
 
 /**
  * @author Kelin Tan
  */
 @MockDatabase
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [SpringBootArchetypeServer::class]
+)
 class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
     @Test
     fun `test find all users`() {

@@ -12,9 +12,9 @@ import lombok.Getter;
  */
 public class FakeDataSource extends HikariDataSource {
     @Getter
-    private String schemaLocation;
+    private final String schemaLocation;
     @Getter
-    private String dataLocation;
+    private final String dataLocation;
 
     public FakeDataSource(String schemaLocation, String dataLocation) {
         super();

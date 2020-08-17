@@ -6,20 +6,26 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.kelin.archetype.api.config.DataSourceConfig;
+import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.model.request.LoginRequest;
 import com.kelin.archetype.base.json.JsonConverter;
 import com.kelin.archetype.base.testing.BaseMockMvcTest;
 import com.kelin.archetype.base.testing.database.MockDatabase;
+import com.kelin.archetype.database.config.DataSourceConfig;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 /**
  * @author Kelin Tan
  */
 @MockDatabase(name = DataSourceConfig.BIZ)
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringBootArchetypeServer.class
+)
 public class AccountControllerTest extends BaseMockMvcTest {
     @Test
     public void testLoginBadRequest() throws Exception {
