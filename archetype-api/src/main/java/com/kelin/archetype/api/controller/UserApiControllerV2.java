@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.api.controller;
 
-import com.kelin.archetype.base.rest.response.RestResponse;
-import com.kelin.archetype.base.rest.response.RestResponseFactory;
+import com.kelin.archetype.core.rest.response.RestResponse;
+import com.kelin.archetype.core.rest.response.RestResponseFactory;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 // Copyright 2020 Alo7 Inc. All rights reserved.
 package com.kelin.archetype.database.mapper.primary
 
-import com.kelin.archetype.base.mybatis.crud.BasicCrudMapper
-import com.kelin.archetype.base.mybatis.crud.MapperTable
+import com.kelin.archetype.core.mybatis.crud.BasicCrudMapper
+import com.kelin.archetype.core.mybatis.crud.MapperTable
 import com.kelin.archetype.database.entity.primary.User
 import org.apache.ibatis.annotations.Select
 

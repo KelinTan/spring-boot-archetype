@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.kelin.archetype.jwt.JwtRSAKeyProvider,\
+  com.kelin.archetype.jwt.JwtManager
+

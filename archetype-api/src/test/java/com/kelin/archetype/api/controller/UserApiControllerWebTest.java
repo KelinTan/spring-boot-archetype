@@ -9,11 +9,11 @@ import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kelin.archetype.api.SpringBootArchetypeServer;
-import com.kelin.archetype.base.http.HttpRequest;
-import com.kelin.archetype.base.http.HttpUtils;
-import com.kelin.archetype.base.rest.response.RestResponse;
-import com.kelin.archetype.base.testing.BaseSpringWebTest;
-import com.kelin.archetype.base.testing.database.MockDatabase;
+import com.kelin.archetype.core.http.HttpRequest;
+import com.kelin.archetype.core.http.HttpUtils;
+import com.kelin.archetype.core.rest.response.RestResponse;
+import com.kelin.archetype.core.testing.BaseSpringWebTest;
+import com.kelin.archetype.core.testing.database.MockDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.apache.commons.lang3.BooleanUtils;

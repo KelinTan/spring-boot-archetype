@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.model.request.LoginRequest;
-import com.kelin.archetype.base.json.JsonConverter;
-import com.kelin.archetype.base.testing.BaseMockMvcTest;
-import com.kelin.archetype.base.testing.database.MockDatabase;
+import com.kelin.archetype.core.json.JsonConverter;
+import com.kelin.archetype.core.testing.BaseMockMvcTest;
+import com.kelin.archetype.core.testing.database.MockDatabase;
 import com.kelin.archetype.database.config.DataSourceConfig;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
