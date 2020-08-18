@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.client;
 
-import com.kelin.archetype.base.rpc.RpcErrorHandler;
+import com.kelin.archetype.core.rpc.RpcErrorHandler;
 
 /**
  * @author Kelin Tan

@@ -2,9 +2,9 @@
 
 package com.kelin.archetype.database.config;
 
-import static com.kelin.archetype.base.consants.Profile.PROFILE_TEST;
+import static com.kelin.archetype.core.consants.Profile.PROFILE_TEST;
 
-import com.kelin.archetype.base.testing.database.FakeDataSource;
+import com.kelin.archetype.core.testing.database.FakeDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

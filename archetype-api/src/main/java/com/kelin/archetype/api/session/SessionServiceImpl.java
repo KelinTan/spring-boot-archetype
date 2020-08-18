@@ -3,9 +3,9 @@
 package com.kelin.archetype.api.session;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.kelin.archetype.base.jwt.JwtManager;
 import com.kelin.archetype.database.entity.biz.BizAccount;
 import com.kelin.archetype.database.mapper.biz.BizAccountMapper;
+import com.kelin.archetype.jwt.JwtManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

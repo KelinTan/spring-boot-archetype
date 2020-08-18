@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.session.testing;
 
-import static com.kelin.archetype.base.consants.Profile.PROFILE_TEST;
+import static com.kelin.archetype.core.consants.Profile.PROFILE_TEST;
 
 import com.kelin.archetype.api.session.SessionService;
 import com.kelin.archetype.database.entity.biz.BizAccount;

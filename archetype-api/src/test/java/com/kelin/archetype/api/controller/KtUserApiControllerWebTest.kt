@@ -3,8 +3,8 @@
 package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.SpringBootArchetypeServer
-import com.kelin.archetype.base.testing.KtBaseSpringWebTest
-import com.kelin.archetype.base.testing.database.MockDatabase
+import com.kelin.archetype.core.testing.KtBaseSpringWebTest
+import com.kelin.archetype.core.testing.database.MockDatabase
 import org.apache.http.HttpStatus
 import org.junit.Test
 import org.springframework.boot.test.context.SpringBootTest

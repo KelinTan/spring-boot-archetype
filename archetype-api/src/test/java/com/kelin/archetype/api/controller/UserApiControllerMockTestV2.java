@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kelin.archetype.api.SpringBootArchetypeServer;
-import com.kelin.archetype.base.testing.BaseMockMvcTest;
-import com.kelin.archetype.base.testing.database.MockDatabase;
+import com.kelin.archetype.core.testing.BaseMockMvcTest;
+import com.kelin.archetype.core.testing.database.MockDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.assertj.core.util.Lists;

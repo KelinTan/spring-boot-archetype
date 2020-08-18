@@ -6,9 +6,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.kelin.archetype.api.SpringBootArchetypeServer;
-import com.kelin.archetype.base.rest.response.RestResponse;
-import com.kelin.archetype.base.testing.BaseMockTest;
-import com.kelin.archetype.base.testing.database.MockDatabase;
+import com.kelin.archetype.core.rest.response.RestResponse;
+import com.kelin.archetype.core.testing.BaseMockTest;
+import com.kelin.archetype.core.testing.database.MockDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.assertj.core.util.Lists;

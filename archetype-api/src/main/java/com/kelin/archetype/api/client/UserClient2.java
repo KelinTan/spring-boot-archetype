@@ -2,9 +2,9 @@
 
 package com.kelin.archetype.api.client;
 
-import com.kelin.archetype.base.rest.response.RestResponse;
-import com.kelin.archetype.base.rpc.HttpMethod;
-import com.kelin.archetype.base.rpc.RpcClient;
+import com.kelin.archetype.core.rest.response.RestResponse;
+import com.kelin.archetype.core.rpc.HttpMethod;
+import com.kelin.archetype.core.rpc.RpcClient;
 import com.kelin.archetype.database.entity.primary.User;
 import org.springframework.web.bind.annotation.RequestMethod;
 

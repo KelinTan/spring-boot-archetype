@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.session.testing.FakeSessionService;
-import com.kelin.archetype.base.testing.BaseMockMvcTest;
-import com.kelin.archetype.base.testing.database.MockDatabase;
-import com.kelin.archetype.base.testing.database.MockDatabases;
+import com.kelin.archetype.core.testing.BaseMockMvcTest;
+import com.kelin.archetype.core.testing.database.MockDatabase;
+import com.kelin.archetype.core.testing.database.MockDatabases;
 import com.kelin.archetype.database.config.DataSourceConfig;
 import com.kelin.archetype.database.mapper.biz.BizAccountMapper;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
