@@ -98,4 +98,11 @@ class KtUserClientTest : KtBaseSpringTest() {
             }
         }
     }
+
+    @Test
+    fun testRpcDeleteWithRequestParam() {
+        userMapper.findOne(3L) not null
+        userClient.delete2(3L)
+        userMapper.findOne(3L) eq null
+    }
 }
