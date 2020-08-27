@@ -1,0 +1,10 @@
+description = 'archetype-demo-api'
+dependencies {
+    compile project(':archetype-demo-database')
+    compile project(':archetype-jwt')
+
+    testCompile project(':archetype-systest')
+
+    compile group: 'io.springfox', name: 'springfox-swagger2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui'
+}
