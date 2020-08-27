@@ -2,10 +2,10 @@
 
 package com.kelin.archetype.core.rpc;
 
-import com.kelin.archetype.core.http.HttpRequest;
-import com.kelin.archetype.core.http.HttpUtils;
-import com.kelin.archetype.core.json.JsonConverter;
-import com.kelin.archetype.core.log.LogMessageBuilder;
+import com.kelin.archetype.common.http.HttpRequest;
+import com.kelin.archetype.common.http.HttpUtils;
+import com.kelin.archetype.common.json.JsonConverter;
+import com.kelin.archetype.common.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;

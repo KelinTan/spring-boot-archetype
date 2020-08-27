@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.core.rpc;
 
-import com.kelin.archetype.core.log.LogMessageBuilder;
+import com.kelin.archetype.common.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -22,7 +22,7 @@ import java.util.Set;
  */
 @Slf4j
 public class ClassPathRpcClientScanner extends ClassPathScanningCandidateComponentProvider {
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     public ClassPathRpcClientScanner(Environment environment, ClassLoader classLoader, ResourceLoader resourceLoader) {
         super(false, environment);

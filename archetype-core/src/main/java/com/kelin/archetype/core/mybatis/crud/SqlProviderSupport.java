@@ -3,7 +3,8 @@
 package com.kelin.archetype.core.mybatis.crud;
 
 import com.google.common.base.CaseFormat;
-import com.kelin.archetype.core.log.LogMessageBuilder;
+import com.kelin.archetype.common.database.MapperTable;
+import com.kelin.archetype.common.log.LogMessageBuilder;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.Field;

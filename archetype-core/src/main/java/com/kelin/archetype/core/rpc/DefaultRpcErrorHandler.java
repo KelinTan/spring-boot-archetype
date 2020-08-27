@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.core.rpc;
 
-import com.kelin.archetype.core.log.LogMessageBuilder;
-import com.kelin.archetype.core.rest.exception.RestExceptionFactory;
+import com.kelin.archetype.common.log.LogMessageBuilder;
+import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 
 /**
