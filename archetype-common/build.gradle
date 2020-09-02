@@ -1,16 +1,16 @@
 description = 'archetype-common'
 dependencies {
-    compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
+    api (group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
         exclude module: "spring-boot-starter-tomcat"
     }
-    compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
-    compile group: 'org.apache.commons', name: 'commons-lang3'
-    compile group: 'org.apache.commons', name: 'commons-collections4'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient'
-    compile group: 'commons-io', name: 'commons-io'
-    compile group: 'com.google.guava', name: 'guava'
-    compile group: 'org.springframework.data', name: 'spring-data-commons'
-    compile group: 'org.assertj', name: 'assertj-core'
-    compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+    api group: 'org.apache.commons', name: 'commons-lang3'
+    api group: 'org.apache.commons', name: 'commons-collections4'
+    api group: 'org.apache.httpcomponents', name: 'httpclient'
+    api group: 'commons-io', name: 'commons-io'
+    api group: 'com.google.guava', name: 'guava'
+    api group: 'org.springframework.data', name: 'spring-data-commons'
+    api group: 'org.assertj', name: 'assertj-core'
+    api group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'
 }

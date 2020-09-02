@@ -2,6 +2,6 @@ description = 'archetype-core'
 dependencies {
     compile project(':archetype-common')
 
-    compile group: 'mysql', name: 'mysql-connector-java'
-    compile group: 'javax.servlet', name: 'javax.servlet-api'
+    implementation group: 'mysql', name: 'mysql-connector-java'
+    api group: 'javax.servlet', name: 'javax.servlet-api'
 }
