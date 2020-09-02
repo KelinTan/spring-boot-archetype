@@ -9,8 +9,8 @@ apply from: rootProject.file("gradle/checkcode.gradle")
 repositories {
     mavenLocal()
 
-    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
-    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+    maven { url "https://repo.maven.apache.org/maven2" }
 }
 
 dependencies {

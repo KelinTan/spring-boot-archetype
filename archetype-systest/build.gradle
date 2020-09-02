@@ -1,8 +1,8 @@
 description = 'archetype-systest'
 dependencies {
     compile project(':archetype-common')
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    compile group: 'org.assertj', name: 'assertj-core'
-    compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
-    compile group: 'com.h2database', name: 'h2'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    api group: 'org.assertj', name: 'assertj-core'
+    implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
+    implementation group: 'com.h2database', name: 'h2'
 }

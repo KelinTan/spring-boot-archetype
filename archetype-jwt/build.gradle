@@ -1,6 +1,6 @@
 description = 'archetype-jwt'
 dependencies {
-    compile group: 'com.auth0', name: 'java-jwt'
-    compile "org.apache.commons:commons-lang3"
-    compile "org.springframework.boot:spring-boot-autoconfigure"
+    api group: 'com.auth0', name: 'java-jwt'
+    api "org.apache.commons:commons-lang3"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
 }
