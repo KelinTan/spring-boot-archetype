@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * @author Kelin Tan
@@ -47,6 +48,12 @@ public class RestExceptionHandler {
     public RestErrorResponse handleMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
         return handleException(e, HttpStatus.METHOD_NOT_ALLOWED.value());
+    }
+
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public RestErrorResponse handleNotFoundException(Exception e) {
+        return handleException(e, HttpStatus.NOT_FOUND.value());
     }
 
     @ExceptionHandler(value = Exception.class)
