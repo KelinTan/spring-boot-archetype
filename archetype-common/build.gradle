@@ -1,8 +1,7 @@
 description = 'archetype-common'
 dependencies {
-    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
-        exclude(module: 'spring-boot-starter-logging')
-        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
+        exclude module: "spring-boot-starter-tomcat"
     }
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
     compile group: 'org.apache.commons', name: 'commons-lang3'
@@ -13,4 +12,5 @@ dependencies {
     compile group: 'org.springframework.data', name: 'spring-data-commons'
     compile group: 'org.assertj', name: 'assertj-core'
     compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'
 }

@@ -25,19 +25,20 @@ dependencies {
 
 dependencyManagement {
     dependencies {
-        dependency group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.5.RELEASE'
-        dependency group: 'com.auth0', name: 'java-jwt', version: '3.9.0'
-        dependency group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '2.0.5.RELEASE'
-        dependency group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.5.RELEASE'
-        dependency group: 'com.h2database', name: 'h2', version: '1.4.196'
+        dependency group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.9.RELEASE'
+        dependency group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: '2.0.9.RELEASE'
+        dependency group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.0.9.RELEASE'
+        dependency group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '2.0.9.RELEASE'
+        dependency group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.9.RELEASE'
+        dependency group: 'org.springframework.data', name: 'spring-data-commons', version: '2.0.7.RELEASE'
         dependency group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.0.1'
+        dependency group: 'com.auth0', name: 'java-jwt', version: '3.9.0'
+        dependency group: 'com.h2database', name: 'h2', version: '1.4.196'
         dependency group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
         dependency group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
         dependency group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.6'
         dependency group: 'commons-io', name: 'commons-io', version: '2.6'
-        dependency group: 'com.auth0', name: 'java-jwt', version: '3.9.0'
         dependency group: 'com.google.guava', name: 'guava', version: '20.0'
-        dependency group: 'org.springframework.data', name: 'spring-data-commons', version: '2.0.7.RELEASE'
         dependency group: 'org.assertj', name: 'assertj-core', version: '3.12.1'
         dependency group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
         dependency group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
@@ -66,6 +67,7 @@ tasks.withType(JavaCompile) {
 configurations {
     all*.exclude group:'ch.qos.logback', module: 'logback-classic'
     all*.exclude group:'ch.qos.logback', module: 'logback-core'
+    all*.exclude group:'org.springframework.boot', module: 'spring-boot-starter-logging'
 }
 
 test {
