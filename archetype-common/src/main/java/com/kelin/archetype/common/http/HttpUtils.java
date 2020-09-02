@@ -2,6 +2,8 @@
 
 package com.kelin.archetype.common.http;
 
+import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 /**
  * @author Kelin Tan
  */
+@Slf4j
 public class HttpUtils {
     private static final Pattern PATH_VARIABLE_PATTERN = Pattern.compile("\\{([^}])*}");
 
@@ -93,7 +96,8 @@ public class HttpUtils {
         try {
             return new URIBuilder(host);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            log.error("Invalid Host: {} " + host, e);
+            throw RestExceptionFactory.toSystemException();
         }
     }
 
@@ -103,7 +107,8 @@ public class HttpUtils {
         try {
             return builder.build();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            log.error("Invalid builder: {} " + builder.toString(), e);
+            throw RestExceptionFactory.toSystemException();
         }
     }
 
@@ -113,7 +118,8 @@ public class HttpUtils {
         try {
             return HttpClientFactory.getDefaultHttpClient().execute(request);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Invalid request: {} " + request.toString(), e);
+            throw RestExceptionFactory.toSystemException();
         }
     }
 
@@ -124,6 +130,7 @@ public class HttpUtils {
         try {
             return EntityUtils.toString(httpEntity);
         } catch (IOException e) {
+            log.error("Io exception: ", e);
             return null;
         }
     }

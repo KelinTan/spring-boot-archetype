@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public class SessionAuthInterceptor implements HandlerInterceptor {
-    private SessionService sessionService;
+    private final SessionService sessionService;
 
     public SessionAuthInterceptor(SessionService sessionService) {
         this.sessionService = sessionService;

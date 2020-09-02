@@ -157,22 +157,22 @@ public class HttpRequest {
         return response.getStatusLine().getStatusCode();
     }
 
-    public boolean isOk() {
+    public void isOk() {
         Preconditions.checkNotNull(this.response);
 
-        return HttpUtils.isHttpOk(status());
+        assert HttpUtils.isHttpOk(status());
     }
 
-    public boolean isBadRequest() {
+    public void isBadRequest() {
         Preconditions.checkNotNull(this.response);
 
-        return HttpUtils.isHttpBadRequest(status());
+        assert HttpUtils.isHttpBadRequest(status());
     }
 
-    public boolean isErrorRequest() {
+    public void isErrorRequest() {
         Preconditions.checkNotNull(this.response);
 
-        return HttpUtils.isHttpErrorRequest(status());
+        assert HttpUtils.isHttpErrorRequest(status());
     }
 
     public <T> T json(Class<T> type) {
