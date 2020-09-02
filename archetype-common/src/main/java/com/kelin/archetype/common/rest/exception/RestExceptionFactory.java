@@ -24,6 +24,10 @@ public class RestExceptionFactory {
         return toException(HttpStatus.INTERNAL_SERVER_ERROR, errorCode, message);
     }
 
+    public static RestException toSystemException(String message) {
+        return toException(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), message);
+    }
+
     public static RestException toSystemException(int errorCode) {
         return toException(errorCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
