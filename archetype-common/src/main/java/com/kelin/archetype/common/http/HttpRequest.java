@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 import org.assertj.core.util.Preconditions;
 
 import java.net.URI;
@@ -29,8 +30,8 @@ import java.util.Map;
  * @author Kelin Tan
  */
 public class HttpRequest {
-    private URIBuilder uriBuilder;
-    private Map<String, Object> headers = new LinkedHashMap<>();
+    private final URIBuilder uriBuilder;
+    private final Map<String, Object> headers = new LinkedHashMap<>();
     private String content;
     private RequestConfig config;
     private HttpRequestBase request;
@@ -154,11 +155,15 @@ public class HttpRequest {
     public int status() {
         Preconditions.checkNotNull(this.response);
 
+        HttpUtils.safeEntityToString(response.getEntity());
+
         return response.getStatusLine().getStatusCode();
     }
 
     public void isOk() {
         Preconditions.checkNotNull(this.response);
+
+        EntityUtils.consumeQuietly(this.response.getEntity());
 
         assert HttpUtils.isHttpOk(status());
     }
@@ -166,11 +171,15 @@ public class HttpRequest {
     public void isBadRequest() {
         Preconditions.checkNotNull(this.response);
 
+        EntityUtils.consumeQuietly(this.response.getEntity());
+
         assert HttpUtils.isHttpBadRequest(status());
     }
 
     public void isErrorRequest() {
         Preconditions.checkNotNull(this.response);
+
+        EntityUtils.consumeQuietly(this.response.getEntity());
 
         assert HttpUtils.isHttpErrorRequest(status());
     }
