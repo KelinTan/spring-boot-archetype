@@ -154,33 +154,19 @@ public class HttpRequest {
 
     public int status() {
         Preconditions.checkNotNull(this.response);
-
-        HttpUtils.safeEntityToString(response.getEntity());
-
+        EntityUtils.consumeQuietly(this.response.getEntity());
         return response.getStatusLine().getStatusCode();
     }
 
     public void isOk() {
-        Preconditions.checkNotNull(this.response);
-
-        EntityUtils.consumeQuietly(this.response.getEntity());
-
         assert HttpUtils.isHttpOk(status());
     }
 
     public void isBadRequest() {
-        Preconditions.checkNotNull(this.response);
-
-        EntityUtils.consumeQuietly(this.response.getEntity());
-
         assert HttpUtils.isHttpBadRequest(status());
     }
 
     public void isErrorRequest() {
-        Preconditions.checkNotNull(this.response);
-
-        EntityUtils.consumeQuietly(this.response.getEntity());
-
         assert HttpUtils.isHttpErrorRequest(status());
     }
 
