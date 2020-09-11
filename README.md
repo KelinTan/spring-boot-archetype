@@ -14,15 +14,15 @@
 
 4. @MockDatabase用于单元测试 & 集成测试，采用内存数据库H2进行数据库测试
 
-5. 集成checkstylet用于代码静态检查
+5. 集成Checkstyle用于代码静态检查
 
-6. jacoco的单元测试覆盖率
+6. 集成Jacoco的单元测试覆盖率
 
-7. jwt支持
+7. JWT支持
 
 8. Mybatis BasicCrudMapper 用于单表的CRUD
 
 9. 统一异常处理，统一Rest请求返回格式
 
-10. kotlin用于单元测试，更简洁，可读性更好
+10. Kotlin用于单元测试，更简洁，可读性更好
 
