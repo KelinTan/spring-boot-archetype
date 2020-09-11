@@ -14,7 +14,7 @@
 
 4. @MockDatabase用于单元测试 & 集成测试，采用内存数据库H2进行数据库测试
 
-5. 集成checksylt用于代码静态检查
+5. 集成checkstylet用于代码静态检查
 
 6. jacoco的单元测试覆盖率
 
