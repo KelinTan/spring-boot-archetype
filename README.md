@@ -1,7 +1,7 @@
-# Spring Boot Archetype
-
 [![CI](https://github.com/KelinTan/spring-boot-archetype/workflows/Java%20CI/badge.svg)](https://github.com/KelinTan/spring-boot-archetype)
 [![codecov](https://codecov.io/gh/KelinTan/spring-boot-archetype/branch/master/graph/badge.svg)](https://codecov.io/gh/KelinTan/spring-boot-archetype)
+
+# Spring Boot Archetype
 
 1.Gradle + Spring Boot + Mybatis + Junit4 + H2 Support Web Project
 
