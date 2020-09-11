@@ -1,4 +1,4 @@
-English | [简体中文](,/README.md)
+English | [简体中文](./README.md)
 
 
 [![CI](https://github.com/KelinTan/spring-boot-archetype/workflows/Java%20CI/badge.svg)](https://github.com/KelinTan/spring-boot-archetype)
