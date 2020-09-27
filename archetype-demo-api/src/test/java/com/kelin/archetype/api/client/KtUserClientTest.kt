@@ -4,6 +4,7 @@ package com.kelin.archetype.api.client
 
 import com.kelin.archetype.api.SpringBootArchetypeServer
 import com.kelin.archetype.common.rest.exception.RestException
+import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringTest
@@ -17,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
  * @author Kelin Tan
  */
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = [SpringBootArchetypeServer::class])
-@MockDatabase
+@MockDatabase(name = PrimaryDatabase.NAME)
 class KtUserClientTest : KtBaseSpringTest() {
     @Autowired
     lateinit var userClient: UserClient

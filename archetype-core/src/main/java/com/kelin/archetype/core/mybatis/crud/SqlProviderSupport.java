@@ -18,8 +18,6 @@ import java.util.List;
 public abstract class SqlProviderSupport {
     public static final String DEFAULT_ID = "id";
 
-    public static final Field[] EMPTY_FIELDS = new Field[0];
-
     protected String table(ProviderContext context) {
         return getMapperAnnotation(context).value();
     }

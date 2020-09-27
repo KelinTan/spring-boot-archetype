@@ -1,5 +1,6 @@
 package com.kelin.archetype.database
 
+import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringTest
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 
-@MockDatabase
+@MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class UserMapperTest : KtBaseSpringTest() {
     @Autowired

@@ -10,7 +10,7 @@ import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.model.request.LoginRequest;
 import com.kelin.archetype.common.json.JsonConverter;
-import com.kelin.archetype.database.config.DataSourceConfig;
+import com.kelin.archetype.database.config.BizDatabase;
 import com.kelin.archetype.test.BaseMockMvcTest;
 import com.kelin.archetype.test.database.MockDatabase;
 import org.apache.http.HttpStatus;
@@ -21,7 +21,7 @@ import org.springframework.http.MediaType;
 /**
  * @author Kelin Tan
  */
-@MockDatabase(name = DataSourceConfig.BIZ)
+@MockDatabase(name = BizDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = SpringBootArchetypeServer.class

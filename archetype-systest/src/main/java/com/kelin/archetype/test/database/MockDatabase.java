@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 @Repeatable(value = MockDatabases.class)
 public @interface MockDatabase {
     /**
-     * specific dataSource name,default get primary dataSource
+     * specific database name {@link MybatisDatabase}
      */
     String name() default "";
 

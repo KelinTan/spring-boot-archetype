@@ -9,7 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.session.testing.FakeSessionService;
-import com.kelin.archetype.database.config.DataSourceConfig;
+import com.kelin.archetype.database.config.BizDatabase;
+import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.mapper.biz.BizAccountMapper;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import com.kelin.archetype.test.BaseMockMvcTest;
@@ -25,8 +26,8 @@ import org.springframework.http.MediaType;
  * @author Kelin Tan
  */
 @MockDatabases
-        ({@MockDatabase(name = DataSourceConfig.PRIMARY, mappers = UserMapper.class),
-                @MockDatabase(name = DataSourceConfig.BIZ, tables = BizAccountMapper.TABLE)})
+        ({@MockDatabase(name = PrimaryDatabase.NAME, mappers = UserMapper.class),
+                @MockDatabase(name = BizDatabase.NAME, tables = BizAccountMapper.TABLE)})
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = SpringBootArchetypeServer.class
