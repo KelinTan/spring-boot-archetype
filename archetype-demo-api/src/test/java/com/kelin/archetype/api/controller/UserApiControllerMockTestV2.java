@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kelin.archetype.api.SpringBootArchetypeServer;
+import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import com.kelin.archetype.test.BaseMockMvcTest;
@@ -23,7 +24,7 @@ import org.springframework.http.MediaType;
 /**
  * @author Kelin Tan
  */
-@MockDatabase
+@MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = SpringBootArchetypeServer.class

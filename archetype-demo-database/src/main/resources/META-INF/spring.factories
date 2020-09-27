@@ -1,7 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.kelin.archetype.database.config.DataSourceConfig,\
-  com.kelin.archetype.database.config.FakeDataSourceConfig,\
-  com.kelin.archetype.database.config.MybatisBizSqlSessionFactoryConfig,\
-  com.kelin.archetype.database.config.MybatisPrimarySqlSessionFactoryConfig
+  com.kelin.archetype.database.config.BizDatabase,\
+  com.kelin.archetype.database.config.PrimaryDatabase
 
 

@@ -3,6 +3,7 @@
 package com.kelin.archetype.core.rpc;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -43,22 +44,22 @@ public class RpcClientRegistrar
     }
 
     @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
+    public void setBeanClassLoader(@NotNull ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+    public void setBeanFactory(@NotNull BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
 
     @Override
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(@NotNull Environment environment) {
         this.environment = environment;
     }
 
     @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
+    public void setResourceLoader(@NotNull ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 

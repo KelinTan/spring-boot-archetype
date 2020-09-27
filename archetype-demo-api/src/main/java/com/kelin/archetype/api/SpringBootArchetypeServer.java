@@ -14,7 +14,6 @@ public class SpringBootArchetypeServer {
     public static void main(String[] args) {
         //to make GlobalException to handle NoHandlerFoundException
         System.setProperty("spring.mvc.throwExceptionIfNoHandlerFound", "true");
-        System.setProperty("spring.mvc.favicon.enabled", "false");
         System.setProperty("spring.mvc.staticPathPattern", "/swagger-ui.html");
         SpringApplication.run(SpringBootArchetypeServer.class, args);
     }

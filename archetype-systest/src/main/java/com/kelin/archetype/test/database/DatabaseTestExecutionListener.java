@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.test.database;
 
+import com.kelin.archetype.common.database.DbFactory;
 import com.kelin.archetype.common.database.FakeDataSource;
 import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.log.LogMessageBuilder;
@@ -46,7 +47,8 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            if (DATA_SOURCE_SCHEMA_INITIALIZED.getOrDefault(mockDatabase.name(), false)) {
+            if (DATA_SOURCE_SCHEMA_INITIALIZED.getOrDefault(DbFactory.computeDataSourceName(mockDatabase.name()),
+                    false)) {
                 return;
             }
             MockDatabaseConfig config = getDataSourceConfig(testContext, mockDatabase);
@@ -136,7 +138,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
 
     private DataSource checkDataSource(TestContext testContext, MockDatabase mockDatabase) {
         DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext,
-                mockDatabase.name());
+                DbFactory.computeDataSourceName(mockDatabase.name()));
         if (dataSource == null) {
             throw new RuntimeException(LogMessageBuilder.builder()
                     .message("Invalid data source :")

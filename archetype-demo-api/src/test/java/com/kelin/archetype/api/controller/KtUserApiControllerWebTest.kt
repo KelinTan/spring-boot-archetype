@@ -3,6 +3,7 @@
 package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.SpringBootArchetypeServer
+import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.apache.http.HttpStatus
@@ -12,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest
 /**
  * @author Kelin Tan
  */
-@MockDatabase
+@MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = [SpringBootArchetypeServer::class]

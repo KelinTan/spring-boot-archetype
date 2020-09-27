@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.kelin.archetype.api.SpringBootArchetypeServer;
 import com.kelin.archetype.common.rest.response.RestResponse;
+import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import com.kelin.archetype.test.BaseMockTest;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @author Kelin Tan
  */
-@MockDatabase
+@MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = SpringBootArchetypeServer.class
