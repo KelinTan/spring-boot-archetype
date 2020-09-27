@@ -1,3 +1,5 @@
+// Copyright 2020 Kelin Inc. All rights reserved.
+
 package com.kelin.archetype.database.config;
 
 import static com.kelin.archetype.database.config.PrimaryDatabase.NAME;
