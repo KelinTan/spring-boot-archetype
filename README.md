@@ -8,7 +8,7 @@
 
 1. Gradle5 + Spring Boot 2.0.9.RELEASE + Mybatis + Kotlin 搭建的Web服务脚手架
 
-2. 多数据源配置
+2. @MybatisDatabase 注入Mybatis sqlSession & dataSource && ...支持多数据源
 
 3. @RpcClient代理HttpClient, 通过接口调用外部Http请求
 
@@ -25,4 +25,5 @@
 9. 统一异常处理，统一Rest请求返回格式
 
 10. Kotlin用于单元测试，更简洁，可读性更好
+
 
