@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.kelin.archetype.api.SpringBootArchetypeServer;
+import com.kelin.archetype.api.SpringBootArchetypeApplication;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
@@ -26,7 +26,7 @@ import org.springframework.http.MediaType;
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = SpringBootArchetypeServer.class
+        classes = SpringBootArchetypeApplication.class
 )
 public class UserApiControllerMockTest extends BaseMockMvcTest {
     @MockBean

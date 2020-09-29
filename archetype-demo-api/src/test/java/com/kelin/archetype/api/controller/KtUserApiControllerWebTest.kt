@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.controller
 
-import com.kelin.archetype.api.SpringBootArchetypeServer
+import com.kelin.archetype.api.SpringBootArchetypeApplication
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
@@ -16,9 +16,16 @@ import org.springframework.boot.test.context.SpringBootTest
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = [SpringBootArchetypeServer::class]
+    classes = [SpringBootArchetypeApplication::class]
 )
 class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
+    @Test
+    fun `find all users with header`() {
+        Http.withPath("$API_PREFIX/findAll")
+            .performHeader()
+            .status() eq HttpStatus.SC_OK
+    }
+
     @Test
     fun `test find all users`() {
         Http.withPath("$API_PREFIX/findAll")

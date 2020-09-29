@@ -13,12 +13,12 @@ public class RestException extends RuntimeException {
      * http status {@link org.springframework.http.HttpStatus}
      */
     @Getter
-    private HttpStatus status;
+    private final HttpStatus status;
     /**
      * biz errorCode
      */
     @Getter
-    private int errorCode;
+    private final int errorCode;
 
     public RestException(HttpStatus httpStatus) {
         super(httpStatus.getReasonPhrase());

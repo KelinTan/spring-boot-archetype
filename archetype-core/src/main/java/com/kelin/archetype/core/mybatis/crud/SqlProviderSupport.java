@@ -5,6 +5,7 @@ package com.kelin.archetype.core.mybatis.crud;
 import com.google.common.base.CaseFormat;
 import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.log.LogMessageBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.Field;
@@ -19,7 +20,17 @@ public abstract class SqlProviderSupport {
     public static final String DEFAULT_ID = "id";
 
     protected String table(ProviderContext context) {
-        return getMapperAnnotation(context).value();
+        MapperTable mapperTable = getMapperAnnotation(context);
+        if (StringUtils.isBlank(mapperTable.value()) && StringUtils.isBlank(mapperTable.table())) {
+            throw new RuntimeException(LogMessageBuilder.builder()
+                    .message("@MapperTable need value or table")
+                    .parameter("class", context.getMapperType().getName())
+                    .build());
+        }
+        if (StringUtils.isNotBlank(mapperTable.value())) {
+            return mapperTable.value();
+        }
+        return mapperTable.table();
     }
 
     protected String columns(ProviderContext context) {

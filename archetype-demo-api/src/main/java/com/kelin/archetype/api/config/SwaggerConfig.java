@@ -4,7 +4,6 @@ package com.kelin.archetype.api.config;
 
 import static com.kelin.archetype.common.consants.Profile.PROFILE_DEV;
 import static com.kelin.archetype.common.consants.Profile.PROFILE_STAGING;
-import static com.kelin.archetype.common.consants.Profile.PROFILE_TEST;
 
 import com.kelin.archetype.api.model.constant.ApiConstants;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-@Profile({PROFILE_DEV, PROFILE_TEST, PROFILE_STAGING})
+@Profile({PROFILE_DEV, PROFILE_STAGING})
 public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
