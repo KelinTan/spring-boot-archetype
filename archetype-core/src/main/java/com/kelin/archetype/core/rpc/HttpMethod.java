@@ -15,11 +15,28 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface HttpMethod {
-    String value();
+    /**
+     * alias for path
+     */
+    String value() default "";
 
+    /**
+     * Http path,join with {@link RpcClient#endpoint()}
+     */
+    String path() default "";
+
+    /**
+     * @see org.springframework.web.bind.annotation.RequestMethod
+     */
     RequestMethod method() default RequestMethod.GET;
 
-    int connectionTimeout() default 2000;
+    /**
+     * Http request connect timeout milliseconds default 5000
+     */
+    int connectionTimeout() default 5000;
 
+    /**
+     * Http request read timeout milliseconds default 5000
+     */
     int readTimeout() default 5000;
 }

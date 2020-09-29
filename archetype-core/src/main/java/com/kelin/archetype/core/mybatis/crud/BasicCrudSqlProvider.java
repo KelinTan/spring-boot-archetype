@@ -70,7 +70,7 @@ public class BasicCrudSqlProvider extends SqlProviderSupport {
                         .map(field -> columnName(field) + " = " + bindParameter(field)).toArray(String[]::new))
                 .toString();
         if (page != null) {
-            return sql + " limit " + page.getOffset() + "," + page.getPageSize();
+            return sql + " LIMIT " + page.getOffset() + "," + page.getPageSize();
         }
 
         return sql;
@@ -78,7 +78,7 @@ public class BasicCrudSqlProvider extends SqlProviderSupport {
 
     public String countByEntity(Object entity, ProviderContext context) {
         return new SQL()
-                .SELECT("count(*)")
+                .SELECT("COUNT(*)")
                 .FROM(table(context))
                 .WHERE(fields(entity).stream().filter(field -> value(entity, field) != null)
                         .map(field -> columnName(field) + " = " + bindParameter(field)).toArray(String[]::new))

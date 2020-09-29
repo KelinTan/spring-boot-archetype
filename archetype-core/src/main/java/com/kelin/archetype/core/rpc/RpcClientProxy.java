@@ -35,11 +35,11 @@ public class RpcClientProxy implements InvocationHandler {
     private Class<?> clazz;
     private String endpoint;
     private RpcErrorHandler rpcErrorHandler;
-    private Map<Method, String> requestUrlOnMethods = new HashMap<>();
-    private Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
-    private Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
-    private Map<Method, RequestConfig> requestConfigOnMethods = new HashMap<>();
-    private Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
+    private final Map<Method, String> requestUrlOnMethods = new HashMap<>();
+    private final Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
+    private final Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
+    private final Map<Method, RequestConfig> requestConfigOnMethods = new HashMap<>();
+    private final Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
 
     RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         super();
@@ -91,7 +91,8 @@ public class RpcClientProxy implements InvocationHandler {
         Method[] methods = clazz.getMethods();
         Arrays.stream(methods).forEach(method -> {
             HttpMethod httpMethod = getHttpMethod(method);
-            this.requestUrlOnMethods.put(method, httpMethod.value());
+            this.requestUrlOnMethods.put(method, getRequestPathOnMethod(httpMethod));
+
             this.methodParameterAnnotations.put(method, method.getParameterAnnotations());
             this.requestMethodOnMethods.put(method, httpMethod.method());
             this.requestConfigOnMethods.put(method, RequestConfig.custom()
@@ -99,6 +100,20 @@ public class RpcClientProxy implements InvocationHandler {
                     .setSocketTimeout(httpMethod.readTimeout())
                     .build());
         });
+    }
+
+    private String getRequestPathOnMethod(HttpMethod httpMethod) {
+        if (StringUtils.isEmpty(httpMethod.value()) && StringUtils.isEmpty(httpMethod.path())) {
+            throw new RuntimeException(LogMessageBuilder.builder()
+                    .message("@HttpMethod need value or path")
+                    .parameter("clazz", clazz.getName())
+                    .parameter("method", httpMethod)
+                    .build());
+        }
+        if (StringUtils.isNotBlank(httpMethod.value())) {
+            return httpMethod.value();
+        }
+        return httpMethod.path();
     }
 
     private HttpRequest createRequest(String uri, RequestMethod method, RequestConfig config,

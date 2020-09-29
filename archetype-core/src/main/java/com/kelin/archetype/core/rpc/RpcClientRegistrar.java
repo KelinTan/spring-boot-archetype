@@ -39,7 +39,7 @@ public class RpcClientRegistrar
     private Environment environment;
 
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata meta, BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(@NotNull AnnotationMetadata meta, @NotNull BeanDefinitionRegistry registry) {
         registerRpcClient(meta);
     }
 
