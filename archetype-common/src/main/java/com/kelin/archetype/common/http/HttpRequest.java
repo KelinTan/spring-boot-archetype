@@ -158,16 +158,16 @@ public class HttpRequest {
         return response.getStatusLine().getStatusCode();
     }
 
-    public void isOk() {
-        assert HttpUtils.isHttpOk(status());
+    public boolean isOk() {
+        return HttpUtils.isHttpOk(status());
     }
 
-    public void isBadRequest() {
-        assert HttpUtils.isHttpBadRequest(status());
+    public boolean isBadRequest() {
+        return HttpUtils.isHttpBadRequest(status());
     }
 
-    public void isErrorRequest() {
-        assert HttpUtils.isHttpErrorRequest(status());
+    public boolean isErrorRequest() {
+        return HttpUtils.isHttpErrorRequest(status());
     }
 
     public <T> T json(Class<T> type) {
