@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class LogMessageBuilder {
     private String message;
-    private List<String> parameters = new ArrayList<>();
+    private final List<String> parameters = new ArrayList<>();
 
     private LogMessageBuilder() {
     }

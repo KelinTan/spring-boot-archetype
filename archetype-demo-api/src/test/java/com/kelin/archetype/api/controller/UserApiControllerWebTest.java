@@ -8,7 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.kelin.archetype.api.SpringBootArchetypeServer;
+import com.kelin.archetype.api.SpringBootArchetypeApplication;
 import com.kelin.archetype.common.http.HttpRequest;
 import com.kelin.archetype.common.http.HttpUtils;
 import com.kelin.archetype.common.rest.response.RestResponse;
@@ -33,7 +33,7 @@ import java.util.List;
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = SpringBootArchetypeServer.class
+        classes = SpringBootArchetypeApplication.class
 )
 public class UserApiControllerWebTest extends BaseSpringWebTest {
     @Autowired

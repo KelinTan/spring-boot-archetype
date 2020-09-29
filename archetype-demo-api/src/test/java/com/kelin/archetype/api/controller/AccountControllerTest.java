@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.kelin.archetype.api.SpringBootArchetypeServer;
+import com.kelin.archetype.api.SpringBootArchetypeApplication;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.model.request.LoginRequest;
 import com.kelin.archetype.common.json.JsonConverter;
@@ -24,7 +24,7 @@ import org.springframework.http.MediaType;
 @MockDatabase(name = BizDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = SpringBootArchetypeServer.class
+        classes = SpringBootArchetypeApplication.class
 )
 public class AccountControllerTest extends BaseMockMvcTest {
     @Test
