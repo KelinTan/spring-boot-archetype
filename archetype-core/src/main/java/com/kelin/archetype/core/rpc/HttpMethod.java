@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.core.rpc;
 
+import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.lang.annotation.ElementType;
@@ -18,11 +19,13 @@ public @interface HttpMethod {
     /**
      * alias for path
      */
+    @AliasFor("path")
     String value() default "";
 
     /**
      * Http path,join with {@link RpcClient#endpoint()}
      */
+    @AliasFor("value")
     String path() default "";
 
     /**

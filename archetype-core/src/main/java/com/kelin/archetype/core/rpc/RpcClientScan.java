@@ -26,5 +26,6 @@ public @interface RpcClientScan {
     /**
      * Rpc client scan basePackages
      */
+    @AliasFor("value")
     String[] basePackages() default {};
 }
