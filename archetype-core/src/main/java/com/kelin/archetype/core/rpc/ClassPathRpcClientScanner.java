@@ -40,7 +40,7 @@ public class ClassPathRpcClientScanner extends ClassPathScanningCandidateCompone
                 return !target.isAnnotation();
             } catch (Exception e) {
                 log.error(LogMessageBuilder.builder()
-                        .message("load class exception")
+                        .message("Load class exception")
                         .parameter("bean", beanDefinition)
                         .build(), e);
             }

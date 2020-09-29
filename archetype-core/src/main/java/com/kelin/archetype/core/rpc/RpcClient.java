@@ -13,7 +13,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RpcClient {
+    /**
+     * Rpc endpoint,support spring value expression,like ${user.client.endpoint}
+     */
     String endpoint();
 
+    /**
+     * Rpc errorHandler when rpc status is 4xx or 5xx
+     */
     Class<? extends RpcErrorHandler> errorHandler() default DefaultRpcErrorHandler.class;
 }

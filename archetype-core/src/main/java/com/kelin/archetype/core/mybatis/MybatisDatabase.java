@@ -16,21 +16,49 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Import(MybatisDatabaseRegistrar.class)
 public @interface MybatisDatabase {
+    /**
+     * Database name,unique
+     */
     String name();
 
+    /**
+     * Database url, support spring value expression,like ${spring.datasource.url}
+     */
     String databaseUrl();
+
+    /**
+     * Database userName,support spring value expression,like ${spring.datasource.userName}
+     */
 
     String databaseUserName();
 
+    /**
+     * Database password,support spring value expression,like ${spring.datasource.password}
+     */
     String databasePassword();
 
+    /**
+     * Mybatis mapper packages
+     */
     String[] mapperPackages() default {};
 
+    /**
+     * Mybatis mapper xml locations
+     */
     String mapperXmlLocation() default "";
 
+    /**
+     * Mybatis typeAlias package
+     */
     String typeAliasesPackage() default "";
 
+    /**
+     * Database schema location for test
+     */
     String schemaLocation() default "";
 
+    /**
+     * Database data location for test
+     */
     String dataLocation() default "";
 }

@@ -9,6 +9,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +42,16 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
     private BeanFactory beanFactory;
     private Environment environment;
 
+    @Override
+    public void setBeanFactory(@NotNull BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
+
+    @Override
+    public void setEnvironment(@NotNull Environment environment) {
+        this.environment = environment;
+    }
+
     @SneakyThrows
     @Override
     public void registerBeanDefinitions(AnnotationMetadata meta, @NotNull BeanDefinitionRegistry registry) {
@@ -52,7 +63,7 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
         //scan mybatis mappers
         ClassPathMapperScanner mapperScanner = new ClassPathMapperScanner(registry);
-        mapperScanner.setSqlSessionFactoryBeanName(computeSqlSessionFactoryName(database));
+        mapperScanner.setSqlSessionFactoryBeanName(DbFactory.computeSqlSessionFactoryName(database.name()));
         mapperScanner.registerFilters();
         mapperScanner.doScan(database.mapperPackages());
 
@@ -64,37 +75,16 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
         //register sqlSession
         SqlSessionFactory sqlSessionFactory = createSqlSessionFactory(dataSource, database);
-        defaultBeanFactory.registerSingleton(computeSqlSessionFactoryName(database), sqlSessionFactory);
+        defaultBeanFactory.registerSingleton(DbFactory.computeSqlSessionFactoryName(database.name()),
+                sqlSessionFactory);
 
         //register sql session template
-        defaultBeanFactory.registerSingleton(computeSqlSessionTemplateName(database),
+        defaultBeanFactory.registerSingleton(DbFactory.computeSqlSessionTemplateName(database.name()),
                 new SqlSessionTemplate(sqlSessionFactory));
 
         //register transactional manager
-        defaultBeanFactory.registerSingleton(computeTransactionManagerName(database),
+        defaultBeanFactory.registerSingleton(DbFactory.computeTransactionManagerName(database.name()),
                 new DataSourceTransactionManager(dataSource));
-    }
-
-    @Override
-    public void setBeanFactory(@NotNull BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
-    }
-
-    @Override
-    public void setEnvironment(@NotNull Environment environment) {
-        this.environment = environment;
-    }
-
-    private String computeSqlSessionFactoryName(MybatisDatabase database) {
-        return database.name() + ".sqlSessionFactory";
-    }
-
-    private String computeSqlSessionTemplateName(MybatisDatabase database) {
-        return database.name() + ".sqlSessionTemplate";
-    }
-
-    private String computeTransactionManagerName(MybatisDatabase database) {
-        return database.name() + ".transactionManager";
     }
 
     private DataSource createDataSource(MybatisDatabase database) {
@@ -127,7 +117,7 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
         sqlSessionFactoryBean.setTypeAliasesPackage(database.typeAliasesPackage());
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
-        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        Configuration configuration = new Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.setDefaultFetchSize(100);
         configuration.setDefaultStatementTimeout(30);
