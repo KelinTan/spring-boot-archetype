@@ -79,7 +79,7 @@ public class UserApiControllerWebTest extends BaseSpringWebTest {
 
     @Test
     public void testFindUser2PerformGetBadRequest() {
-        HttpRequest.host(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest();
+        assert HttpRequest.host(serverPrefix + "/api/v1/user/findUser").performGet().isBadRequest();
     }
 
     @Test
@@ -135,7 +135,7 @@ public class UserApiControllerWebTest extends BaseSpringWebTest {
     public void testDelete() {
         assertNotNull(userMapper.findOne(3L));
 
-        HttpRequest.host(serverPrefix + "/api/v1/user/3")
+        assert HttpRequest.host(serverPrefix + "/api/v1/user/3")
                 .performDelete()
                 .isOk();
 
