@@ -10,7 +10,7 @@ import com.kelin.archetype.common.rest.response.RestResponse;
 import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
-import com.kelin.archetype.test.BaseMockTest;
+import com.kelin.archetype.test.BaseSpringTest;
 import com.kelin.archetype.test.database.MockDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import java.util.List;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = SpringBootArchetypeApplication.class
 )
-public class UserApiControllerMockTestV3 extends BaseMockTest {
+public class UserApiControllerMockTestV3 extends BaseSpringTest {
     @Mock
     UserMapper userMapper;
 
