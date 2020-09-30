@@ -1,14 +1,9 @@
 rootProject.name = 'spring-boot-archetype'
-include ':archetype-common'
-include ':archetype-core'
-include ':archetype-systest'
-include ':archetype-jwt'
-include ':archetype-demo-database'
-include ':archetype-demo-api'
-
-project(':archetype-common').projectDir = "$rootDir/archetype-common" as File
-project(':archetype-core').projectDir = "$rootDir/archetype-core" as File
-project(':archetype-systest').projectDir = "$rootDir/archetype-systest" as File
-project(':archetype-jwt').projectDir = "$rootDir/archetype-jwt" as File
-project(':archetype-demo-database').projectDir = "$rootDir/archetype-demo-database" as File
-project(':archetype-demo-api').projectDir = "$rootDir/archetype-demo-api" as File
+fileTree(".") {
+    include "**/build.gradle"
+    exclude "build.gradle" // Exclude the root build file.
+}.collect {
+    relativePath(it.parent).replace(File.separator, ":")
+}.each {
+    include(it)
+}
