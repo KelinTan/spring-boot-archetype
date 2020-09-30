@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.kelin.archetype.common.rest.exception.RestExceptionHandler
+  com.kelin.archetype.common.rest.exception.RestExceptionHandler,\
+  com.kelin.archetype.common.cache.CacheConfiguration
 

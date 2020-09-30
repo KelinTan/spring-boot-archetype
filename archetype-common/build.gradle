@@ -13,4 +13,9 @@ dependencies {
     api group: 'org.assertj', name: 'assertj-core'
     api group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache'
+    api group: 'com.github.ben-manes.caffeine', name: 'caffeine'
+
+    testCompile project(':archetype-systest')
 }
