@@ -2,6 +2,7 @@ description = 'archetype-demo-api'
 dependencies {
     compile project(':archetype-demo-database')
     compile project(':archetype-jwt')
+    compile project(':archetype-cache')
 
     testCompile project(':archetype-systest')
 
