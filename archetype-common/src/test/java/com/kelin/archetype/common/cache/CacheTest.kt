@@ -1,4 +1,4 @@
-package com.kelin.archetype.cache
+package com.kelin.archetype.common.cache
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.kelin.archetype.test.KtTestUtils

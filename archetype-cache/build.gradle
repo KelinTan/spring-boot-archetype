@@ -1,8 +1,0 @@
-description = 'archetype-cache'
-dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache'
-    api group: 'com.github.ben-manes.caffeine', name: 'caffeine'
-
-    testCompile project(':archetype-systest')
-}

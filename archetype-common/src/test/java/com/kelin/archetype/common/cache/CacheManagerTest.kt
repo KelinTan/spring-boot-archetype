@@ -1,8 +1,8 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.cache
+package com.kelin.archetype.common.cache
 
-import com.kelin.archetype.cache.DemoService.CACHE_NAME
+import com.kelin.archetype.common.cache.DemoService.CACHE_NAME
 import com.kelin.archetype.test.KtBaseSpringTest
 import org.junit.After
 import org.junit.Test

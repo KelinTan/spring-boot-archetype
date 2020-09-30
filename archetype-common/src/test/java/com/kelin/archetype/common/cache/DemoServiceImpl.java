@@ -1,6 +1,6 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.cache;
+package com.kelin.archetype.common.cache;
 
 import org.springframework.stereotype.Service;
 
