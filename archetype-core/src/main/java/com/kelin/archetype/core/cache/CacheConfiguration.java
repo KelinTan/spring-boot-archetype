@@ -1,6 +1,6 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.cache;
+package com.kelin.archetype.core.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
