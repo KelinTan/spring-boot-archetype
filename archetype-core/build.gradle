@@ -4,4 +4,8 @@ dependencies {
 
     implementation group: 'mysql', name: 'mysql-connector-java'
     api group: 'javax.servlet', name: 'javax.servlet-api'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-cache'
+    api group: 'com.github.ben-manes.caffeine', name: 'caffeine'
+
+    testCompile project(':archetype-systest')
 }

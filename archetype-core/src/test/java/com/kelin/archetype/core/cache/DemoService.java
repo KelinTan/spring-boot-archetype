@@ -1,6 +1,6 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.cache;
+package com.kelin.archetype.core.cache;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
