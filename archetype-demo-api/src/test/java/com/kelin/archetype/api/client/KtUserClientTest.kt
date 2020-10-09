@@ -24,11 +24,19 @@ class KtUserClientTest : KtBaseSpringTest() {
     lateinit var userClient: UserClient
 
     @Autowired
+    lateinit var userClient2: UserClient2
+
+    @Autowired
     lateinit var userMapper: UserMapper
 
     @Test(expected = RestException::class)
     fun testRpcError() {
         userClient.findAllError()
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testRpcCustomError() {
+        userClient2.findAllError()
     }
 
     @Test
