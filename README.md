@@ -26,6 +26,6 @@
 
 10. `Kotlin`用于单元测试，更简洁，可读性更好
 
-11. 集成`lettuce` & `Redisson`的Redis客户端，支持sync|async的redis操作及分布式锁
+11. 集成`lettuce` & `Redisson`的Redis客户端，支持 `sync|async`的redis操作及分布式锁
 
 
