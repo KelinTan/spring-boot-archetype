@@ -1,0 +1,9 @@
+description = 'archetype-redis'
+dependencies {
+    api 'io.lettuce:lettuce-core'
+    api 'org.springframework.boot:spring-boot-autoconfigure'
+    api 'org.redisson:redisson'
+
+    testCompile 'com.github.kstyrc:embedded-redis'
+    testCompile project(':archetype-systest')
+}

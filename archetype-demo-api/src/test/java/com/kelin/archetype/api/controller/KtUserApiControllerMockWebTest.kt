@@ -9,7 +9,7 @@ import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.junit.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 
@@ -27,7 +27,7 @@ class KtUserApiControllerMockWebTest : KtBaseSpringWebTest() {
 
     @Test
     fun `test find all users with mock`() {
-        Mockito.`when`(userMapper.findAll()).thenReturn(listOf(User().apply {
+        `when`(userMapper.findAll()).thenReturn(listOf(User().apply {
             userName = "mock"
             id = 2
         }))
