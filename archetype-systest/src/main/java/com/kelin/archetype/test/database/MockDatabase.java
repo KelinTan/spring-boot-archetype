@@ -2,9 +2,6 @@
 
 package com.kelin.archetype.test.database;
 
-import com.kelin.archetype.common.database.FakeDataSource;
-import com.kelin.archetype.common.database.MapperTable;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -26,12 +23,13 @@ public @interface MockDatabase {
     String name() default "";
 
     /**
-     * specific schema location if not use {@link FakeDataSource#getSchemaLocation()}
+     * specific schema location if not use
+     * {@link com.kelin.archetype.common.database.FakeDataSource#getSchemaLocation()}
      */
     String schema() default "";
 
     /**
-     * ø specific data location if not use {@link FakeDataSource#getDataLocation()}
+     * ø specific data location if not use {@link com.kelin.archetype.common.database.FakeDataSource#getDataLocation()}
      */
     String data() default "";
 
@@ -41,7 +39,8 @@ public @interface MockDatabase {
     String[] tables() default {};
 
     /**
-     * specific mappers to reset data,default migrate all tables in database, {@link MapperTable#table()}
+     * specific mappers to reset data,default migrate all tables in database, {@link
+     * com.kelin.archetype.common.database.MapperTable#table()}
      */
     Class<?>[] mappers() default {};
 }
