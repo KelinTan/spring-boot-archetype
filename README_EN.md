@@ -6,22 +6,24 @@ English | [简体中文](./README.md)
 
 # Spring Boot Archetype
 
-1.Gradle + Spring Boot + Mybatis + Junit4 + H2 Support Web Project
+1.`Gradle5` + `Spring Boot` + `Mybatis` + `Junit4` + `H2` Support java web project quick start
 
-2.Support multiple dataSource
+2.Support multiple dataSource: `MybatisDatabase` inject sqlSession & DataSource
 
-2.Support @RpcClient to post http request with interface
+2.Support `@RpcClient` to post http request with interface
 
-3.Support @MockDatabase to test db in H2
+3.Support `@MockDatabase` to test db in H2
 
-4.Support checkstyle to check code
+4.Support `Checkstyle` to check code
 
-5 Support jacoco && codecov
+5 Support `jacoco` && codecov
 
-6.Support jwt 
+6.Support `jwt` 
 
-9.Support BasicCrudMapper to CRUD with single table
+9.Support `BasicCrudMapper` to CRUD with single table
 
 10.Support RestResponse && RestErrorResponse
 
 11.Support efficient kotlin test
+
+12.Support `Lettuce` and `Redisson` redis operation and distributed lock
