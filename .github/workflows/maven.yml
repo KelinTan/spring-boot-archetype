@@ -19,10 +19,10 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew
     - uses: codecov/codecov-action@v1
-      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
+#      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
-        file: ./archetype-api/build/reports/jacoco/test/html/index.html #optional
-        yml: ./codecov.yml #optional
+        files: ./archetype-demo-api/build/reports/jacoco/test/html/index.html,./archetype-demo-database/build/reports/jacoco/test/html/index.html,
+#        yml: ./codecov.yml #optional
         flags: unittests #optional
         name: codecov-jacoco #optional
