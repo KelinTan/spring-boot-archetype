@@ -22,7 +22,7 @@ jobs:
 #      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
-        files: ./archetype-demo-api/build/reports/jacoco/test/html/index.html,./archetype-demo-database/build/reports/jacoco/test/html/index.html,
+        files: ./archetype-demo-api/build/reports/jacoco/test/jacocoTestReport.xml,./archetype-demo-database/build/reports/jacoco/test/jacocoTestReport.xml
 #        yml: ./codecov.yml #optional
         flags: unittests #optional
         name: codecov-jacoco #optional
