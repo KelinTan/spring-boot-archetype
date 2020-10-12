@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.test
 
-import com.kelin.archetype.common.consants.Profile.PROFILE_TEST
+import com.kelin.archetype.common.constants.Profile.PROFILE_TEST
 import com.kelin.archetype.test.database.DatabaseTestExecutionListener
 import org.junit.runner.RunWith
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener

@@ -1,6 +1,6 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.consants;
+package com.kelin.archetype.common.constants;
 
 import org.springframework.core.env.Environment;
 
