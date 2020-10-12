@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.core.mybatis;
 
-import com.kelin.archetype.common.consants.Profile;
+import com.kelin.archetype.common.constants.Profile;
 import com.kelin.archetype.common.database.DbFactory;
 import com.kelin.archetype.common.database.FakeDataSource;
 import com.zaxxer.hikari.HikariDataSource;

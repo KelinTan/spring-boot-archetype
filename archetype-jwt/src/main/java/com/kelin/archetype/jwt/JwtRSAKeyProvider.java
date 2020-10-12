@@ -3,7 +3,7 @@
 package com.kelin.archetype.jwt;
 
 import com.auth0.jwt.interfaces.RSAKeyProvider;
-import lombok.Data;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
@@ -13,10 +13,14 @@ import java.security.interfaces.RSAPublicKey;
 /**
  * @author Kelin Tan
  */
-@Data
 @EnableConfigurationProperties(JwtProperties.class)
 public class JwtRSAKeyProvider implements RSAKeyProvider {
+    @Getter
     private final JwtProperties jwtProperties;
+
+    public JwtRSAKeyProvider(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
     @SneakyThrows
     @Override

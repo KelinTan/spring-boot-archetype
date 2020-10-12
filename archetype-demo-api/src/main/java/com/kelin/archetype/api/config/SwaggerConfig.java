@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.api.config;
 
-import static com.kelin.archetype.common.consants.Profile.PROFILE_DEV;
-import static com.kelin.archetype.common.consants.Profile.PROFILE_STAGING;
+import static com.kelin.archetype.common.constants.Profile.PROFILE_DEV;
+import static com.kelin.archetype.common.constants.Profile.PROFILE_STAGING;
 
 import com.kelin.archetype.api.model.constant.ApiConstants;
 import org.springframework.context.annotation.Bean;
