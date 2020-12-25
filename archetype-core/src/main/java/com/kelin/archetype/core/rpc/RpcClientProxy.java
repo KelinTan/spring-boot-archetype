@@ -6,6 +6,7 @@ import com.kelin.archetype.common.http.HttpRequest;
 import com.kelin.archetype.common.http.HttpUtils;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.log.LogMessageBuilder;
+import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -104,7 +105,7 @@ public class RpcClientProxy implements InvocationHandler {
 
     private String getRequestPathOnMethod(HttpMethod httpMethod) {
         if (StringUtils.isEmpty(httpMethod.value()) && StringUtils.isEmpty(httpMethod.path())) {
-            throw new RuntimeException(LogMessageBuilder.builder()
+            throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                     .message("@HttpMethod need value or path")
                     .parameter("clazz", clazz.getName())
                     .parameter("method", httpMethod)
@@ -138,7 +139,7 @@ public class RpcClientProxy implements InvocationHandler {
             case PUT:
                 return request.put();
             default:
-                throw new RuntimeException(LogMessageBuilder.builder()
+                throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                         .message("UnSupported http method")
                         .parameter("uri", uri)
                         .parameter("method", method)
@@ -154,7 +155,7 @@ public class RpcClientProxy implements InvocationHandler {
     private HttpMethod getHttpMethod(Method method) {
         HttpMethod annotation = AnnotationUtils.findAnnotation(method, HttpMethod.class);
         if (annotation == null) {
-            throw new RuntimeException(LogMessageBuilder.builder()
+            throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                     .message("RpcClient method need @HttpMethod ")
                     .parameter("clazz", clazz.getName())
                     .parameter("method", method.getName())

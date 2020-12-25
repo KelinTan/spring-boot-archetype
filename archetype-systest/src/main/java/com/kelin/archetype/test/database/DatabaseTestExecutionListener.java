@@ -6,6 +6,7 @@ import com.kelin.archetype.common.database.DbFactory;
 import com.kelin.archetype.common.database.FakeDataSource;
 import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.log.LogMessageBuilder;
+import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -140,7 +141,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext,
                 DbFactory.computeDataSourceName(mockDatabase.name()));
         if (dataSource == null) {
-            throw new RuntimeException(LogMessageBuilder.builder()
+            throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                     .message("Invalid data source :")
                     .parameter("name", mockDatabase.name())
                     .build());

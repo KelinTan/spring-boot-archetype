@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.jwt;
 
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
@@ -78,11 +79,8 @@ public class RsaUtil {
         return Base64.getEncoder().encodeToString(src);
     }
 
+    @SneakyThrows
     private static KeyFactory getKeyFactoryInstance() {
-        try {
-            return KeyFactory.getInstance(RSA);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return KeyFactory.getInstance(RSA);
     }
 }

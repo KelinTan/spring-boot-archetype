@@ -5,6 +5,7 @@ package com.kelin.archetype.core.mybatis.crud;
 import com.google.common.base.CaseFormat;
 import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.log.LogMessageBuilder;
+import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
@@ -22,7 +23,7 @@ public abstract class SqlProviderSupport {
     protected String table(ProviderContext context) {
         MapperTable mapperTable = getMapperAnnotation(context);
         if (StringUtils.isBlank(mapperTable.value()) && StringUtils.isBlank(mapperTable.table())) {
-            throw new RuntimeException(LogMessageBuilder.builder()
+            throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                     .message("@MapperTable need value or table")
                     .parameter("class", context.getMapperType().getName())
                     .build());
@@ -81,7 +82,8 @@ public abstract class SqlProviderSupport {
         if (context.getMapperType().isAnnotationPresent(MapperTable.class)) {
             return context.getMapperType().getAnnotation(MapperTable.class);
         }
-        throw new RuntimeException(LogMessageBuilder.builder()
+
+        throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                 .message("@BasicCrudMapper need @MapperTable")
                 .parameter("class", context.getMapperType().getName())
                 .build());
