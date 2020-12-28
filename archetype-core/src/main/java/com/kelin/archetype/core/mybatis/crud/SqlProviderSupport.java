@@ -22,16 +22,13 @@ public abstract class SqlProviderSupport {
 
     protected String table(ProviderContext context) {
         MapperTable mapperTable = getMapperAnnotation(context);
-        if (StringUtils.isBlank(mapperTable.value()) && StringUtils.isBlank(mapperTable.table())) {
+        if (StringUtils.isBlank(mapperTable.value())) {
             throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                     .message("@MapperTable need value or table")
                     .parameter("class", context.getMapperType().getName())
                     .build());
         }
-        if (StringUtils.isNotBlank(mapperTable.value())) {
-            return mapperTable.value();
-        }
-        return mapperTable.table();
+        return mapperTable.value();
     }
 
     protected String columns(ProviderContext context) {
