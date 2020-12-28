@@ -8,7 +8,7 @@ import org.junit.Test
  */
 class DbUtilsTest : KtTestUtils {
     @Test
-    fun `test db factory`() {
+    fun `test db utils`() {
         DbUtils.computeDataSourceName("biz") eq "biz.dataSource"
         DbUtils.computeSqlSessionFactoryName("biz") eq "biz.sqlSessionFactory"
         DbUtils.computeSqlSessionTemplateName("biz") eq "biz.sqlSessionTemplate"
