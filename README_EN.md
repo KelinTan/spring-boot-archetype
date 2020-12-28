@@ -10,20 +10,22 @@ English | [简体中文](./README.md)
 
 2.Support multiple dataSource: `MybatisDatabase` inject sqlSession & DataSource
 
-2.Support `@RpcClient` to post http request with interface
+3.Support `@RpcClient` to post http request with interface
 
-3.Support `@MockDatabase` to test db in H2
+4.Support `@MockDatabase` to test db in H2
 
-4.Support `Checkstyle` to check code
+5.Support `Checkstyle` to check code
 
-5 Support `jacoco` && codecov
+6 Support `jacoco` && codecov
 
-6.Support `jwt` 
+7.Support `jwt` 
 
-9.Support `BasicCrudMapper` to CRUD with single table
+8.Support `BaseCrudMapper` to CRUD with single table
 
-10.Support RestResponse && RestErrorResponse
+9.Support RestResponse && RestErrorResponse
 
-11.Support efficient kotlin test
+10.Support efficient kotlin test
 
-12.Support `Lettuce` and `Redisson` redis operation and distributed lock
+11.Support `Lettuce` and `Redisson` redis operation and distributed lock
+
+12.Support `MapperTable` sharding table
