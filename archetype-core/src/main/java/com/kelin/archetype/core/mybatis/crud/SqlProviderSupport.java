@@ -7,12 +7,13 @@ import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Kelin Tan
@@ -51,17 +52,9 @@ public abstract class SqlProviderSupport {
         if (entity == null) {
             return Collections.emptyList();
         }
-        Field[] declaredFields = entity.getClass().getDeclaredFields();
-        List<Field> filterFields = new ArrayList<>(declaredFields.length);
-
+        List<Field> declaredFields = FieldUtils.getAllFieldsList(entity.getClass());
         //fix jacoco https://www.eclemma.org/jacoco/trunk/doc/faq.html
-        for (Field field : declaredFields) {
-            if (!field.isSynthetic()) {
-                filterFields.add(field);
-            }
-        }
-
-        return filterFields;
+        return declaredFields.stream().filter(field -> !field.isSynthetic()).collect(Collectors.toList());
     }
 
     protected Object value(Object entity, Field field) {

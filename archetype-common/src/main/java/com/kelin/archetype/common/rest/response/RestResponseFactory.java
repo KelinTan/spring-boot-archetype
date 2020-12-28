@@ -13,7 +13,7 @@ public class RestResponseFactory {
     private RestResponseFactory() {
     }
 
-    public static RestResponse emptyResponse() {
+    public static <T> RestResponse<T> emptyResponse() {
         return success(null);
     }
 

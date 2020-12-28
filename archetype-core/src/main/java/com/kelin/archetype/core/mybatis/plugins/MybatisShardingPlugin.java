@@ -7,6 +7,7 @@ import com.kelin.archetype.common.log.LogMessageBuilder;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -19,6 +20,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
@@ -67,9 +69,20 @@ public class MybatisShardingPlugin implements Interceptor {
     public void setProperties(Properties properties) {
     }
 
+    @SneakyThrows
     private int getShardingValue(BoundSql boundSql, String shardingKey, String mapperStatementId) {
-        Map<?, ?> map = (Map<?, ?>) boundSql.getParameterObject();
-        Object shardingValue = map.get(shardingKey);
+        Object parameterObject = boundSql.getParameterObject();
+        Object shardingValue;
+        if (parameterObject instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) parameterObject;
+            shardingValue = map.get(shardingKey);
+        } else if (ClassUtils.isPrimitiveOrWrapper(parameterObject.getClass())) {
+            shardingValue = parameterObject;
+        } else {
+            Field field = FieldUtils.getField(parameterObject.getClass(), shardingKey, true);
+            shardingValue = field.get(parameterObject);
+        }
+
         if (shardingValue == null) {
             throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder().message(
                     "Invalid statement").parameter("statement", mapperStatementId).build());

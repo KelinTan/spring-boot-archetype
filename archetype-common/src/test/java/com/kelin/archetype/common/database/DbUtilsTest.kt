@@ -1,3 +1,5 @@
+// Copyright 2020 Kelin Inc. All rights reserved.
+
 package com.kelin.archetype.common.database
 
 import com.kelin.archetype.test.KtTestUtils
