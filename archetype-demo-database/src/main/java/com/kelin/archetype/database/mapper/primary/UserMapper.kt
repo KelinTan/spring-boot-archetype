@@ -1,4 +1,5 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
+
 package com.kelin.archetype.database.mapper.primary
 
 import com.kelin.archetype.common.database.MapperTable
