@@ -39,8 +39,7 @@ public @interface MockDatabase {
     String[] tables() default {};
 
     /**
-     * specific mappers to reset data,default migrate all tables in database, {@link
-     * com.kelin.archetype.common.database.MapperTable#table()}
+     * specific mappers to reset data,default migrate all tables in database, {@link MapperTable#value()} ()}
      */
     Class<?>[] mappers() default {};
 }

@@ -2,8 +2,6 @@
 
 package com.kelin.archetype.common.database;
 
-import org.springframework.core.annotation.AliasFor;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,19 +14,27 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface MapperTable {
     /**
-     * Alias for table
-     */
-    @AliasFor("table")
-    String value() default "";
-
-    /**
      * Database table name
      */
-    @AliasFor("value")
-    String table() default "";
+    String value() default "";
 
     /**
      * Database table select columns,default * but not recommended
      */
     String columns() default "*";
+
+    /**
+     * Table sharding
+     */
+    boolean sharding() default false;
+
+    /**
+     * Table sharding key default id
+     */
+    String shardingKey() default "id";
+
+    /**
+     * Sharding Table count only when sharding = true,strategy: shardingKey % count
+     */
+    int count() default 0;
 }

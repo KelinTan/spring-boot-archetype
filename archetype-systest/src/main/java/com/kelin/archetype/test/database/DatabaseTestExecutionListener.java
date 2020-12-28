@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.test.database;
 
-import com.kelin.archetype.common.database.DbFactory;
+import com.kelin.archetype.common.database.DbUtils;
 import com.kelin.archetype.common.database.FakeDataSource;
 import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.log.LogMessageBuilder;
@@ -25,12 +25,11 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Kelin Tan
@@ -48,7 +47,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         }
 
         sqlAnnotations.forEach(mockDatabase -> {
-            if (DATA_SOURCE_SCHEMA_INITIALIZED.getOrDefault(DbFactory.computeDataSourceName(mockDatabase.name()),
+            if (DATA_SOURCE_SCHEMA_INITIALIZED.getOrDefault(DbUtils.computeDataSourceName(mockDatabase.name()),
                     false)) {
                 return;
             }
@@ -82,8 +81,8 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
                 } else {
                     log.debug("clear all table for dataSource: " + mockDatabase.name());
                     JdbcTestUtils.deleteFromTables(jdbcTemplate, Arrays.stream(resources)
-                            .map(resource -> FilenameUtils.removeExtension(resource.getFilename())).collect(
-                                    Collectors.joining(",")));
+                            .map(resource -> FilenameUtils.removeExtension(resource.getFilename()))
+                            .toArray(String[]::new));
                 }
             } catch (IOException e) {
                 log.error("load resource error:", e);
@@ -108,16 +107,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
     }
 
     private String[] mergeTables(MockDatabase mockDatabase) {
-        String[] annotationTables = mockDatabase.tables();
-        String[] mapperTables = Stream.of(mockDatabase.mappers())
-                .filter(clazz -> clazz.isAnnotationPresent(MapperTable.class))
-                .map(clazz -> clazz.getAnnotation(MapperTable.class).value())
-                .toArray(String[]::new);
-
-        List<String> mergeTables = new ArrayList<>();
-        mergeTables.addAll(Arrays.asList(annotationTables));
-        mergeTables.addAll(Arrays.asList(mapperTables));
-
+        List<String> mergeTables = getMockDatabaseTables(mockDatabase);
         return mergeTables.stream().distinct().toArray(String[]::new);
     }
 
@@ -139,7 +129,7 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
 
     private DataSource checkDataSource(TestContext testContext, MockDatabase mockDatabase) {
         DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext,
-                DbFactory.computeDataSourceName(mockDatabase.name()));
+                DbUtils.computeDataSourceName(mockDatabase.name()));
         if (dataSource == null) {
             throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
                     .message("Invalid data source :")
@@ -173,5 +163,35 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
     private boolean checkResourceLoad(Resource resource, String[] table) {
         return table.length == 0 || Arrays.stream(table).anyMatch(
                 s -> s.equals(FilenameUtils.removeExtension(resource.getFilename())));
+    }
+
+    private List<String> getMockDatabaseTables(MockDatabase mockDatabase) {
+        String[] annotationTables = mockDatabase.tables();
+
+        List<String> mapperTables = new ArrayList<>();
+        Arrays.stream(mockDatabase.mappers()).forEach(mapperClazz -> {
+            if (mapperClazz.isAnnotationPresent(MapperTable.class)) {
+                MapperTable mapperTable = mapperClazz.getAnnotation(MapperTable.class);
+                mapperTables.addAll(getMapperTables(mapperTable));
+            }
+        });
+
+        List<String> mergeTables = new ArrayList<>();
+        mergeTables.addAll(Arrays.asList(annotationTables));
+        mergeTables.addAll(mapperTables);
+
+        return mergeTables;
+    }
+
+    private List<String> getMapperTables(MapperTable mapperTable) {
+        if (mapperTable.sharding()) {
+            List<String> tables = new ArrayList<>();
+            for (int i = 0; i < mapperTable.count(); i++) {
+                tables.add(mapperTable.value() + "_" + i);
+            }
+            return tables;
+        } else {
+            return Collections.singletonList(mapperTable.value());
+        }
     }
 }

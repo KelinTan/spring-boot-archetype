@@ -3,12 +3,14 @@
 package com.kelin.archetype.core.mybatis;
 
 import com.kelin.archetype.common.constants.Profile;
-import com.kelin.archetype.common.database.DbFactory;
+import com.kelin.archetype.common.database.DbUtils;
 import com.kelin.archetype.common.database.FakeDataSource;
+import com.kelin.archetype.core.mybatis.plugins.MybatisShardingPlugin;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -63,7 +65,7 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
         //scan mybatis mappers
         ClassPathMapperScanner mapperScanner = new ClassPathMapperScanner(registry);
-        mapperScanner.setSqlSessionFactoryBeanName(DbFactory.computeSqlSessionFactoryName(database.name()));
+        mapperScanner.setSqlSessionFactoryBeanName(DbUtils.computeSqlSessionFactoryName(database.name()));
         mapperScanner.registerFilters();
         mapperScanner.doScan(database.mapperPackages());
 
@@ -71,19 +73,19 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
         //register datasource
         DataSource dataSource = createDataSource(database);
-        defaultBeanFactory.registerSingleton(DbFactory.computeDataSourceName(database.name()), dataSource);
+        defaultBeanFactory.registerSingleton(DbUtils.computeDataSourceName(database.name()), dataSource);
 
         //register sqlSession
         SqlSessionFactory sqlSessionFactory = createSqlSessionFactory(dataSource, database);
-        defaultBeanFactory.registerSingleton(DbFactory.computeSqlSessionFactoryName(database.name()),
+        defaultBeanFactory.registerSingleton(DbUtils.computeSqlSessionFactoryName(database.name()),
                 sqlSessionFactory);
 
         //register sql session template
-        defaultBeanFactory.registerSingleton(DbFactory.computeSqlSessionTemplateName(database.name()),
+        defaultBeanFactory.registerSingleton(DbUtils.computeSqlSessionTemplateName(database.name()),
                 new SqlSessionTemplate(sqlSessionFactory));
 
         //register transactional manager
-        defaultBeanFactory.registerSingleton(DbFactory.computeTransactionManagerName(database.name()),
+        defaultBeanFactory.registerSingleton(DbUtils.computeTransactionManagerName(database.name()),
                 new DataSourceTransactionManager(dataSource));
     }
 
@@ -117,6 +119,8 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
         sqlSessionFactoryBean.setTypeAliasesPackage(database.typeAliasesPackage());
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
+        Interceptor[] interceptors = {new MybatisShardingPlugin()};
+        sqlSessionFactoryBean.setPlugins(interceptors);
         Configuration configuration = new Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.setDefaultFetchSize(100);
