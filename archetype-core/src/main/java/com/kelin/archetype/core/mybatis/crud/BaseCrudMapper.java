@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Provide BasicCrudMapper to support basic crud for single table
+ * Provide BaseCrudMapper to support basic crud for single table
  * <p>
  * the tables need has auto_increment id for primary key and entity's fields need LOWER_CAMEL
  * <p>
@@ -23,37 +23,37 @@ import java.util.List;
  *
  * @author Kelin Tan
  */
-public interface BasicCrudMapper<T extends BasicEntity> {
-    @SelectProvider(type = BasicCrudSqlProvider.class, method = "findOne")
+public interface BaseCrudMapper<T extends BaseEntity> {
+    @SelectProvider(type = BaseCrudSqlProvider.class, method = "findOne")
     T findOne(Long id);
 
-    @InsertProvider(type = BasicCrudSqlProvider.class, method = "insertSelective")
+    @InsertProvider(type = BaseCrudSqlProvider.class, method = "insertSelective")
     @Options(useGeneratedKeys = true, keyProperty = SqlProviderSupport.DEFAULT_ID)
     void insertSelective(T entity);
 
-    @InsertProvider(type = BasicCrudSqlProvider.class, method = "insert")
+    @InsertProvider(type = BaseCrudSqlProvider.class, method = "insert")
     @Options(useGeneratedKeys = true, keyProperty = SqlProviderSupport.DEFAULT_ID)
     void insert(T entity);
 
-    @UpdateProvider(type = BasicCrudSqlProvider.class, method = "updateSelective")
+    @UpdateProvider(type = BaseCrudSqlProvider.class, method = "updateSelective")
     void updateSelective(T entity);
 
-    @UpdateProvider(type = BasicCrudSqlProvider.class, method = "update")
+    @UpdateProvider(type = BaseCrudSqlProvider.class, method = "update")
     void update(T entity);
 
-    @DeleteProvider(type = BasicCrudSqlProvider.class, method = "delete")
+    @DeleteProvider(type = BaseCrudSqlProvider.class, method = "delete")
     void delete(Long id);
 
-    @SelectProvider(type = BasicCrudSqlProvider.class, method = "findAll")
+    @SelectProvider(type = BaseCrudSqlProvider.class, method = "findAll")
     List<T> findAll();
 
-    @SelectProvider(type = BasicCrudSqlProvider.class, method = "findByEntity")
+    @SelectProvider(type = BaseCrudSqlProvider.class, method = "findByEntity")
     List<T> findByEntity(T entity);
 
-    @SelectProvider(type = BasicCrudSqlProvider.class, method = "findByEntityWithPage")
+    @SelectProvider(type = BaseCrudSqlProvider.class, method = "findByEntityWithPage")
     List<T> findByEntityWithPage(T entity, Pageable page);
 
-    @SelectProvider(type = BasicCrudSqlProvider.class, method = "countByEntity")
+    @SelectProvider(type = BaseCrudSqlProvider.class, method = "countByEntity")
     int countByEntity(T entity);
 
     default Page<T> findPage(T entity, Pageable page) {

@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.database.entity.primary;
 
-import com.kelin.archetype.core.mybatis.crud.BasicEntity;
+import com.kelin.archetype.core.mybatis.crud.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BasicEntity {
+public class User extends BaseEntity {
     @NotBlank
     private String userName;
 }

@@ -8,6 +8,6 @@ import lombok.Data;
  * @author Kelin Tan
  */
 @Data
-public class BasicEntity {
+public class BaseEntity {
     private Long id;
 }
