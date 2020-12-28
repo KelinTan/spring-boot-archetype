@@ -45,9 +45,9 @@ public class MybatisShardingPlugin implements Interceptor {
             MapperTable mapperTable = clazz.getAnnotation(MapperTable.class);
             if (mapperTable.sharding()) {
                 BoundSql boundSql = (BoundSql) metaStatementHandler.getValue(DELEGATE_BOUND_SQL);
-                int id = getShardingKeyValue(boundSql, mapperTable.shardingKey(), mappedStatement.getId());
+                int shardingValue = getShardingValue(boundSql, mapperTable.shardingKey(), mappedStatement.getId());
                 metaStatementHandler.setValue(DELEGATE_BOUND_SQL_SQL,
-                        getShardingSql(boundSql.getSql(), mapperTable.value(), id, mapperTable.count()));
+                        getShardingSql(boundSql.getSql(), mapperTable.value(), shardingValue, mapperTable.count()));
             }
         }
 
@@ -67,7 +67,7 @@ public class MybatisShardingPlugin implements Interceptor {
     public void setProperties(Properties properties) {
     }
 
-    private int getShardingKeyValue(BoundSql boundSql, String shardingKey, String mapperStatementId) {
+    private int getShardingValue(BoundSql boundSql, String shardingKey, String mapperStatementId) {
         Map<?, ?> map = (Map<?, ?>) boundSql.getParameterObject();
         Object shardingValue = map.get(shardingKey);
         if (shardingValue == null) {
@@ -90,8 +90,8 @@ public class MybatisShardingPlugin implements Interceptor {
         return ClassUtils.getClass(mapperStatementId.substring(0, mapperStatementId.lastIndexOf(".")));
     }
 
-    private String getShardingSql(String sql, String table, int id, int count) {
-        return sql.replace(table, table + "_" + getShardingIdx(id, count));
+    private String getShardingSql(String sql, String table, int shardingValue, int tableCount) {
+        return sql.replace(table, table + "_" + getShardingIdx(shardingValue, tableCount));
     }
 
     private int getShardingIdx(int tableId, int tableCount) {
