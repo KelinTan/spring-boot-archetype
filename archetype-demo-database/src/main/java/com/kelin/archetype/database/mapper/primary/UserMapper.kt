@@ -3,7 +3,7 @@
 package com.kelin.archetype.database.mapper.primary
 
 import com.kelin.archetype.common.database.MapperTable
-import com.kelin.archetype.core.mybatis.crud.BasicCrudMapper
+import com.kelin.archetype.core.mybatis.crud.BaseCrudMapper
 import com.kelin.archetype.database.entity.primary.User
 import org.apache.ibatis.annotations.Select
 
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select
  * @author Kelin Tan
  */
 @MapperTable(value = UserMapper.TABLE, columns = UserMapper.COLUMNS)
-interface UserMapper : BasicCrudMapper<User> {
+interface UserMapper : BaseCrudMapper<User> {
     @Select("SELECT $COLUMNS FROM $TABLE WHERE user_name = #{name}")
     fun findByName(name: String): List<User>
 

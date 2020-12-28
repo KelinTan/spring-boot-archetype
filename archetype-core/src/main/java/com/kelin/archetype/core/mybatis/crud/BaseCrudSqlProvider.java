@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @author Kelin Tan
  */
 @SuppressWarnings("unused")
-public class BasicCrudSqlProvider extends SqlProviderSupport {
+public class BaseCrudSqlProvider extends SqlProviderSupport {
     public String findOne(Long id, ProviderContext context) {
         return new SQL()
                 .SELECT(columns(context))

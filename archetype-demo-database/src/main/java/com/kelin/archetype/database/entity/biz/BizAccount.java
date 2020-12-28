@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.database.entity.biz;
 
-import com.kelin.archetype.core.mybatis.crud.BasicEntity;
+import com.kelin.archetype.core.mybatis.crud.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BizAccount extends BasicEntity {
+public class BizAccount extends BaseEntity {
     private String account;
     private String password;
     private String token;

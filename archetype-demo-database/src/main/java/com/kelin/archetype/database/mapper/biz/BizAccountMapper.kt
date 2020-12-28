@@ -3,7 +3,7 @@
 package com.kelin.archetype.database.mapper.biz
 
 import com.kelin.archetype.common.database.MapperTable
-import com.kelin.archetype.core.mybatis.crud.BasicCrudMapper
+import com.kelin.archetype.core.mybatis.crud.BaseCrudMapper
 import com.kelin.archetype.database.entity.biz.BizAccount
 import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Update
  * @author Kelin Tan
  */
 @MapperTable(value = BizAccountMapper.TABLE, columns = BizAccountMapper.COLUMNS)
-interface BizAccountMapper : BasicCrudMapper<BizAccount> {
+interface BizAccountMapper : BaseCrudMapper<BizAccount> {
     @Select("SELECT $COLUMNS FROM $TABLE WHERE account = #{account}")
     fun findByAccount(account: String): BizAccount?
 
