@@ -39,7 +39,7 @@ public class RpcClientProxy implements InvocationHandler {
     private final Map<Method, String> requestUrlOnMethods = new HashMap<>();
     private final Map<Method, Annotation[][]> methodParameterAnnotations = new HashMap<>();
     private final Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
-    private final Map<Method, RequestConfig> requestConfigOnMethods = new HashMap<>();
+    private final Map<Method, HttpConfig> requestHttpConfigOnMethods = new HashMap<>();
     private final Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
 
     RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
@@ -50,25 +50,39 @@ public class RpcClientProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        HttpRequest request = getHttpRequest(method, args);
-
-        CloseableHttpResponse response = request.execute().response();
-        int status = response.getStatusLine().getStatusCode();
-        HttpEntity entity = response.getEntity();
-        if (HttpUtils.isHttpOk(status)) {
-            if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
-                return JsonConverter.deserialize(HttpUtils.safeEntityToString(entity), method.getGenericReturnType());
-            } else {
-                EntityUtils.consumeQuietly(entity);
+        HttpConfig httpConfig = requestHttpConfigOnMethods.get(method);
+        HttpRequest request = getHttpRequest(method, httpConfig, args);
+        for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
+            CloseableHttpResponse response = request.execute().response();
+            int status = response.getStatusLine().getStatusCode();
+            HttpEntity entity = response.getEntity();
+            if (HttpUtils.isHttpOk(status)) {
+                if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
+                    return JsonConverter.deserialize(HttpUtils.safeEntityToString(entity),
+                            method.getGenericReturnType());
+                } else {
+                    EntityUtils.consumeQuietly(entity);
+                }
+                break;
+            } else if (HttpUtils.isHttpBadRequest(status)) {
+                //4xx error we do not retry
+                rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
+                break;
             }
-        } else {
-            rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
+            log.warn(LogMessageBuilder.builder()
+                    .message("Rpc failed: " + method.getName())
+                    .parameter("retryTimes", i)
+                    .parameter("errorResponse", HttpUtils.safeEntityToString(entity))
+                    .build());
+            if (i == httpConfig.getRetryTimes() - 1) {
+                rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
+            }
         }
 
         return null;
     }
 
-    private HttpRequest getHttpRequest(Method method, Object[] args) {
+    private HttpRequest getHttpRequest(Method method, HttpConfig config, Object[] args) {
         if (methodHttpRequestMap.containsKey(method)) {
             return methodHttpRequestMap.get(method);
         }
@@ -79,7 +93,7 @@ public class RpcClientProxy implements InvocationHandler {
         Object requestBody = buildRequestBody(method, args);
 
         String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
-        HttpRequest request = createRequest(url, requestMethod, requestConfigOnMethods.get(method), parameterMap,
+        HttpRequest request = createRequest(url, requestMethod, config, parameterMap,
                 headerMap, requestBody);
         methodHttpRequestMap.putIfAbsent(method, request);
         return request;
@@ -96,9 +110,10 @@ public class RpcClientProxy implements InvocationHandler {
 
             this.methodParameterAnnotations.put(method, method.getParameterAnnotations());
             this.requestMethodOnMethods.put(method, httpMethod.method());
-            this.requestConfigOnMethods.put(method, RequestConfig.custom()
-                    .setConnectTimeout(httpMethod.connectionTimeout())
-                    .setSocketTimeout(httpMethod.readTimeout())
+            this.requestHttpConfigOnMethods.put(method, HttpConfig.builder()
+                    .connectionTimeout(httpMethod.connectionTimeout())
+                    .readTimeout(httpMethod.readTimeout())
+                    .retryTimes(httpMethod.retryTimes())
                     .build());
         });
     }
@@ -117,13 +132,16 @@ public class RpcClientProxy implements InvocationHandler {
         return httpMethod.path();
     }
 
-    private HttpRequest createRequest(String uri, RequestMethod method, RequestConfig config,
+    private HttpRequest createRequest(String uri, RequestMethod method, HttpConfig config,
             Map<String, Object> paramsMap,
             Map<String, Object> headerMap,
             Object requestBody) {
         HttpRequest request = HttpRequest
                 .host(uri)
-                .withConfig(config)
+                .withConfig(RequestConfig.custom()
+                        .setConnectTimeout(config.getConnectionTimeout())
+                        .setSocketTimeout(config.getReadTimeout())
+                        .build())
                 .withParams(paramsMap)
                 .withHeaders(headerMap);
         if (requestBody != null) {
