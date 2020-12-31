@@ -42,4 +42,9 @@ public @interface HttpMethod {
      * Http request read timeout milliseconds default 5000
      */
     int readTimeout() default 5000;
+
+    /**
+     * Http Request retry times
+     */
+    int retryTimes() default 1;
 }
