@@ -21,8 +21,26 @@ public class CollectionHelper {
         return batchCall(list, DEFAULT_BATCH_SIZE, caller);
     }
 
-    public static <T> void batchConsume(List<T> list, Consumer<List<T>> consumer) {
-        batchConsume(list, DEFAULT_BATCH_SIZE, consumer);
+    public static <T, R> List<R> batchCall(List<T> list, int batchSize, Function<List<T>, R> caller) {
+        if (CollectionUtils.isEmpty(list) || batchSize <= 0) {
+            return Collections.emptyList();
+        }
+
+        List<R> result = new ArrayList<>();
+        if (list.size() <= batchSize) {
+            result.add(caller.apply(list));
+            return result;
+        }
+
+        int fromIndex = 0;
+        while (fromIndex < list.size()) {
+            //copy new list,do not operate sub list
+            int endIndex = fromIndex + batchSize;
+            List<T> subList = Lists.newArrayList(list.subList(fromIndex, Math.min(endIndex, list.size())));
+            result.add(caller.apply(subList));
+            fromIndex = fromIndex + batchSize;
+        }
+        return result;
     }
 
     public static <T> void batchConsume(List<T> list, int batchSize, Consumer<List<T>> consumer) {
@@ -44,27 +62,7 @@ public class CollectionHelper {
         }
     }
 
-    public static <T, R> List<R> batchCall(List<T> list, int batchSize, Function<List<T>, R> caller) {
-        if (CollectionUtils.isEmpty(list) || batchSize <= 0) {
-            return Collections.emptyList();
-        }
-
-        List<R> result = new ArrayList<>();
-        if (list.size() <= batchSize) {
-            result.add(caller.apply(list));
-            return result;
-        }
-
-        int fromIndex = 0;
-
-        while (fromIndex < list.size()) {
-            //copy new list,do not operate sub list
-            int endIndex = fromIndex + batchSize;
-            List<T> subList = Lists.newArrayList(list.subList(fromIndex, Math.min(endIndex, list.size())));
-            result.add(caller.apply(subList));
-            fromIndex = fromIndex + batchSize;
-        }
-        return result;
+    public static <T> void batchConsume(List<T> list, Consumer<List<T>> consumer) {
+        batchConsume(list, DEFAULT_BATCH_SIZE, consumer);
     }
-
 }
