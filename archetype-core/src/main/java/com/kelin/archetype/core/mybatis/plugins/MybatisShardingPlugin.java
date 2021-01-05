@@ -3,6 +3,7 @@
 package com.kelin.archetype.core.mybatis.plugins;
 
 import com.kelin.archetype.common.database.MapperTable;
+import com.kelin.archetype.common.database.sharding.ShardingStrategy;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.SneakyThrows;
@@ -47,9 +48,9 @@ public class MybatisShardingPlugin implements Interceptor {
             MapperTable mapperTable = clazz.getAnnotation(MapperTable.class);
             if (mapperTable.sharding()) {
                 BoundSql boundSql = (BoundSql) metaStatementHandler.getValue(DELEGATE_BOUND_SQL);
-                int shardingValue = getShardingValue(boundSql, mapperTable.shardingKey(), mappedStatement.getId());
+                String shardingValue = getShardingValue(boundSql, mapperTable.shardingKey(), mappedStatement.getId());
                 metaStatementHandler.setValue(DELEGATE_BOUND_SQL_SQL,
-                        getShardingSql(boundSql.getSql(), mapperTable.value(), shardingValue, mapperTable.count()));
+                        getShardingSql(boundSql.getSql(), mapperTable, shardingValue));
             }
         }
 
@@ -70,13 +71,13 @@ public class MybatisShardingPlugin implements Interceptor {
     }
 
     @SneakyThrows
-    private int getShardingValue(BoundSql boundSql, String shardingKey, String mapperStatementId) {
+    private String getShardingValue(BoundSql boundSql, String shardingKey, String mapperStatementId) {
         Object parameterObject = boundSql.getParameterObject();
         Object shardingValue;
         if (parameterObject instanceof Map) {
             Map<?, ?> map = (Map<?, ?>) parameterObject;
             shardingValue = map.get(shardingKey);
-        } else if (ClassUtils.isPrimitiveOrWrapper(parameterObject.getClass())) {
+        } else if (ClassUtils.isPrimitiveOrWrapper(parameterObject.getClass()) || parameterObject instanceof String) {
             shardingValue = parameterObject;
         } else {
             Field field = FieldUtils.getField(parameterObject.getClass(), shardingKey, true);
@@ -88,14 +89,7 @@ public class MybatisShardingPlugin implements Interceptor {
                     "Invalid statement").parameter("statement", mapperStatementId).build());
         }
 
-        if (shardingValue instanceof Integer) {
-            return (Integer) shardingValue;
-        } else if (shardingValue instanceof Long) {
-            return Math.toIntExact((Long) shardingValue);
-        }
-
-        throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder().message(
-                "Invalid statement").parameter("statement", mapperStatementId).build());
+        return String.valueOf(shardingValue);
     }
 
     @SneakyThrows
@@ -103,11 +97,10 @@ public class MybatisShardingPlugin implements Interceptor {
         return ClassUtils.getClass(mapperStatementId.substring(0, mapperStatementId.lastIndexOf(".")));
     }
 
-    private String getShardingSql(String sql, String table, int shardingValue, int tableCount) {
-        return sql.replace(table, table + "_" + getShardingIdx(shardingValue, tableCount));
-    }
-
-    private int getShardingIdx(int tableId, int tableCount) {
-        return tableId % tableCount;
+    @SneakyThrows
+    private String getShardingSql(String sql, MapperTable mapperTable, String shardingValue) {
+        ShardingStrategy shardingStrategy = mapperTable.shardingStrategy().newInstance();
+        return sql.replace(mapperTable.value(),
+                shardingStrategy.getShardingTable(mapperTable.value(), shardingValue, mapperTable.count()));
     }
 }
