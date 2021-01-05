@@ -2,6 +2,9 @@
 
 package com.kelin.archetype.common.database;
 
+import com.kelin.archetype.common.database.sharding.DefaultShardingStrategy;
+import com.kelin.archetype.common.database.sharding.ShardingStrategy;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,7 +37,12 @@ public @interface MapperTable {
     String shardingKey() default "id";
 
     /**
-     * Sharding Table count only when sharding = true,strategy: shardingKey % count
+     * Sharding Table count only when sharding = true
      */
     int count() default 0;
+
+    /**
+     * Sharding strategy
+     */
+    Class<? extends ShardingStrategy> shardingStrategy() default DefaultShardingStrategy.class;
 }
