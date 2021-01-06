@@ -6,28 +6,208 @@
 
 # Spring Boot 脚手架
 
-1. `Gradle5` + `Spring Boot 2.0.9.RELEASE` + `Mybatis 3.5` + `Kotlin 1.4` 搭建的Web服务脚手架
+[TOC]
 
-2. `@MybatisDatabase` 注入Mybatis SqlSession & DataSource支持多数据源
+## 简介
+spring-boot-archetype基于`Spring Boot`,`Mybatis`,`Kotlin`搭建，在此基础上优化改进，提供数据库、Rpc接口、Redis、缓存、单元测试等的自动注入，集成`CheckStyle`代码静态检查、单元测试、集成测试,简化开发
 
-3. `@RpcClient`代理HttpClient, 通过接口调用外部Http请求
+## 数据库
 
-4. `@MockDatabase`用于单元测试 & 集成测试，采用内存数据库H2进行数据库测试
+### 配置
 
-5. 集成`Checkstyle`用于代码静态检查
+基于注解 `MybatisDatabase` 配置相关数据库连接信息,`MybatisDatabaseRegistrar` 自动注册`DataSource`、`SqlSession`  、`TransactionalManager`、`SqlSessionTemplate`  等相关类
+例如：
+```java
+/**
+ * @author Kelin Tan
+ */
+@Configuration
+@MybatisDatabase(name = NAME,
+        databaseUrl = "${spring.datasource.biz.jdbc-url}",
+        databaseUserName = "${spring.datasource.biz.username}",
+        databasePassword = "${spring.datasource.biz.password}",
+        mapperPackages = "com.kelin.archetype.database.mapper.biz",
+        mapperXmlLocation = "classpath:mappers/biz/*.xml",
+        typeAliasesPackage = "com.kelin.archetype.database.entity.biz",
+        schemaLocation = "classpath:schema/biz/*.sql",
+        dataLocation = "classpath:data/biz/*.sql"
+)
+public class BizDatabase {
+    public static final String NAME = "Biz";
+}
+```
 
-6. 集成`Jacoco`的单元测试覆盖率
+属性配置如下：
 
-7. `JWT`支持
+| 配置 | 说明  |
+| --- | --- |
+| name | 数据源名称，多个数据源名称不能重复 |
+| databaseUrl | 数据库连接地址，支持Spring EL表达式  |
+| databaseUserName | 数据库连接账号，支持Spring El表达式  |
+| databasePassword | 数据库连接密码，支持Spring El表达式  |
+| mapperPackages | Mybatis需要扫描的mapper包路径  |
+| mapperXmlLocation | Mybatis需要扫描的xml路径  |
+| typeAliasesPackage | Mybatis需要扫描的别名路径  |
+| schemaLocation | 单元测试初始化的数据库schema SQL  |
+| dataLocation | 单元测试初始化的数据库data SQL  |
 
-8. Mybatis `BaseCrudMapper` 用于单表的CRUD
+### MapperTable
 
-9. 统一异常处理，统一Rest请求返回格式
+提供 `MapperTable` 注解替换Mybatis自带的`Mapper`注解
 
-10. `Kotlin`用于单元测试，更简洁，可读性更好
+```java
+/**
+ * @author Kelin Tan
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface MapperTable {
+    /**
+     * Database table name
+     */
+    String value() default "";
 
-11. 集成`lettuce` & `Redisson`的Redis客户端，支持 `sync|async`的redis操作及分布式锁
+    /**
+     * Database table select columns,default * but not recommended
+     */
+    String columns() default "*";
 
-12. 支持基于 `MapperTable` 的分表
+    /**
+     * Table sharding
+     */
+    boolean sharding() default false;
+
+    /**
+     * Table sharding key default id
+     */
+    String shardingKey() default "id";
+
+    /**
+     * Sharding Table count only when sharding = true
+     */
+    int count() default 0;
+
+    /**
+     * Sharding strategy
+     */
+    Class<? extends ShardingStrategy> shardingStrategy() default DefaultShardingStrategy.class;
+}
+```
+主要提供以下功能
+
+* 定义表名和相关列
+* 根据定义的表和相关列提供 `BaseCrudMapper`的单表增删改查，基于Mybatis相关Provider实现，无需写简单的单表增删改查SQL
+* 根据定义的表,提供单元测试中初始化和清理相关表数据的功能
+* 支持分表,目前提供基于特定KEY取模和按年划分的分表策略，更多策略支持自定义扩展，实现 `ShardingStrategy` 即可
 
 
+## RPC
+基于注解 `RpcClient`,`RpcScan`,`HttpMethod` 实现通过接口访问远程服务,代码更简洁，支持统一的错误处理和HTTP配置
+
+### 注入
+
+`RpcClientScan` 指定package扫描,通过 `RpcClientRegistrar`注册相关`RpcClient`接口的代理到Spring容器
+例如：
+```java
+@SpringBootApplication
+@RpcClientScan(RPC_CLIENT_SCAN_PACKAGE)
+public class SpringBootArchetypeApplication {
+    public static void main(String[] args) {
+        //to make GlobalException to handle NoHandlerFoundException
+        System.setProperty("spring.mvc.throwExceptionIfNoHandlerFound", "true");
+        System.setProperty("spring.mvc.staticPathPattern", "/swagger-ui.html");
+        SpringApplication.run(SpringBootArchetypeApplication.class, args);
+    }
+}
+```
+
+### HTTP远程访问
+
+`RpcClient` 标记相关类为Rpc的客户端
+
+属性配置如下
+
+| 配置 | 说明  |
+| --- | --- |
+| endpoint | 远程服务器地址，支持Spring EL表达式 |
+| errorHandler | 错误处理，支持自定义实现处理4xx和5xx的请求  |
+
+`HttpMethod`作用接口的方法，标记为一个远程请求,支持Spring MVC的相关Request注解，如：`PathVariable`,`RequestParam`,`RequestHeader`,`RequestBody`
+
+属性配置如下:
+
+| 配置 | 说明  |
+| --- | --- |
+| value | 远程服务器路径，和endpoint组合为完整的请求地址 |
+| path | value的别名  |
+| method | HTTP请求方法  |
+| connectionTimeout | 连接超时，单位ms  |
+| readTimeout | 读取超时，单位ms  |
+| retryTimes | 重试次数，默认不重试  |
+
+## 单测
+
+### MockDatabase
+
+`MockDatabase`注解用于相关单元测试类，基于`DatabaseTestExecutionListener` 可以初始化和清理相关数据源的数据，保证单元测试的独立和可重复执行，可指定特定的mapper或table来初始化提升单测速度，默认会对数据源整个数据库做初始化和清理,
+
+### BaseSpringTest
+
+继承`BaseSpringTest`提供基础的Spring容器测试能力,支持数据库的重置
+
+### BaseSpringWebTest
+
+继承`BaseSpringWebTest`提供基础的Spring Web容器测试能力,支持数据库的重置,可利用RPC的基础`HttpRequest`来实现对API的集成测试
+
+### Kotlin支持
+
+基于`KtTestUtils`的`KtBaseSpringTest`和`KtBaseSpringWebTest`的Kotlin单测基类，单测更简单，可读性更好
+例如：
+```kotlin
+/**
+ * @author Kelin Tan
+ */
+@MockDatabase(name = PrimaryDatabase.NAME)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [SpringBootArchetypeApplication::class]
+)
+class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
+    @Test
+    fun `find all users with header`() {
+        Http.withPath("$API_PREFIX/findAll")
+            .performHeader()
+            .status() eq HttpStatus.SC_OK
+    }
+
+    @Test
+    fun `test find all users`() {
+        Http.withPath("$API_PREFIX/findAll")
+            .performGet()
+            .json() verify {
+            -"result" verify {
+                size eq 4
+                item(0) verify {
+                    -"id" eq 1
+                    -"id" not 2
+                    "nId".node.isNullOrNone
+                    +"userName" startsWith "test"
+                    -"userName" endsWith "1"
+                }
+            }
+        }
+    }
+```
+
+## 其他
+
+### Redis
+集成`lettuce` & `Redisson`的Redis客户端，支持 `sync|async`的redis操作及分布式锁，内嵌`embedded-redis`提供集成测试,参见：`archetype-redis`
+
+### Cache
+
+集成`CaffeineCacheManager`提供更强性能的缓存工具
+
+### JWT
+
+集成`JWT`提供统一认证授权 参见：`archetype-jwt`
