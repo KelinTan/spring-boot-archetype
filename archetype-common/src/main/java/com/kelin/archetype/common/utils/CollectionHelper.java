@@ -43,7 +43,7 @@ public class CollectionHelper {
         return result;
     }
 
-    public static <T> void batchConsume(List<T> list, int batchSize, Consumer<List<T>> consumer) {
+    public static <T> void batchRun(List<T> list, int batchSize, Consumer<List<T>> consumer) {
         if (CollectionUtils.isEmpty(list) || batchSize <= 0) {
             return;
         }
@@ -62,7 +62,7 @@ public class CollectionHelper {
         }
     }
 
-    public static <T> void batchConsume(List<T> list, Consumer<List<T>> consumer) {
-        batchConsume(list, DEFAULT_BATCH_SIZE, consumer);
+    public static <T> void batchRun(List<T> list, Consumer<List<T>> consumer) {
+        batchRun(list, DEFAULT_BATCH_SIZE, consumer);
     }
 }

@@ -63,7 +63,7 @@ class CollectionHelperTest : KtTestUtils {
     @Test
     fun `consume in batch`() {
         val result = mutableListOf<Int>()
-        CollectionHelper.batchConsume(listOf(1, 2)) {
+        CollectionHelper.batchRun(listOf(1, 2)) {
             result.addAll(it)
         }
 
@@ -74,7 +74,7 @@ class CollectionHelperTest : KtTestUtils {
 
         result.clear()
 
-        CollectionHelper.batchConsume(listOf(1, 2, 3), 2) {
+        CollectionHelper.batchRun(listOf(1, 2, 3), 2) {
             result.add(it.count())
         }
 
@@ -85,7 +85,7 @@ class CollectionHelperTest : KtTestUtils {
 
         result.clear()
 
-        CollectionHelper.batchConsume(listOf(1, 2, 3, 4), 2) {
+        CollectionHelper.batchRun(listOf(1, 2, 3, 4), 2) {
             result.add(it.count())
         }
 
@@ -96,7 +96,7 @@ class CollectionHelperTest : KtTestUtils {
 
         result.clear()
 
-        CollectionHelper.batchConsume(listOf(1), 2) {
+        CollectionHelper.batchRun(listOf(1), 2) {
             result.add(it.count())
         }
 
@@ -113,7 +113,7 @@ class CollectionHelperTest : KtTestUtils {
         }
 
         val result = mutableListOf<Int>()
-        CollectionHelper.batchConsume(list) {
+        CollectionHelper.batchRun(list) {
             result.add(it.count())
         }
 
