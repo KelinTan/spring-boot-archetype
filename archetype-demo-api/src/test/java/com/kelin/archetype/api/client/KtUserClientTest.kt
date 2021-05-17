@@ -109,6 +109,17 @@ class KtUserClientTest : KtBaseSpringTest() {
     }
 
     @Test
+    fun `test rpc get use async http client`() {
+        userClient.findAllAsync() verify {
+            result verify {
+                item(0) verify {
+                    id eq 1
+                }
+            }
+        }
+    }
+
+    @Test
     fun testRpcDeleteWithRequestParam() {
         userMapper.findOne(3L) not null
         userClient.delete2(3L)

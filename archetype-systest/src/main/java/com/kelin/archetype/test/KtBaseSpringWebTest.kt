@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.test
 
+import com.kelin.archetype.common.http.AsyncHttpRequest
 import com.kelin.archetype.common.http.HttpRequest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
@@ -20,4 +21,8 @@ open class KtBaseSpringWebTest : KtBaseSpringTest() {
     @Suppress("PropertyName")
     val Http: HttpRequest
         get() = HttpRequest(host)
+
+    @Suppress("PropertyName")
+    val AsyncHttp: AsyncHttpRequest
+        get() = AsyncHttpRequest(host)
 }

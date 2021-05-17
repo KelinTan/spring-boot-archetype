@@ -47,4 +47,9 @@ public @interface HttpMethod {
      * Http Request retry times
      */
     int retryTimes() default 1;
+
+    /**
+     * Use AsyncHttpClient to perform http request
+     */
+    boolean async() default false;
 }

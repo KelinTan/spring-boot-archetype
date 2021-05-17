@@ -13,14 +13,22 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.assertj.core.util.Preconditions;
+import org.asynchttpclient.ListenableFuture;
+import org.asynchttpclient.Param;
+import org.asynchttpclient.Request;
+import org.asynchttpclient.Response;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,15 +41,17 @@ import java.util.stream.Collectors;
 public class HttpUtils {
     private static final Pattern PATH_VARIABLE_PATTERN = Pattern.compile("\\{([^}])*}");
 
-    public static boolean isHttpOk(int status) {
+    public static final int DEFAULT_TIMEOUT_SECONDS = 5;
+
+    public static boolean isOk(int status) {
         return status / 100 == 2;
     }
 
-    public static boolean isHttpBadRequest(int status) {
+    public static boolean isBadRequest(int status) {
         return status / 100 == 4;
     }
 
-    public static boolean isHttpErrorRequest(int status) {
+    public static boolean isError(int status) {
         return status / 100 == 5;
     }
 
@@ -123,6 +133,10 @@ public class HttpUtils {
         }
     }
 
+    static ListenableFuture<Response> asyncExecute(Request request) {
+        return HttpClientFactory.getAsyncHttpClient().executeRequest(request);
+    }
+
     public static String safeEntityToString(HttpEntity httpEntity) {
         if (httpEntity == null) {
             return null;
@@ -135,6 +149,26 @@ public class HttpUtils {
         }
     }
 
+    public static Response safeAsyncResponse(ListenableFuture<Response> future) {
+        try {
+            return future.get(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            log.error("Async response get exception: ", e);
+        }
+
+        return null;
+    }
+
+    public static String safeAsyncResponseBody(ListenableFuture<Response> future) {
+        try {
+            return future.get(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS).getResponseBody(StandardCharsets.UTF_8);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            log.error("Async response get exception: ", e);
+        }
+
+        return null;
+    }
+
     static List<NameValuePair> buildNameValuePairs(Map<String, Object> params) {
         if (MapUtils.isEmpty(params)) {
             return Collections.emptyList();
@@ -142,5 +176,13 @@ public class HttpUtils {
         return params.entrySet().stream().map(
                 (Function<Entry<String, Object>, NameValuePair>) param -> new BasicNameValuePair(param.getKey(),
                         param.getValue().toString())).collect(Collectors.toList());
+    }
+
+    static List<Param> buildAsyncParams(Map<String, Object> params) {
+        if (MapUtils.isEmpty(params)) {
+            return Collections.emptyList();
+        }
+        return params.entrySet().stream().map(entry -> new Param(entry.getKey(), String.valueOf(entry.getValue())))
+                .collect(Collectors.toList());
     }
 }

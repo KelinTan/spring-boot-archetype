@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.test
 
+import com.kelin.archetype.common.http.AsyncHttpRequest
 import com.kelin.archetype.common.http.HttpRequest
 import com.kelin.archetype.common.http.HttpUtils
 import com.kelin.archetype.common.json.JsonConverter
@@ -128,6 +129,15 @@ interface KtTestUtils {
 
     fun HttpRequest.json(): JsonNodeWrapper {
         val entity = HttpUtils.safeEntityToString(this.response().entity)
+        return JsonNodeWrapper(
+            JsonConverter.readTree(
+                entity
+            )
+        )
+    }
+
+    fun AsyncHttpRequest.json(): JsonNodeWrapper {
+        val entity = HttpUtils.safeAsyncResponseBody(this.response())
         return JsonNodeWrapper(
             JsonConverter.readTree(
                 entity
