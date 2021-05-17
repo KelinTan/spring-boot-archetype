@@ -6,6 +6,7 @@ dependencies {
     api group: 'org.apache.commons', name: 'commons-lang3'
     api group: 'org.apache.commons', name: 'commons-collections4'
     api group: 'org.apache.httpcomponents', name: 'httpclient'
+    api group: 'org.asynchttpclient', name: 'async-http-client'
     api group: 'commons-io', name: 'commons-io'
     api group: 'com.google.guava', name: 'guava'
     api group: 'org.springframework.data', name: 'spring-data-commons'

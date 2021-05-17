@@ -46,7 +46,7 @@ public class UserApiControllerWebTest extends BaseSpringWebTest {
                 .withHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET")
                 .performOptions().response();
 
-        assertTrue(HttpUtils.isHttpOk(response.getStatusLine().getStatusCode()));
+        assertTrue(HttpUtils.isOk(response.getStatusLine().getStatusCode()));
         assertEquals(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN).getValue(), "*");
         assertTrue(response.getFirstHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS).getValue()
                 .contains("GET"));

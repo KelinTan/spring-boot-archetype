@@ -33,7 +33,7 @@ public class HttpRequest {
     private final URIBuilder uriBuilder;
     private final Map<String, Object> headers = new LinkedHashMap<>();
     private String content;
-    private RequestConfig config;
+    private HttpConfig config;
     private HttpRequestBase request;
     private CloseableHttpResponse response;
 
@@ -81,7 +81,7 @@ public class HttpRequest {
         return this;
     }
 
-    public HttpRequest withConfig(RequestConfig config) {
+    public HttpRequest withConfig(HttpConfig config) {
         this.config = config;
         return this;
     }
@@ -94,7 +94,7 @@ public class HttpRequest {
     public HttpRequest post() {
         HttpPost post = new HttpPost(build());
 
-        buildEntity(post);
+        buildBody(post);
 
         this.request = post;
         return this;
@@ -108,7 +108,7 @@ public class HttpRequest {
     public HttpRequest put() {
         HttpPut put = new HttpPut(build());
 
-        buildEntity(put);
+        buildBody(put);
 
         this.request = put;
         return this;
@@ -117,7 +117,7 @@ public class HttpRequest {
     public HttpRequest patch() {
         HttpPatch patch = new HttpPatch(build());
 
-        buildEntity(patch);
+        buildBody(patch);
 
         this.request = patch;
         return this;
@@ -140,7 +140,10 @@ public class HttpRequest {
             headers.forEach((header, value) -> request.addHeader(header, value.toString()));
         }
         if (config != null) {
-            request.setConfig(config);
+            request.setConfig(RequestConfig.custom()
+                    .setConnectTimeout(config.getConnectionTimeout())
+                    .setSocketTimeout(config.getReadTimeout())
+                    .build());
         }
         this.response = HttpUtils.safeExecute(this.request);
         return this;
@@ -159,15 +162,15 @@ public class HttpRequest {
     }
 
     public boolean isOk() {
-        return HttpUtils.isHttpOk(status());
+        return HttpUtils.isOk(status());
     }
 
     public boolean isBadRequest() {
-        return HttpUtils.isHttpBadRequest(status());
+        return HttpUtils.isBadRequest(status());
     }
 
     public boolean isErrorRequest() {
-        return HttpUtils.isHttpErrorRequest(status());
+        return HttpUtils.isError(status());
     }
 
     public <T> T json(Class<T> type) {
@@ -223,7 +226,7 @@ public class HttpRequest {
         return patch().execute();
     }
 
-    private void buildEntity(HttpEntityEnclosingRequestBase entityRequest) {
+    private void buildBody(HttpEntityEnclosingRequestBase entityRequest) {
         if (content != null) {
             entityRequest.setEntity(new StringEntity(content, ContentType.APPLICATION_JSON));
         }

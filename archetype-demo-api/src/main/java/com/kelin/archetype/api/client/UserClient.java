@@ -24,6 +24,9 @@ public interface UserClient {
     @HttpMethod(value = "/api/v1/user/findAll")
     RestResponse<List<User>> findAll();
 
+    @HttpMethod(value = "/api/v1/user/findAll", async = true)
+    RestResponse<List<User>> findAllAsync();
+
     @HttpMethod(value = "/api/v1/user/{id}")
     RestResponse<User> findUser(@PathVariable(value = "id") Long id);
 

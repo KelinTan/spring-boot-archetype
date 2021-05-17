@@ -2,6 +2,8 @@
 
 package com.kelin.archetype.core.rpc;
 
+import com.kelin.archetype.common.http.AsyncHttpRequest;
+import com.kelin.archetype.common.http.HttpConfig;
 import com.kelin.archetype.common.http.HttpRequest;
 import com.kelin.archetype.common.http.HttpUtils;
 import com.kelin.archetype.common.json.JsonConverter;
@@ -10,9 +12,9 @@ import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.asynchttpclient.Response;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +43,7 @@ public class RpcClientProxy implements InvocationHandler {
     private final Map<Method, RequestMethod> requestMethodOnMethods = new HashMap<>();
     private final Map<Method, HttpConfig> requestHttpConfigOnMethods = new HashMap<>();
     private final Map<Method, HttpRequest> methodHttpRequestMap = new ConcurrentHashMap<>();
+    private final Map<Method, AsyncHttpRequest> methodAsyncHttpRequestMap = new ConcurrentHashMap<>();
 
     RpcClientProxy(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         super();
@@ -51,12 +54,57 @@ public class RpcClientProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         HttpConfig httpConfig = requestHttpConfigOnMethods.get(method);
+        if (httpConfig.isAsync()) {
+            return invokeAsyncRequest(method, httpConfig, args);
+        } else {
+            return invokeRequest(method, httpConfig, args);
+        }
+    }
+
+    private Object invokeAsyncRequest(Method method, HttpConfig httpConfig, Object[] args) {
+        AsyncHttpRequest request = getAsyncHttpRequest(method, httpConfig, args);
+        for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
+            Response response = HttpUtils.safeAsyncResponse(request.execute().response());
+            if (response == null) {
+                log.warn(LogMessageBuilder.builder()
+                        .message("Rpc failed with empty response: " + method.getName())
+                        .parameter("retryTimes", i)
+                        .build());
+                throw RestExceptionFactory.toRpcException();
+            }
+            int status = response.getStatusCode();
+            String body = response.getResponseBody();
+            if (HttpUtils.isOk(status)) {
+                if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
+                    return JsonConverter.deserialize(body, method.getGenericReturnType());
+                }
+                break;
+            } else if (HttpUtils.isBadRequest(status)) {
+                //4xx error we do not retry
+                rpcErrorHandler.handle(status, body);
+                break;
+            }
+            log.warn(LogMessageBuilder.builder()
+                    .message("Rpc failed: " + method.getName())
+                    .parameter("retryTimes", i)
+                    .parameter("errorResponse", body)
+                    .build());
+            if (i == httpConfig.getRetryTimes() - 1) {
+                rpcErrorHandler.handle(status, body);
+            }
+        }
+
+        //should not reach here
+        return null;
+    }
+
+    private Object invokeRequest(Method method, HttpConfig httpConfig, Object[] args) {
         HttpRequest request = getHttpRequest(method, httpConfig, args);
         for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
             CloseableHttpResponse response = request.execute().response();
             int status = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
-            if (HttpUtils.isHttpOk(status)) {
+            if (HttpUtils.isOk(status)) {
                 if (!StringUtils.equalsIgnoreCase(method.getGenericReturnType().getTypeName(), "void")) {
                     return JsonConverter.deserialize(HttpUtils.safeEntityToString(entity),
                             method.getGenericReturnType());
@@ -64,7 +112,7 @@ public class RpcClientProxy implements InvocationHandler {
                     EntityUtils.consumeQuietly(entity);
                 }
                 break;
-            } else if (HttpUtils.isHttpBadRequest(status)) {
+            } else if (HttpUtils.isBadRequest(status)) {
                 //4xx error we do not retry
                 rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
                 break;
@@ -79,6 +127,7 @@ public class RpcClientProxy implements InvocationHandler {
             }
         }
 
+        //should not reach here
         return null;
     }
 
@@ -99,6 +148,23 @@ public class RpcClientProxy implements InvocationHandler {
         return request;
     }
 
+    private AsyncHttpRequest getAsyncHttpRequest(Method method, HttpConfig config, Object[] args) {
+        if (methodAsyncHttpRequestMap.containsKey(method)) {
+            return methodAsyncHttpRequestMap.get(method);
+        }
+        RequestMethod requestMethod = requestMethodOnMethods.get(method);
+        Map<String, Object> parameterMap = buildParameterMap(method, args);
+        Map<String, Object> pathParameterMap = buildPathParameterMap(method, args);
+        Map<String, Object> headerMap = buildRequestHeaderMap(method, args);
+        Object requestBody = buildRequestBody(method, args);
+
+        String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
+        AsyncHttpRequest request = createAsyncRequest(url, requestMethod, config, parameterMap,
+                headerMap, requestBody);
+        methodAsyncHttpRequestMap.putIfAbsent(method, request);
+        return request;
+    }
+
     private void init(Class<?> clazz, String endpoint, RpcErrorHandler rpcErrorHandler) {
         this.clazz = clazz;
         this.endpoint = endpoint;
@@ -114,6 +180,7 @@ public class RpcClientProxy implements InvocationHandler {
                     .connectionTimeout(httpMethod.connectionTimeout())
                     .readTimeout(httpMethod.readTimeout())
                     .retryTimes(httpMethod.retryTimes())
+                    .async(httpMethod.async())
                     .build());
         });
     }
@@ -138,10 +205,37 @@ public class RpcClientProxy implements InvocationHandler {
             Object requestBody) {
         HttpRequest request = HttpRequest
                 .host(uri)
-                .withConfig(RequestConfig.custom()
-                        .setConnectTimeout(config.getConnectionTimeout())
-                        .setSocketTimeout(config.getReadTimeout())
-                        .build())
+                .withConfig(config)
+                .withParams(paramsMap)
+                .withHeaders(headerMap);
+        if (requestBody != null) {
+            request.withContent(JsonConverter.serialize(requestBody));
+        }
+        switch (method) {
+            case GET:
+                return request.get();
+            case DELETE:
+                return request.delete();
+            case POST:
+                return request.post();
+            case PUT:
+                return request.put();
+            default:
+                throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+                        .message("UnSupported http method")
+                        .parameter("uri", uri)
+                        .parameter("method", method)
+                        .build());
+        }
+    }
+
+    private AsyncHttpRequest createAsyncRequest(String uri, RequestMethod method, HttpConfig config,
+            Map<String, Object> paramsMap,
+            Map<String, Object> headerMap,
+            Object requestBody) {
+        AsyncHttpRequest request = AsyncHttpRequest
+                .host(uri)
+                .withConfig(config)
                 .withParams(paramsMap)
                 .withHeaders(headerMap);
         if (requestBody != null) {
