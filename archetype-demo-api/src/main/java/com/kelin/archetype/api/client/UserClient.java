@@ -3,14 +3,17 @@
 package com.kelin.archetype.api.client;
 
 import com.kelin.archetype.common.rest.response.RestResponse;
+import com.kelin.archetype.common.rest.response.RestResponseFactory;
 import com.kelin.archetype.core.rpc.HttpMethod;
 import com.kelin.archetype.core.rpc.RpcClient;
 import com.kelin.archetype.database.entity.primary.User;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,7 +25,13 @@ public interface UserClient {
     RestResponse<List<User>> findAllError();
 
     @HttpMethod(value = "/api/v1/user/findAll")
-    RestResponse<List<User>> findAll();
+    RestResponse<List<User>> findAll() throws Exception;
+
+    @HystrixCommand(groupKey = "user")
+    @HttpMethod(value = "/api/v1/user/findAll/error")
+    default RestResponse<List<User>> findAllErrorFallback() {
+        return RestResponseFactory.success(Collections.singletonList(new User("fallback")));
+    }
 
     @HttpMethod(value = "/api/v1/user/findAll", async = true)
     RestResponse<List<User>> findAllAsync();

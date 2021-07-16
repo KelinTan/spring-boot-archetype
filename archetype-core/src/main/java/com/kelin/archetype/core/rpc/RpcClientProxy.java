@@ -9,6 +9,13 @@ import com.kelin.archetype.common.http.HttpUtils;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
+import com.kelin.archetype.common.utils.ProxyUtils;
+import com.netflix.hystrix.HystrixCommand.Setter;
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -51,13 +58,54 @@ public class RpcClientProxy implements InvocationHandler {
         init(clazz, endpoint, rpcErrorHandler);
     }
 
+    @SneakyThrows
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
+        HystrixCommand annotation = AnnotationUtils.findAnnotation(method, HystrixCommand.class);
+        if (annotation != null) {
+            return invokeHystrixRequest(annotation, proxy, method, args);
+        } else {
+            return invokeRequest(method, args);
+        }
+    }
+
+    private Object invokeHystrixRequest(HystrixCommand annotation, Object proxy, Method method, Object[] args) {
+        com.netflix.hystrix.HystrixCommand command = new com.netflix.hystrix.HystrixCommand(Setter.withGroupKey(
+                HystrixCommandGroupKey.Factory.asKey(annotation.groupKey()))
+                .andCommandKey(HystrixCommandKey.Factory.asKey(annotation.commandKey()))
+                .andCommandPropertiesDefaults(HystrixPropertiesManager
+                        .initializeCommandProperties(Arrays.asList(annotation.commandProperties())))) {
+            @Override
+            protected Object run() {
+                return invokeRequest(method, args);
+            }
+
+            @Override
+            protected Object getFallback() {
+                if (!method.isDefault()) {
+                    throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+                            .message("RpcClient with hystrix method need default ")
+                            .parameter("clazz", clazz.getName())
+                            .parameter("method", method.getName())
+                            .build());
+                }
+                log.error(LogMessageBuilder.builder()
+                        .message("RpcClient fallback")
+                        .parameter("clazz", clazz.getName())
+                        .parameter("method", method.getName())
+                        .build());
+                return ProxyUtils.safeInvokeDefaultMethod(proxy, method, args);
+            }
+        };
+        return command.execute();
+    }
+
+    private Object invokeRequest(Method method, Object[] args) {
         HttpConfig httpConfig = requestHttpConfigOnMethods.get(method);
         if (httpConfig.isAsync()) {
             return invokeAsyncRequest(method, httpConfig, args);
         } else {
-            return invokeRequest(method, httpConfig, args);
+            return invokeSyncRequest(method, httpConfig, args);
         }
     }
 
@@ -98,7 +146,7 @@ public class RpcClientProxy implements InvocationHandler {
         return null;
     }
 
-    private Object invokeRequest(Method method, HttpConfig httpConfig, Object[] args) {
+    private Object invokeSyncRequest(Method method, HttpConfig httpConfig, Object[] args) {
         HttpRequest request = getHttpRequest(method, httpConfig, args);
         for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
             CloseableHttpResponse response = request.execute().response();
