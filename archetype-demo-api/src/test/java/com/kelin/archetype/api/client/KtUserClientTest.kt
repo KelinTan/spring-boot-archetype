@@ -125,4 +125,15 @@ class KtUserClientTest : KtBaseSpringTest() {
         userClient.delete2(3L)
         userMapper.findOne(3L) eq null
     }
+
+    @Test
+    fun `test rpc error hystrix fallback`() {
+        userClient.findAllErrorFallback() verify {
+            result verify {
+                item(0) verify {
+                    userName eq "fallback"
+                }
+            }
+        }
+    }
 }

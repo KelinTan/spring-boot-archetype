@@ -37,6 +37,11 @@ dependencyManagement {
             entry 'springfox-swagger2'
             entry 'springfox-swagger-ui'
         }
+        dependencySet(group: 'com.netflix.hystrix', version: '1.5.18') {
+            entry 'hystrix-javanica'
+            entry 'hystrix-core'
+            entry 'hystrix-metrics-event-stream'
+        }
         dependency group: 'org.springframework.data', name: 'spring-data-commons', version: '2.0.7.RELEASE'
         dependency group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.0.1'
         dependency group: 'com.auth0', name: 'java-jwt', version: '3.9.0'

@@ -5,7 +5,7 @@ dependencies {
 
     testCompile project(':archetype-systest')
 
-    implementation group: 'io.springfox', name: 'springfox-swagger2'
-    implementation (group: 'io.springfox', name: 'springfox-swagger-ui')
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2'
+    implementation 'io.springfox:springfox-swagger2'
+    implementation 'io.springfox:springfox-swagger-ui'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 }
