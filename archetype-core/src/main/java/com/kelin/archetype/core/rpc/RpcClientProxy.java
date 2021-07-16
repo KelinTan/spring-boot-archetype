@@ -13,6 +13,7 @@ import com.kelin.archetype.common.utils.ProxyUtils;
 import com.netflix.hystrix.HystrixCommand.Setter;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.HystrixThreadPoolKey;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager;
 import lombok.SneakyThrows;
@@ -74,7 +75,10 @@ public class RpcClientProxy implements InvocationHandler {
                 HystrixCommandGroupKey.Factory.asKey(annotation.groupKey()))
                 .andCommandKey(HystrixCommandKey.Factory.asKey(annotation.commandKey()))
                 .andCommandPropertiesDefaults(HystrixPropertiesManager
-                        .initializeCommandProperties(Arrays.asList(annotation.commandProperties())))) {
+                        .initializeCommandProperties(Arrays.asList(annotation.commandProperties())))
+                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(annotation.threadPoolKey()))
+                .andThreadPoolPropertiesDefaults(HystrixPropertiesManager
+                        .initializeThreadPoolProperties(Arrays.asList(annotation.threadPoolProperties())))) {
             @Override
             protected Object run() {
                 return invokeRequest(method, args);
