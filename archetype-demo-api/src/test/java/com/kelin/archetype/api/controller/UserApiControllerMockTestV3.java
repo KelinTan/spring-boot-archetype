@@ -5,7 +5,7 @@ package com.kelin.archetype.api.controller;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import com.kelin.archetype.api.SpringBootArchetypeApplication;
+import com.kelin.archetype.api.ApiApplication;
 import com.kelin.archetype.common.rest.response.RestResponse;
 import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
@@ -27,7 +27,7 @@ import java.util.List;
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = SpringBootArchetypeApplication.class
+        classes = ApiApplication.class
 )
 public class UserApiControllerMockTestV3 extends BaseSpringTest {
     @Mock

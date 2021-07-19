@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.service
 
-import com.kelin.archetype.api.SpringBootArchetypeApplication
+import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringTest
 import org.junit.Test
@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
  */
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
-    classes = [SpringBootArchetypeApplication::class]
+    classes = [ApiApplication::class]
 )
 class UserServiceMockTest : KtBaseSpringTest() {
     @InjectMocks

@@ -21,6 +21,7 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     api "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    api "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0"
 }
 
 dependencyManagement {
@@ -32,10 +33,17 @@ dependencyManagement {
             entry 'spring-boot-autoconfigure'
             entry 'spring-boot-starter-test'
             entry 'spring-boot-starter-cache'
+            entry 'spring-boot-starter-security'
+            entry 'spring-boot-starter-validation'
+            entry 'spring-boot-starter-jdbc'
         }
         dependencySet(group: 'io.springfox', version: '2.9.2') {
             entry 'springfox-swagger2'
             entry 'springfox-swagger-ui'
+        }
+        dependencySet(group: 'de.codecentric', version: '2.3.1') {
+            entry 'spring-boot-admin-starter-client'
+            entry 'spring-boot-admin-starter-server'
         }
         dependencySet(group: 'com.netflix.hystrix', version: '1.5.18') {
             entry 'hystrix-javanica'
@@ -54,7 +62,7 @@ dependencyManagement {
         dependency group: 'com.google.guava', name: 'guava', version: '20.0'
         dependency group: 'org.assertj', name: 'assertj-core', version: '3.12.1'
         dependency group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
-        dependency group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
+        dependency group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
         dependency group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.8.5'
         dependency 'io.lettuce:lettuce-core:5.1.8.RELEASE'
         dependency 'com.github.kstyrc:embedded-redis:0.6'

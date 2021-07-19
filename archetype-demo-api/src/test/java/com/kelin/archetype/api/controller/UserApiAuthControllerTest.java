@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.kelin.archetype.api.SpringBootArchetypeApplication;
+import com.kelin.archetype.api.ApiApplication;
 import com.kelin.archetype.api.model.constant.BizErrorCode;
 import com.kelin.archetype.api.session.testing.FakeSessionService;
 import com.kelin.archetype.database.config.BizDatabase;
@@ -30,7 +30,7 @@ import org.springframework.http.MediaType;
                 @MockDatabase(name = BizDatabase.NAME, tables = BizAccountMapper.TABLE)})
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = SpringBootArchetypeApplication.class
+        classes = ApiApplication.class
 )
 public class UserApiAuthControllerTest extends BaseMockMvcTest {
     @Autowired

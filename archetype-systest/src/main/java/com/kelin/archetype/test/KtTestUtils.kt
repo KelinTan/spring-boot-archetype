@@ -2,12 +2,13 @@
 
 package com.kelin.archetype.test
 
-import com.kelin.archetype.common.http.AsyncHttpRequest
 import com.kelin.archetype.common.http.HttpRequest
-import com.kelin.archetype.common.http.HttpUtils
 import com.kelin.archetype.common.json.JsonConverter
+import com.kelin.archetype.common.utils.HttpUtils
+import org.asynchttpclient.Response
 import org.junit.Assert.assertArrayEquals
 import java.math.BigDecimal
+import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -136,8 +137,8 @@ interface KtTestUtils {
         )
     }
 
-    fun AsyncHttpRequest.json(): JsonNodeWrapper {
-        val entity = HttpUtils.safeAsyncResponseBody(this.response())
+    fun Response.json(): JsonNodeWrapper {
+        val entity = this.getResponseBody(StandardCharsets.UTF_8)
         return JsonNodeWrapper(
             JsonConverter.readTree(
                 entity

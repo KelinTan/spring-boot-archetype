@@ -4,6 +4,7 @@ package com.kelin.archetype.common.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kelin.archetype.common.json.JsonConverter;
+import com.kelin.archetype.common.utils.HttpUtils;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;

@@ -2,16 +2,18 @@
 
 package com.kelin.archetype.api.controller
 
-import com.kelin.archetype.api.SpringBootArchetypeApplication
+import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.junit.Test
+import org.mockito.InjectMocks
+import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 
 /**
  * @author Kelin Tan
@@ -19,11 +21,15 @@ import org.springframework.boot.test.mock.mockito.MockBean
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = [SpringBootArchetypeApplication::class]
+    classes = [ApiApplication::class]
 )
 class KtUserApiControllerMockWebTest : KtBaseSpringWebTest() {
-    @MockBean
+    @Mock
     lateinit var userMapper: UserMapper
+
+    @InjectMocks
+    @Autowired
+    lateinit var userApiController: UserApiController
 
     @Test
     fun `test find all users with mock`() {

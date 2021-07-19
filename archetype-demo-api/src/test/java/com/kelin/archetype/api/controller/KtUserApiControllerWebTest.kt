@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.controller
 
-import com.kelin.archetype.api.SpringBootArchetypeApplication
+import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = [SpringBootArchetypeApplication::class]
+    classes = [ApiApplication::class]
 )
 class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
     @Test

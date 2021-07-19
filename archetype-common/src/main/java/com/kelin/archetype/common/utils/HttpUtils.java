@@ -1,7 +1,8 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.http;
+package com.kelin.archetype.common.utils;
 
+import com.kelin.archetype.common.http.HttpClientFactory;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
@@ -100,7 +101,7 @@ public class HttpUtils {
         return stringBuilder.substring(0, stringBuilder.lastIndexOf("&"));
     }
 
-    static URIBuilder safeURIBuilder(String host) {
+    public static URIBuilder safeURIBuilder(String host) {
         Preconditions.checkNotNullOrEmpty(host);
 
         try {
@@ -111,7 +112,7 @@ public class HttpUtils {
         }
     }
 
-    static URI safeURI(URIBuilder builder) {
+    public static URI safeURI(URIBuilder builder) {
         Preconditions.checkNotNull(builder);
 
         try {
@@ -122,7 +123,7 @@ public class HttpUtils {
         }
     }
 
-    static CloseableHttpResponse safeExecute(HttpRequestBase request) {
+    public static CloseableHttpResponse safeExecute(HttpRequestBase request) {
         Preconditions.checkNotNull(request);
 
         try {
@@ -133,8 +134,12 @@ public class HttpUtils {
         }
     }
 
-    static ListenableFuture<Response> asyncExecute(Request request) {
+    public static ListenableFuture<Response> asyncExecute(Request request) {
         return HttpClientFactory.getAsyncHttpClient().executeRequest(request);
+    }
+
+    public static Response asyncExecuteResponse(Request request) {
+        return safeAsyncResponse(HttpClientFactory.getAsyncHttpClient().executeRequest(request));
     }
 
     public static String safeEntityToString(HttpEntity httpEntity) {
@@ -169,7 +174,7 @@ public class HttpUtils {
         return null;
     }
 
-    static List<NameValuePair> buildNameValuePairs(Map<String, Object> params) {
+    public static List<NameValuePair> buildNameValuePairs(Map<String, Object> params) {
         if (MapUtils.isEmpty(params)) {
             return Collections.emptyList();
         }
@@ -178,7 +183,7 @@ public class HttpUtils {
                         param.getValue().toString())).collect(Collectors.toList());
     }
 
-    static List<Param> buildAsyncParams(Map<String, Object> params) {
+    public static List<Param> buildAsyncParams(Map<String, Object> params) {
         if (MapUtils.isEmpty(params)) {
             return Collections.emptyList();
         }
