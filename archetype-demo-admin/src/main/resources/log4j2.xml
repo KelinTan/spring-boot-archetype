@@ -5,8 +5,8 @@
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
         </console>
-        <RollingFile name="RollingFileLog" fileName="logs/archetype-api.log"
-                     filePattern="logs/$${date:yyyy-MM}/archetype-api-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFileLog" fileName="logs/archetype-admin.log"
+                     filePattern="logs/$${date:yyyy-MM}/archetype-admin-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
