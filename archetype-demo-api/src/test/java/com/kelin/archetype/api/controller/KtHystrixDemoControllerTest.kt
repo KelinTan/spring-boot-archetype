@@ -2,28 +2,34 @@
 
 package com.kelin.archetype.api.controller
 
-import com.kelin.archetype.api.SpringBootArchetypeApplication
+import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.api.client.UserClient
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.junit.Test
+import org.mockito.InjectMocks
+import org.mockito.Mock
 import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 
 /**
  * @author Kelin Tan
  */
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = [SpringBootArchetypeApplication::class]
+    classes = [ApiApplication::class]
 )
 @MockDatabase(name = PrimaryDatabase.NAME)
 class KtHystrixDemoControllerTest : KtBaseSpringWebTest() {
-    @MockBean
+    @Mock
     lateinit var userClient: UserClient
+
+    @InjectMocks
+    @Autowired
+    lateinit var hystrixDemoController: HystrixDemoController
 
     @Test
     fun `test find all users with fallback`() {

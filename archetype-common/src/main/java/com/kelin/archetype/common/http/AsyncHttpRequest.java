@@ -4,6 +4,7 @@ package com.kelin.archetype.common.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kelin.archetype.common.json.JsonConverter;
+import com.kelin.archetype.common.utils.HttpUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
 import org.assertj.core.util.Preconditions;
@@ -102,7 +103,7 @@ public class AsyncHttpRequest {
         return response;
     }
 
-    public AsyncHttpRequest execute() {
+    public Response execute() {
         Preconditions.checkNotNull(this.request);
 
         if (!headers.isEmpty()) {
@@ -116,23 +117,22 @@ public class AsyncHttpRequest {
             request.setReadTimeout(config.getReadTimeout());
         }
 
-        this.response = HttpUtils.asyncExecute(request.build());
-        return this;
+        return HttpUtils.asyncExecuteResponse(request.build());
     }
 
-    public AsyncHttpRequest performGet() {
+    public Response performGet() {
         return get().execute();
     }
 
-    public AsyncHttpRequest performPost() {
+    public Response performPost() {
         return post().execute();
     }
 
-    public AsyncHttpRequest performPut() {
+    public Response performPut() {
         return put().execute();
     }
 
-    public AsyncHttpRequest performDelete() {
+    public Response performDelete() {
         return delete().execute();
     }
 

@@ -8,10 +8,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.kelin.archetype.api.SpringBootArchetypeApplication;
+import com.kelin.archetype.api.ApiApplication;
 import com.kelin.archetype.common.http.HttpRequest;
-import com.kelin.archetype.common.http.HttpUtils;
 import com.kelin.archetype.common.rest.response.RestResponse;
+import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
@@ -33,7 +33,7 @@ import java.util.List;
 @MockDatabase(name = PrimaryDatabase.NAME)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = SpringBootArchetypeApplication.class
+        classes = ApiApplication.class
 )
 public class UserApiControllerWebTest extends BaseSpringWebTest {
     @Autowired

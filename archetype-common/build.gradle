@@ -14,6 +14,7 @@ dependencies {
     api group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter'
     api group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'
     api group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 
     testCompile project(':archetype-systest')
 }

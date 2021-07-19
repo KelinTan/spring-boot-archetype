@@ -2,10 +2,11 @@ description = 'archetype-core'
 dependencies {
     compile project(':archetype-common')
 
-    implementation group: 'mysql', name: 'mysql-connector-java'
-    api group: 'javax.servlet', name: 'javax.servlet-api'
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-cache'
-    api group: 'com.github.ben-manes.caffeine', name: 'caffeine'
+    implementation 'mysql:mysql-connector-java'
+    api 'javax.servlet:javax.servlet-api'
+    api 'org.springframework.boot:spring-boot-starter-cache'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api 'com.github.ben-manes.caffeine:caffeine'
 
     api 'com.netflix.hystrix:hystrix-core'
     api 'com.netflix.hystrix:hystrix-javanica'

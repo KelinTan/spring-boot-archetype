@@ -5,10 +5,10 @@ package com.kelin.archetype.core.rpc;
 import com.kelin.archetype.common.http.AsyncHttpRequest;
 import com.kelin.archetype.common.http.HttpConfig;
 import com.kelin.archetype.common.http.HttpRequest;
-import com.kelin.archetype.common.http.HttpUtils;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
+import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.common.utils.ProxyUtils;
 import com.netflix.hystrix.HystrixCommand.Setter;
 import com.netflix.hystrix.HystrixCommandGroupKey;
@@ -116,7 +116,7 @@ public class RpcClientProxy implements InvocationHandler {
     private Object invokeAsyncRequest(Method method, HttpConfig httpConfig, Object[] args) {
         AsyncHttpRequest request = getAsyncHttpRequest(method, httpConfig, args);
         for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
-            Response response = HttpUtils.safeAsyncResponse(request.execute().response());
+            Response response = request.execute();
             if (response == null) {
                 log.warn(LogMessageBuilder.builder()
                         .message("Rpc failed with empty response: " + method.getName())

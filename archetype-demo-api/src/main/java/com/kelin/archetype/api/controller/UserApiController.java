@@ -35,6 +35,7 @@ public class UserApiController {
 
     @GetMapping("/findAll")
     public RestResponse<List<User>> findAll() {
+
         return RestResponseFactory.success(userMapper.findAll());
     }
 
