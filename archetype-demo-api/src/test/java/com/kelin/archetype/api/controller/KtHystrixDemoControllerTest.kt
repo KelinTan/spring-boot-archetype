@@ -4,7 +4,7 @@ package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.api.client.UserClient
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory
+import com.kelin.archetype.common.exception.RpcExceptionFactory
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
@@ -33,7 +33,7 @@ class KtHystrixDemoControllerTest : KtBaseSpringWebTest() {
 
     @Test
     fun `test find all users with fallback`() {
-        Mockito.`when`(userClient.findAll()).thenThrow(RestExceptionFactory.toSystemException())
+        Mockito.`when`(userClient.findAll()).thenThrow(RpcExceptionFactory.toException("userClient", "findAll", ""))
 
         Http.withPath("$API_PREFIX/demo")
             .performGet()

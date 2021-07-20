@@ -1,6 +1,6 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.rest.exception;
+package com.kelin.archetype.common.exception;
 
 import com.google.common.base.Preconditions;
 import org.springframework.http.HttpStatus;

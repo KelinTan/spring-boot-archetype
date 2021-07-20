@@ -13,8 +13,7 @@ import lombok.Getter;
 public enum BizErrorCode {
     ACCOUNT_NOT_FOUND(1000, "Account not found"),
     ACCOUNT_PASSWORD_INVALID(1001, "Account password incorrect"),
-    ACCOUNT_SESSION_EXPIRED(1002, "Session expired"),
-    ;
+    ACCOUNT_SESSION_EXPIRED(1002, "Session expired");
     private final int errorCode;
     private final String errorMessage;
 }

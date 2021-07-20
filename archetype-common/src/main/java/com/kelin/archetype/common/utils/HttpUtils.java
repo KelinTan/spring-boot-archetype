@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.common.utils;
 
+import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.common.http.HttpClientFactory;
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.HttpEntity;
@@ -132,10 +132,6 @@ public class HttpUtils {
             log.error("Invalid request: {} " + request.toString(), e);
             throw RestExceptionFactory.toSystemException();
         }
-    }
-
-    public static ListenableFuture<Response> asyncExecute(Request request) {
-        return HttpClientFactory.getAsyncHttpClient().executeRequest(request);
     }
 
     public static Response asyncExecuteResponse(Request request) {

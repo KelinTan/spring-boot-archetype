@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kelin.archetype.api.ApiApplication;
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
+import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.database.config.PrimaryDatabase;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
