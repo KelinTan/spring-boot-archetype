@@ -3,7 +3,7 @@
 package com.kelin.archetype.api.client
 
 import com.kelin.archetype.api.ApiApplication
-import com.kelin.archetype.common.rest.exception.RestException
+import com.kelin.archetype.common.exception.RpcException
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.database.mapper.primary.UserMapper
@@ -29,7 +29,7 @@ class KtUserClientTest : KtBaseSpringTest() {
     @Autowired
     lateinit var userMapper: UserMapper
 
-    @Test(expected = RestException::class)
+    @Test(expected = RpcException::class)
     fun testRpcError() {
         userClient.findAllError()
     }

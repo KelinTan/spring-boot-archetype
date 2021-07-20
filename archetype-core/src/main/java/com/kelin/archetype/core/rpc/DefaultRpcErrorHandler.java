@@ -2,8 +2,7 @@
 
 package com.kelin.archetype.core.rpc;
 
-import com.kelin.archetype.common.log.LogMessageBuilder;
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
+import com.kelin.archetype.common.exception.RpcExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -12,12 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultRpcErrorHandler implements RpcErrorHandler {
     @Override
-    public void handle(int status, String errorResponse) {
-        log.error(LogMessageBuilder.builder()
-                .message("Rpc request error")
-                .parameter("status", status)
-                .parameter("response", errorResponse)
-                .build());
-        throw RestExceptionFactory.toRpcException();
+    public void handle(int status, String errorResponse, String serviceName, String method) {
+        throw RpcExceptionFactory.toException(serviceName, method, status, errorResponse, "");
     }
 }

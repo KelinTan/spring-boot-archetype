@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.client;
 
-import com.kelin.archetype.common.rest.response.RestResponse;
+import com.kelin.archetype.common.beans.RestResponse;
 import com.kelin.archetype.core.rpc.HttpMethod;
 import com.kelin.archetype.core.rpc.RpcClient;
 import com.kelin.archetype.database.entity.primary.User;

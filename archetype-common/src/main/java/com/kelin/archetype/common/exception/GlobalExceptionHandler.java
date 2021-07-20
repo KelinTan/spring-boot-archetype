@@ -1,9 +1,10 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.rest.exception;
+package com.kelin.archetype.common.exception;
 
-import com.kelin.archetype.common.rest.response.RestErrorResponse;
-import com.kelin.archetype.common.rest.response.RestResponseFactory;
+import com.kelin.archetype.common.beans.RestErrorResponse;
+import com.kelin.archetype.common.beans.RestResponseFactory;
+import com.kelin.archetype.common.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 @Slf4j
 @ResponseBody
-public class RestExceptionHandler {
+public class GlobalExceptionHandler {
     @ExceptionHandler(value = RestException.class)
     public ResponseEntity<RestErrorResponse> handleRestException(RestException e) {
         RestErrorResponse errorResponse = RestErrorResponse.builder()
@@ -33,6 +34,23 @@ public class RestExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorResponse, e.getStatus());
+    }
+
+    @ExceptionHandler(value = RpcException.class)
+    public ResponseEntity<RestErrorResponse> handleRpcException(RpcException e) {
+        log.error(LogMessageBuilder.builder()
+                .message("Rpc failed")
+                .parameter("serviceName", e.getServiceName())
+                .parameter("method", e.getMethod())
+                .parameter("status", e.getStatus())
+                .parameter("response", e.getResponse())
+                .build());
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .errorMessage("Rpc failed: " + e.getServiceName() + "." + e.getMethod())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = {MissingServletRequestParameterException.class,

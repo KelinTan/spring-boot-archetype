@@ -2,12 +2,12 @@
 
 package com.kelin.archetype.core.rpc;
 
+import com.kelin.archetype.common.exception.RpcExceptionFactory;
 import com.kelin.archetype.common.http.AsyncHttpRequest;
 import com.kelin.archetype.common.http.HttpConfig;
 import com.kelin.archetype.common.http.HttpRequest;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.log.LogMessageBuilder;
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.common.utils.ProxyUtils;
 import com.netflix.hystrix.HystrixCommand.Setter;
@@ -87,7 +87,7 @@ public class RpcClientProxy implements InvocationHandler {
             @Override
             protected Object getFallback() {
                 if (!method.isDefault()) {
-                    throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+                    throw new RuntimeException(LogMessageBuilder.builder()
                             .message("RpcClient with hystrix method need default ")
                             .parameter("clazz", clazz.getName())
                             .parameter("method", method.getName())
@@ -118,11 +118,10 @@ public class RpcClientProxy implements InvocationHandler {
         for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
             Response response = request.execute();
             if (response == null) {
-                log.warn(LogMessageBuilder.builder()
+                throw RpcExceptionFactory.toException(clazz.getName(), method.getName(), LogMessageBuilder.builder()
                         .message("Rpc failed with empty response: " + method.getName())
                         .parameter("retryTimes", i)
                         .build());
-                throw RestExceptionFactory.toRpcException();
             }
             int status = response.getStatusCode();
             String body = response.getResponseBody();
@@ -133,7 +132,7 @@ public class RpcClientProxy implements InvocationHandler {
                 break;
             } else if (HttpUtils.isBadRequest(status)) {
                 //4xx error we do not retry
-                rpcErrorHandler.handle(status, body);
+                rpcErrorHandler.handle(status, body, clazz.getName(), method.getName());
                 break;
             }
             log.warn(LogMessageBuilder.builder()
@@ -142,7 +141,7 @@ public class RpcClientProxy implements InvocationHandler {
                     .parameter("errorResponse", body)
                     .build());
             if (i == httpConfig.getRetryTimes() - 1) {
-                rpcErrorHandler.handle(status, body);
+                rpcErrorHandler.handle(status, body, clazz.getName(), method.getName());
             }
         }
 
@@ -166,7 +165,7 @@ public class RpcClientProxy implements InvocationHandler {
                 break;
             } else if (HttpUtils.isBadRequest(status)) {
                 //4xx error we do not retry
-                rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
+                rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity), clazz.getName(), method.getName());
                 break;
             }
             log.warn(LogMessageBuilder.builder()
@@ -175,7 +174,7 @@ public class RpcClientProxy implements InvocationHandler {
                     .parameter("errorResponse", HttpUtils.safeEntityToString(entity))
                     .build());
             if (i == httpConfig.getRetryTimes() - 1) {
-                rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity));
+                rpcErrorHandler.handle(status, HttpUtils.safeEntityToString(entity), clazz.getName(), method.getName());
             }
         }
 
@@ -239,7 +238,7 @@ public class RpcClientProxy implements InvocationHandler {
 
     private String getRequestPathOnMethod(HttpMethod httpMethod) {
         if (StringUtils.isEmpty(httpMethod.value()) && StringUtils.isEmpty(httpMethod.path())) {
-            throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+            throw new RuntimeException(LogMessageBuilder.builder()
                     .message("@HttpMethod need value or path")
                     .parameter("clazz", clazz.getName())
                     .parameter("method", httpMethod)
@@ -273,7 +272,7 @@ public class RpcClientProxy implements InvocationHandler {
             case PUT:
                 return request.put();
             default:
-                throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+                throw new RuntimeException(LogMessageBuilder.builder()
                         .message("UnSupported http method")
                         .parameter("uri", uri)
                         .parameter("method", method)
@@ -303,7 +302,7 @@ public class RpcClientProxy implements InvocationHandler {
             case PUT:
                 return request.put();
             default:
-                throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+                throw new RuntimeException(LogMessageBuilder.builder()
                         .message("UnSupported http method")
                         .parameter("uri", uri)
                         .parameter("method", method)
@@ -319,7 +318,7 @@ public class RpcClientProxy implements InvocationHandler {
     private HttpMethod getHttpMethod(Method method) {
         HttpMethod annotation = AnnotationUtils.findAnnotation(method, HttpMethod.class);
         if (annotation == null) {
-            throw RestExceptionFactory.toSystemException(LogMessageBuilder.builder()
+            throw new RuntimeException(LogMessageBuilder.builder()
                     .message("RpcClient method need @HttpMethod ")
                     .parameter("clazz", clazz.getName())
                     .parameter("method", method.getName())

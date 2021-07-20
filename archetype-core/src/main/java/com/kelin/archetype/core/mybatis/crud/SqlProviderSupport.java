@@ -4,8 +4,8 @@ package com.kelin.archetype.core.mybatis.crud;
 
 import com.google.common.base.CaseFormat;
 import com.kelin.archetype.common.database.MapperTable;
+import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;

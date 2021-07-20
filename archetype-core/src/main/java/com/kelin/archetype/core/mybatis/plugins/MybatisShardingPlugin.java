@@ -4,8 +4,8 @@ package com.kelin.archetype.core.mybatis.plugins;
 
 import com.kelin.archetype.common.database.MapperTable;
 import com.kelin.archetype.common.database.sharding.ShardingStrategy;
+import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
-import com.kelin.archetype.common.rest.exception.RestExceptionFactory;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;

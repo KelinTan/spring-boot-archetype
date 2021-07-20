@@ -2,8 +2,9 @@
 
 package com.kelin.archetype.api.client;
 
-import com.kelin.archetype.common.rest.response.RestResponse;
-import com.kelin.archetype.common.rest.response.RestResponseFactory;
+import com.kelin.archetype.common.beans.RestResponse;
+import com.kelin.archetype.common.beans.RestResponseFactory;
+import com.kelin.archetype.common.exception.RpcException;
 import com.kelin.archetype.core.rpc.HttpMethod;
 import com.kelin.archetype.core.rpc.RpcClient;
 import com.kelin.archetype.database.entity.primary.User;
@@ -25,7 +26,7 @@ public interface UserClient {
     RestResponse<List<User>> findAllError();
 
     @HttpMethod(value = "/api/v1/user/findAll")
-    RestResponse<List<User>> findAll() throws Exception;
+    RestResponse<List<User>> findAll() throws RpcException;
 
     @HystrixCommand(groupKey = "user")
     @HttpMethod(value = "/api/v1/user/findAll/error")

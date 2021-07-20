@@ -1,6 +1,6 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.rest.response;
+package com.kelin.archetype.common.beans;
 
 import org.springframework.data.domain.Page;
 
