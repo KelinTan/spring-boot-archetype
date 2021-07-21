@@ -3,6 +3,7 @@
 package com.kelin.archetype.api.service
 
 import com.kelin.archetype.api.ApiApplication
+import com.kelin.archetype.api.service.impl.BizServiceImpl
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringTest
 import org.junit.Test
@@ -18,9 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
     classes = [ApiApplication::class]
 )
-class UserServiceMockTest : KtBaseSpringTest() {
+class BizServiceMockTest : KtBaseSpringTest() {
     @InjectMocks
-    lateinit var userService: UserServiceImpl
+    lateinit var bizService: BizServiceImpl
 
     @Mock
     lateinit var userMapper: UserMapper
@@ -28,6 +29,6 @@ class UserServiceMockTest : KtBaseSpringTest() {
     @Test
     fun `find user by id with mock`() {
         Mockito.`when`(userMapper.findOne(2)).thenReturn(null)
-        userService.findUserById(2) eq null
+        bizService.findUserById(2) eq null
     }
 }

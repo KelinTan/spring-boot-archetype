@@ -1,4 +1,4 @@
-// Copyright 2020 Kelin Inc. All rights reserved.
+// Copyright 2021 Kelin Inc. All rights reserved.
 
 package com.kelin.archetype.api.service;
 
@@ -8,7 +8,13 @@ import org.springframework.cache.annotation.Cacheable;
 /**
  * @author Kelin Tan
  */
-public interface UserService {
+public interface BizService {
+    void updateWithPrimaryTransaction();
+
+    void updateWithBizTransaction();
+
+    void updateWithMultipleTransaction();
+
     @Cacheable(value = "UserCache", key = "#id")
     User findCacheUserById(Long id);
 
