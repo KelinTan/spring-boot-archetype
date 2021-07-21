@@ -3,3 +3,11 @@ server:
 spring:
   profiles:
     active: dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
