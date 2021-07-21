@@ -85,7 +85,7 @@ class BizServiceTest : KtBaseSpringTest() {
             userName eq "test1"
         }
         bizAccountMapper.findOne(1L) verify {
-            account eq "test1"
+            account eq "rollbackFail"
         }
     }
 

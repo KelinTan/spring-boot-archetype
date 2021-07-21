@@ -47,7 +47,7 @@ public class BizServiceImpl implements BizService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = PrimaryDatabase.NAME + ".transactionManager")
     public void updateWithMultipleTransaction() {
         User update = new User();
         update.setId(1L);
@@ -56,7 +56,7 @@ public class BizServiceImpl implements BizService {
 
         BizAccount bizAccountUpdate = new BizAccount();
         bizAccountUpdate.setId(1L);
-        bizAccountUpdate.setAccount("rollback");
+        bizAccountUpdate.setAccount("rollbackFail");
         bizAccountMapper.updateSelective(bizAccountUpdate);
 
         throw new RuntimeException();
