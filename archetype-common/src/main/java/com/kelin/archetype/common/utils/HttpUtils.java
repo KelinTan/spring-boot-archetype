@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 public class HttpUtils {
     private static final Pattern PATH_VARIABLE_PATTERN = Pattern.compile("\\{([^}])*}");
 
+    private static final String PATH_SEPARATOR = "/";
+
     public static final int DEFAULT_TIMEOUT_SECONDS = 5;
 
     public static boolean isOk(int status) {
@@ -57,17 +59,17 @@ public class HttpUtils {
     }
 
     public static String concatPath(String base, String relative) {
-        if (base.endsWith("/")) {
-            if (relative.startsWith("/")) {
+        if (base.endsWith(PATH_SEPARATOR)) {
+            if (relative.startsWith(PATH_SEPARATOR)) {
                 return base + relative.substring(1);
             } else {
                 return base + relative;
             }
         } else {
-            if (relative.startsWith("/")) {
+            if (relative.startsWith(PATH_SEPARATOR)) {
                 return base + relative;
             } else {
-                return base + "/" + relative;
+                return base + PATH_SEPARATOR + relative;
             }
         }
     }

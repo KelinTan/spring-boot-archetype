@@ -2,8 +2,9 @@
 
 package com.kelin.archetype.common.json;
 
+import static com.fasterxml.jackson.core.json.JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +22,7 @@ public class JsonMapperFactory {
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .enable(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS)
+                .enable(ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature())
                 .disable(MapperFeature.INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES)
                 .setNodeFactory(JsonNodeFactory.withExactBigDecimals(true))
         ;
