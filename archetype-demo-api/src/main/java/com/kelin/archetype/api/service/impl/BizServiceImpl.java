@@ -10,6 +10,8 @@ import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.biz.BizAccountMapper;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kelin Tan
  */
 @Service
+@ManagedResource
 public class BizServiceImpl implements BizService {
     @Autowired
     private UserMapper userMapper;
@@ -25,6 +28,7 @@ public class BizServiceImpl implements BizService {
     private BizAccountMapper bizAccountMapper;
 
     @Override
+    @ManagedOperation
     @Transactional(transactionManager = PrimaryDatabase.NAME + ".transactionManager")
     public void updateWithPrimaryTransaction() {
         User update = new User();

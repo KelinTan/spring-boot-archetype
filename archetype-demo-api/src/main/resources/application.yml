@@ -1,8 +1,12 @@
 server:
   port: 8081
 spring:
+  application:
+    name: demo-api
   profiles:
     active: dev
+  jmx:
+    enabled: true
 management:
   endpoints:
     web:

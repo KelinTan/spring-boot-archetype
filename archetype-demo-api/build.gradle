@@ -10,4 +10,5 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'de.codecentric:spring-boot-admin-starter-client'
+    implementation 'org.jolokia:jolokia-core'
 }
