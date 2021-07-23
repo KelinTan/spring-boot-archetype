@@ -2,7 +2,7 @@
 <configuration status="WARN" monitorInterval="30">
     <appenders>
         <console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
         </console>
         <RollingFile name="RollingFileLog" fileName="logs/archetype-admin.log"
@@ -17,7 +17,7 @@
     </appenders>
     <loggers>
         <logger name="org.springframework" level="INFO"/>
-        <root level="all">
+        <root level="TRACE">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileLog"/>
         </root>

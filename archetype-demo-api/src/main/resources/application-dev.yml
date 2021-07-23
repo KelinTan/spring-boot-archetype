@@ -1,3 +1,6 @@
+info:
+  tags:
+    environment: ${spring.profiles.active}
 spring:
   security:
     user:
