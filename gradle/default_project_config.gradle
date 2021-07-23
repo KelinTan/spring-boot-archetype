@@ -67,6 +67,7 @@ dependencyManagement {
         dependency 'io.lettuce:lettuce-core:5.1.8.RELEASE'
         dependency 'com.github.kstyrc:embedded-redis:0.6'
         dependency 'org.redisson:redisson:3.13.5'
+        dependency 'org.jolokia:jolokia-core:1.6.2'
     }
 }
 
