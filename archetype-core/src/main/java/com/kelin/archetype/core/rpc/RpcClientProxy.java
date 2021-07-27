@@ -27,6 +27,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -222,17 +223,12 @@ public class RpcClientProxy implements InvocationHandler {
         this.rpcErrorHandler = rpcErrorHandler;
         Method[] methods = clazz.getMethods();
         Arrays.stream(methods).forEach(method -> {
-            HttpMethod httpMethod = getHttpMethod(method);
-            this.requestUrlOnMethods.put(method, getRequestPathOnMethod(httpMethod));
+            RpcConfig rpcConfig = parseRpcConfig(method);
+            this.requestUrlOnMethods.put(method, rpcConfig.getPath());
 
             this.methodParameterAnnotations.put(method, method.getParameterAnnotations());
-            this.requestMethodOnMethods.put(method, httpMethod.method());
-            this.requestHttpConfigOnMethods.put(method, HttpConfig.builder()
-                    .connectionTimeout(httpMethod.connectionTimeout())
-                    .readTimeout(httpMethod.readTimeout())
-                    .retryTimes(httpMethod.retryTimes())
-                    .async(httpMethod.async())
-                    .build());
+            this.requestMethodOnMethods.put(method, rpcConfig.getMethod());
+            this.requestHttpConfigOnMethods.put(method, rpcConfig.getHttpConfig());
         });
     }
 
@@ -325,6 +321,44 @@ public class RpcClientProxy implements InvocationHandler {
                     .build());
         }
         return annotation;
+    }
+
+    private RpcConfig parseRpcConfig(Method method) {
+        HttpMethod httpMethod = AnnotationUtils.findAnnotation(method, HttpMethod.class);
+        if (httpMethod != null) {
+            return RpcConfig.builder()
+                    .path(getRequestPathOnMethod(httpMethod))
+                    .method(httpMethod.method())
+                    .httpConfig(HttpConfig.builder()
+                            .connectionTimeout(httpMethod.connectionTimeout())
+                            .readTimeout(httpMethod.readTimeout())
+                            .retryTimes(httpMethod.retryTimes())
+                            .async(httpMethod.async())
+                            .build())
+                    .build();
+        } else {
+            RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+
+            if (requestMapping == null) {
+                throw new RuntimeException(LogMessageBuilder.builder()
+                        .message("RpcClient method need @HttpMethod or @RequestMapping")
+                        .parameter("clazz", clazz.getName())
+                        .parameter("method", method.getName())
+                        .build());
+            }
+
+            return RpcConfig.builder()
+                    //only support first value
+                    .path(requestMapping.value()[0])
+                    .method(requestMapping.method()[0])
+                    .httpConfig(HttpConfig.builder()
+                            .connectionTimeout(RpcConstants.CONNECTION_TIMEOUT)
+                            .readTimeout(RpcConstants.READ_TIMEOUT)
+                            .retryTimes(RpcConstants.RETRY_TIMES)
+                            .async(RpcConstants.DEFAULT_ASYNC)
+                            .build())
+                    .build();
+        }
     }
 
     private Map<String, Object> buildParameterMap(Method method, Object[] args) {

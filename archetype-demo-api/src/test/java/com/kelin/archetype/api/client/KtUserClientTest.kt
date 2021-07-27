@@ -24,10 +24,21 @@ class KtUserClientTest : KtBaseSpringTest() {
     lateinit var userClient: UserClient
 
     @Autowired
-    lateinit var userClient2: UserClient2
+    lateinit var userClientV2: UserClientV2
 
     @Autowired
     lateinit var userMapper: UserMapper
+
+    @Test
+    fun `test request mapping annotation`() {
+        userClientV2.findAll() verify {
+            result verify {
+                item(0) verify {
+                    id eq 1
+                }
+            }
+        }
+    }
 
     @Test(expected = RpcException::class)
     fun testRpcError() {
@@ -36,7 +47,7 @@ class KtUserClientTest : KtBaseSpringTest() {
 
     @Test(expected = IllegalArgumentException::class)
     fun testRpcCustomError() {
-        userClient2.findAllError()
+        userClientV2.findAllError()
     }
 
     @Test
