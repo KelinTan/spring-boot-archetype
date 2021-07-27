@@ -2,6 +2,11 @@
 
 package com.kelin.archetype.core.rpc;
 
+import static com.kelin.archetype.core.rpc.RpcConstants.CONNECTION_TIMEOUT;
+import static com.kelin.archetype.core.rpc.RpcConstants.DEFAULT_ASYNC;
+import static com.kelin.archetype.core.rpc.RpcConstants.READ_TIMEOUT;
+import static com.kelin.archetype.core.rpc.RpcConstants.RETRY_TIMES;
+
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -34,22 +39,22 @@ public @interface HttpMethod {
     RequestMethod method() default RequestMethod.GET;
 
     /**
-     * Http request connect timeout milliseconds default 5000
+     * Http request connect timeout milliseconds
      */
-    int connectionTimeout() default 5000;
+    int connectionTimeout() default CONNECTION_TIMEOUT;
 
     /**
      * Http request read timeout milliseconds default 5000
      */
-    int readTimeout() default 5000;
+    int readTimeout() default READ_TIMEOUT;
 
     /**
      * Http Request retry times
      */
-    int retryTimes() default 1;
+    int retryTimes() default RETRY_TIMES;
 
     /**
      * Use AsyncHttpClient to perform http request
      */
-    boolean async() default false;
+    boolean async() default DEFAULT_ASYNC;
 }
