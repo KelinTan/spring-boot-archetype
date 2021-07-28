@@ -8,7 +8,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 /**
  * @author Kelin Tan
  */
-public class BaseSpringWebTest extends BaseSpringTest {
+public abstract class BaseSpringWebTest extends BaseSpringTest {
     @LocalServerPort
     private int serverPort;
 

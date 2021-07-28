@@ -5,7 +5,7 @@ package com.kelin.archetype.api.service
 import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.api.service.impl.BizServiceImpl
 import com.kelin.archetype.database.mapper.primary.UserMapper
-import com.kelin.archetype.test.KtBaseSpringTest
+import com.kelin.archetype.test.KtBaseSpringMockTest
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
     classes = [ApiApplication::class]
 )
-class BizServiceMockTest : KtBaseSpringTest() {
+class BizServiceMockTest : KtBaseSpringMockTest() {
     @InjectMocks
     lateinit var bizService: BizServiceImpl
 

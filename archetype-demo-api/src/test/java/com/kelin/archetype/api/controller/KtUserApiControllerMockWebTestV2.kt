@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = [ApiApplication::class]
 )
-class KtUserApiControllerMockWebTest : KtBaseSpringMockWebTest() {
+class KtUserApiControllerMockWebTestV2 : KtBaseSpringMockWebTest() {
     @Mock
     lateinit var userMapper: UserMapper
 
@@ -29,21 +29,18 @@ class KtUserApiControllerMockWebTest : KtBaseSpringMockWebTest() {
     lateinit var userApiController: UserApiController
 
     @Test
-    fun `test find all users with mock`() {
-        `when`(userMapper.findAll()).thenReturn(listOf(User().apply {
-            userName = "mockKt"
+    fun `test find user by id with mock`() {
+        `when`(userMapper.findOne(1)).thenReturn(User().apply {
+            userName = "mockKtV2"
             id = 2
-        }))
+        })
 
-        Http.withPath("$API_PREFIX/findAll")
+        Http.withPath("$API_PREFIX/1")
             .performGet()
             .json() verify {
             -"result" verify {
-                size eq 1
-                item(0) verify {
-                    -"id" eq 2
-                    -"userName" eq "mockKt"
-                }
+                -"id" eq 2
+                -"userName" eq "mockKtV2"
             }
         }
     }

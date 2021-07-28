@@ -3,6 +3,7 @@
 package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.ApiApplication
+import com.kelin.archetype.common.json.JsonConverter
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
@@ -28,9 +29,11 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
 
     @Test
     fun `test find all users`() {
-        Http.withPath("$API_PREFIX/findAll")
+        val response = Http.withPath("$API_PREFIX/findAll")
             .performGet()
-            .json() verify {
+            .json()
+
+        response verify {
             -"result" verify {
                 size eq 4
                 item(0) verify {

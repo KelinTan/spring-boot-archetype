@@ -6,7 +6,7 @@ import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.api.client.UserClient
 import com.kelin.archetype.common.exception.RpcExceptionFactory
 import com.kelin.archetype.database.config.PrimaryDatabase
-import com.kelin.archetype.test.KtBaseSpringWebTest
+import com.kelin.archetype.test.KtBaseSpringMockWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.junit.Test
 import org.mockito.InjectMocks
@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest
     classes = [ApiApplication::class]
 )
 @MockDatabase(name = PrimaryDatabase.NAME)
-class KtHystrixDemoControllerTest : KtBaseSpringWebTest() {
+class KtHystrixDemoControllerTest : KtBaseSpringMockWebTest() {
     @Mock
     lateinit var userClient: UserClient
 
