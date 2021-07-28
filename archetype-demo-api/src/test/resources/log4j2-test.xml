@@ -2,15 +2,15 @@
 <configuration status="WARN" monitorInterval="30">
     <appenders>
         <console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
         </console>
     </appenders>
     <loggers>
-        <logger name="org.springframework" level="info"/>
-        <logger name="org.mybatis" level="info"/>
-        <logger name="springfox.documentation" level="info"/>
-        <root level="all">
+        <logger name="org.springframework" level="DEBUG"/>
+        <logger name="org.mybatis" level="DEBUG"/>
+        <logger name="springfox.documentation" level="DEBUG"/>
+        <root level="ALL">
             <appender-ref ref="Console"/>
         </root>
     </loggers>

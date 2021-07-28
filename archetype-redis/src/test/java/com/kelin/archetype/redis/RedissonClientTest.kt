@@ -29,7 +29,7 @@ class RedissonClientTest : KtBaseRedisTest() {
         val lockName = "lock2"
         val lock = redissonClient.getLock(lockName)
 
-        lock.tryLock(5, TimeUnit.SECONDS) eq true
+        lock.tryLock(1, TimeUnit.SECONDS) eq true
 
         thread {
             val lock2 = redissonClient.getLock(lockName)

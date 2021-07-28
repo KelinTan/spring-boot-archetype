@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Kelin Tan
  */
 @AutoConfigureMockMvc
-public class BaseMockMvcTest extends BaseSpringTest {
+public abstract class BaseMockMvcTest extends BaseSpringTest {
     @Autowired
     protected MockMvc mockMvc;
 }

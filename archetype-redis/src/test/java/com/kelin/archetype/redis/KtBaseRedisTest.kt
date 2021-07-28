@@ -5,14 +5,12 @@ package com.kelin.archetype.redis
 import com.kelin.archetype.test.KtBaseSpringTest
 import org.junit.AfterClass
 import org.junit.BeforeClass
-import org.junit.Ignore
 import redis.embedded.RedisServer
 
 /**
  * @author Kelin Tan
  */
-@Ignore
-open class KtBaseRedisTest : KtBaseSpringTest() {
+abstract class KtBaseRedisTest : KtBaseSpringTest() {
     companion object {
         private var redisServer: RedisServer? = null
 

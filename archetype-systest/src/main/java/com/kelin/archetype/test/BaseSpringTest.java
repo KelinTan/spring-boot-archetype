@@ -6,6 +6,7 @@ import com.kelin.archetype.common.constants.Profile;
 import com.kelin.archetype.test.database.DatabaseTestExecutionListener;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener;
@@ -22,6 +23,8 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 @ActiveProfiles(Profile.PROFILE_TEST)
 @TestExecutionListeners({ServletTestExecutionListener.class, DirtiesContextBeforeModesTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
-        MockitoTestExecutionListener.class, SqlScriptsTestExecutionListener.class, DatabaseTestExecutionListener.class})
-public class BaseSpringTest {
+        MockitoTestExecutionListener.class,
+        ResetMocksTestExecutionListener.class,
+        SqlScriptsTestExecutionListener.class, DatabaseTestExecutionListener.class})
+public abstract class BaseSpringTest {
 }
