@@ -14,7 +14,7 @@ import com.kelin.archetype.test.BaseMockMvcTest;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import org.springframework.http.MediaType;
         classes = ApiApplication.class
 )
 public class UserApiControllerMockTestV2 extends BaseMockMvcTest {
-    @Mock
+    @Spy
     UserMapper userMapper;
 
     @InjectMocks
