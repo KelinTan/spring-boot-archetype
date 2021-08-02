@@ -6,7 +6,11 @@ package com.kelin.archetype.common.database.sharding;
  * @author Kelin Tan
  */
 public interface ShardingStrategy {
-    String TABLE_DELIMITER = "_";
+    String DEFAULT_TABLE_DELIMITER = "_";
+
+    default String getShardingTableDelimiter() {
+        return DEFAULT_TABLE_DELIMITER;
+    }
 
     /**
      * Get sharding table from baseTable & shardingValue & tableCount
