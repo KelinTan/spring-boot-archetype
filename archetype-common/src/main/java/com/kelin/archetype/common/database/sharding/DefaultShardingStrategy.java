@@ -18,6 +18,6 @@ public class DefaultShardingStrategy implements ShardingStrategy {
                     .parameter("key", shardingValue)
                     .build());
         }
-        return baseTable + TABLE_DELIMITER + Integer.parseInt(shardingValue) % tableCount;
+        return baseTable + getShardingTableDelimiter() + Integer.parseInt(shardingValue) % tableCount;
     }
 }

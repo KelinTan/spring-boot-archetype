@@ -5,8 +5,10 @@ package com.kelin.archetype.test.database;
 import com.kelin.archetype.common.database.DbUtils;
 import com.kelin.archetype.common.database.FakeDataSource;
 import com.kelin.archetype.common.database.MapperTable;
+import com.kelin.archetype.common.database.sharding.ShardingStrategy;
 import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -183,11 +185,13 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
         return mergeTables;
     }
 
+    @SneakyThrows
     private List<String> getMapperTables(MapperTable mapperTable) {
         if (mapperTable.sharding()) {
             List<String> tables = new ArrayList<>();
             for (int i = 0; i < mapperTable.count(); i++) {
-                tables.add(mapperTable.value() + "_" + i);
+                ShardingStrategy strategy = mapperTable.shardingStrategy().newInstance();
+                tables.add(mapperTable.value() + strategy.getShardingTableDelimiter() + i);
             }
             return tables;
         } else {

@@ -16,6 +16,6 @@ public class YearShardingStrategy implements ShardingStrategy {
         //may be support more format
         LocalDate date = LocalDate.parse(shardingValue, DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT));
 
-        return baseTable + TABLE_DELIMITER + date.getYear();
+        return baseTable + getShardingTableDelimiter() + date.getYear();
     }
 }
