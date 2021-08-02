@@ -13,7 +13,7 @@ import com.kelin.archetype.test.BaseSpringTest;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -27,7 +27,7 @@ import java.util.List;
         classes = ApiApplication.class
 )
 public class UserApiControllerMockTestV3 extends BaseSpringTest {
-    @Mock
+    @Spy
     UserMapper userMapper;
 
     @InjectMocks

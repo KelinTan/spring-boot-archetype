@@ -8,8 +8,8 @@ import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringMockTest
 import org.junit.Test
 import org.mockito.InjectMocks
-import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Spy
 import org.springframework.boot.test.context.SpringBootTest
 
 /**
@@ -23,7 +23,7 @@ class BizServiceMockTest : KtBaseSpringMockTest() {
     @InjectMocks
     lateinit var bizService: BizServiceImpl
 
-    @Mock
+    @Spy
     lateinit var userMapper: UserMapper
 
     @Test
