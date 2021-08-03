@@ -189,8 +189,8 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
     private List<String> getMapperTables(MapperTable mapperTable) {
         if (mapperTable.sharding()) {
             List<String> tables = new ArrayList<>();
+            ShardingStrategy strategy = mapperTable.shardingStrategy().newInstance();
             for (int i = 0; i < mapperTable.count(); i++) {
-                ShardingStrategy strategy = mapperTable.shardingStrategy().newInstance();
                 tables.add(mapperTable.value() + strategy.getShardingTableDelimiter() + i);
             }
             return tables;
