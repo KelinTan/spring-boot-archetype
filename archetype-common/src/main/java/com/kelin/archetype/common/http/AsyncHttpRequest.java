@@ -8,6 +8,7 @@ import com.kelin.archetype.common.utils.HttpUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
 import org.assertj.core.util.Preconditions;
+import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.Dsl;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.RequestBuilder;
@@ -104,6 +105,10 @@ public class AsyncHttpRequest {
     }
 
     public Response execute() {
+        return execute(HttpClientFactory.getAsyncHttpClient());
+    }
+
+    public Response execute(AsyncHttpClient asyncHttpClient) {
         Preconditions.checkNotNull(this.request);
 
         if (!headers.isEmpty()) {
@@ -117,7 +122,7 @@ public class AsyncHttpRequest {
             request.setReadTimeout(config.getReadTimeout());
         }
 
-        return HttpUtils.asyncExecuteResponse(request.build());
+        return HttpUtils.asyncExecuteResponse(request.build(), asyncHttpClient);
     }
 
     public Response performGet() {

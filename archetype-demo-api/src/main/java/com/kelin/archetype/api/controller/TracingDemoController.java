@@ -34,4 +34,9 @@ public class TracingDemoController {
     public RestResponse<List<User>> tracingRpc() {
         return userClient.findAll();
     }
+
+    @GetMapping("/asyncRpc")
+    public RestResponse<List<User>> tracingAsyncRpc() {
+        return userClient.findAllAsync();
+    }
 }

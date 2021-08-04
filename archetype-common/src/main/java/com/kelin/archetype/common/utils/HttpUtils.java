@@ -3,7 +3,6 @@
 package com.kelin.archetype.common.utils;
 
 import com.kelin.archetype.common.exception.RestExceptionFactory;
-import com.kelin.archetype.common.http.HttpClientFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.HttpEntity;
@@ -16,6 +15,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.assertj.core.util.Preconditions;
+import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Param;
 import org.asynchttpclient.Request;
@@ -138,8 +138,8 @@ public class HttpUtils {
         }
     }
 
-    public static Response asyncExecuteResponse(Request request) {
-        return safeAsyncResponse(HttpClientFactory.getAsyncHttpClient().executeRequest(request));
+    public static Response asyncExecuteResponse(Request request, AsyncHttpClient asyncHttpClient) {
+        return safeAsyncResponse(asyncHttpClient.executeRequest(request));
     }
 
     public static String safeEntityToString(HttpEntity httpEntity) {

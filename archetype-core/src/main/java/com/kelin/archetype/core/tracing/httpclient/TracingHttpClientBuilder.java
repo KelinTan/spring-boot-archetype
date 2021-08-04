@@ -1,8 +1,8 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing;
+package com.kelin.archetype.core.tracing.httpclient;
 
-import com.kelin.archetype.core.tracing.ApacheClientSpanDecorator.StandardTags;
+import com.kelin.archetype.core.tracing.httpclient.ApacheClientSpanDecorator.StandardTags;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.apache.http.client.RedirectStrategy;
