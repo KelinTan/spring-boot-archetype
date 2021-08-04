@@ -14,7 +14,6 @@ import java.util.Map;
  * @author Kelin Tan
  */
 public class HttpHeadersInjectAdapter implements TextMap {
-
     private final HttpRequest httpRequest;
 
     public HttpHeadersInjectAdapter(HttpRequest httpRequest) {

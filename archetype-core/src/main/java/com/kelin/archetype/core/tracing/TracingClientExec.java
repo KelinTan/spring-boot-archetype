@@ -77,7 +77,6 @@ public class TracingClientExec implements ClientExecChain {
             HttpRequestWrapper request,
             HttpClientContext clientContext,
             HttpExecutionAware execAware) throws IOException, HttpException {
-
         Span localSpan = handleLocalSpan(request, clientContext);
         CloseableHttpResponse response = null;
         try {
@@ -94,11 +93,10 @@ public class TracingClientExec implements ClientExecChain {
                   If there is a redirect localSpan is not finished and redirect is logged.
                  */
                 Integer redirectCount = clientContext.getAttribute(REDIRECT_COUNT, Integer.class);
-                if (!redirectHandlingDisabled &&
-                        clientContext.getRequestConfig().isRedirectsEnabled() &&
-                        redirectStrategy.isRedirected(request, response, clientContext) &&
-                        ++redirectCount < clientContext.getRequestConfig().getMaxRedirects()) {
-
+                if (!redirectHandlingDisabled
+                        && clientContext.getRequestConfig().isRedirectsEnabled()
+                        && redirectStrategy.isRedirected(request, response, clientContext)
+                        && ++redirectCount < clientContext.getRequestConfig().getMaxRedirects()) {
                     clientContext.setAttribute(REDIRECT_COUNT, redirectCount);
                 } else {
                     localSpan.finish();

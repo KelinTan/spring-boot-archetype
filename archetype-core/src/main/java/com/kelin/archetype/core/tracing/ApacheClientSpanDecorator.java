@@ -23,7 +23,6 @@ import java.util.Map;
  * @author Kelin Tan
  */
 public interface ApacheClientSpanDecorator {
-
     /**
      * Decorate span before request is fired.
      *
