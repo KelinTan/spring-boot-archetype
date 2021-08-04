@@ -1,6 +1,6 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing;
+package com.kelin.archetype.core.tracing.httpclient;
 
 import com.kelin.archetype.common.utils.HttpUtils;
 import io.opentracing.Span;

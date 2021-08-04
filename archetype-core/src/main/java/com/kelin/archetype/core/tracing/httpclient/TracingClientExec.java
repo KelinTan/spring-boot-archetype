@@ -1,9 +1,8 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing;
+package com.kelin.archetype.core.tracing.httpclient;
 
-import static com.kelin.archetype.core.tracing.TracingConstants.COMPONENT_NAME;
-import static com.kelin.archetype.core.tracing.TracingConstants.PARENT_CONTEXT;
+import static com.kelin.archetype.core.tracing.httpclient.TracingConstants.PARENT_CONTEXT;
 
 import com.kelin.archetype.core.rpc.RpcConstants;
 import io.opentracing.References;
@@ -37,6 +36,8 @@ import java.util.List;
  * @author Kelin Tan
  */
 public class TracingClientExec implements ClientExecChain {
+    public static final String COMPONENT_NAME = "apache-httpclient";
+
     /**
      * Id of {@link HttpClientContext#setAttribute(String, Object)} representing span associated with the current client
      * processing. Referenced span is local span not a span representing HTTP communication.

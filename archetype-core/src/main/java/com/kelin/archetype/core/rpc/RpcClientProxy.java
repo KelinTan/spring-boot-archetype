@@ -115,7 +115,7 @@ public class RpcClientProxy implements InvocationHandler {
     private Object invokeAsyncRequest(Method method, HttpConfig httpConfig, Object[] args) {
         AsyncHttpRequest request = getAsyncHttpRequest(method, httpConfig, args);
         for (int i = 0; i < httpConfig.getRetryTimes(); i++) {
-            Response response = request.execute();
+            Response response = request.execute(TracingHttpClientFactory.getTracingAsyncHttpClient());
             if (response == null) {
                 throw RpcExceptionFactory.toException(clazz.getName(), method.getName(), LogMessageBuilder.builder()
                         .message("Rpc failed with empty response: " + method.getName())
@@ -216,7 +216,7 @@ public class RpcClientProxy implements InvocationHandler {
         Object requestBody = buildRequestBody(method, args);
 
         String url = buildUrl(endpoint, requestUrlOnMethods.get(method), pathParameterMap);
-        AsyncHttpRequest request = createAsyncRequest(url, requestMethod, config, parameterMap,
+        AsyncHttpRequest request = createAsyncRequest(url, method, requestMethod, config, parameterMap,
                 headerMap, requestBody);
         methodAsyncHttpRequestMap.putIfAbsent(method, request);
         return request;
@@ -281,10 +281,12 @@ public class RpcClientProxy implements InvocationHandler {
         }
     }
 
-    private AsyncHttpRequest createAsyncRequest(String uri, RequestMethod method, HttpConfig config,
+    private AsyncHttpRequest createAsyncRequest(String uri, Method method, RequestMethod httpMethod, HttpConfig config,
             Map<String, Object> paramsMap,
             Map<String, Object> headerMap,
             Object requestBody) {
+        headerMap.put(RpcConstants.RPC_NAME_HEADER, getRpcName(method.getName(), true));
+
         AsyncHttpRequest request = AsyncHttpRequest
                 .host(uri)
                 .withConfig(config)
@@ -293,7 +295,7 @@ public class RpcClientProxy implements InvocationHandler {
         if (requestBody != null) {
             request.withContent(JsonConverter.serialize(requestBody));
         }
-        switch (method) {
+        switch (httpMethod) {
             case GET:
                 return request.get();
             case DELETE:
@@ -423,6 +425,14 @@ public class RpcClientProxy implements InvocationHandler {
     }
 
     private String getRpcName(String methodName) {
-        return clazz.getName() + "." + methodName;
+        return getRpcName(methodName, false);
+    }
+
+    private String getRpcName(String methodName, boolean async) {
+        if (async) {
+            return clazz.getName() + "." + methodName + ".async";
+        } else {
+            return clazz.getName() + "." + methodName;
+        }
     }
 }
