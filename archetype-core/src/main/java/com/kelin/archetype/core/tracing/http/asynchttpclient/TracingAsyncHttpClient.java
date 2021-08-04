@@ -1,8 +1,10 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing.asynchttpclient;
+package com.kelin.archetype.core.tracing.http.asynchttpclient;
 
 import com.kelin.archetype.core.rpc.RpcConstants;
+import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
+import com.kelin.archetype.core.tracing.http.HttpRequestTracing;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
@@ -23,27 +25,17 @@ import java.util.List;
  * An {@link org.asynchttpclient.AsyncHttpClient} that traces HTTP calls using the OpenTracing API.
  */
 public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
+    public static final String COMPONENT_NAME = "async-httpclient";
+
     private final Tracer tracer;
-    private final List<AsyncHttpClientSpanDecorator> decorators;
+    private final List<HttpClientSpanDecorator> decorators;
     private final boolean traceWithActiveSpanOnly;
 
     public TracingAsyncHttpClient() {
-        this(GlobalTracer.get(), Collections.singletonList(AsyncHttpClientSpanDecorator.DEFAULT), false);
+        this(GlobalTracer.get(), Collections.singletonList(new HttpClientSpanDecorator.StandardTags()), false);
     }
 
-    public TracingAsyncHttpClient(Tracer tracer) {
-        this(tracer, Collections.singletonList(AsyncHttpClientSpanDecorator.DEFAULT), false);
-    }
-
-    public TracingAsyncHttpClient(Tracer tracer, boolean traceWithActiveSpanOnly) {
-        this(tracer, Collections.singletonList(AsyncHttpClientSpanDecorator.DEFAULT), traceWithActiveSpanOnly);
-    }
-
-    public TracingAsyncHttpClient(Tracer tracer, List<AsyncHttpClientSpanDecorator> decorators) {
-        this(tracer, decorators, false);
-    }
-
-    public TracingAsyncHttpClient(Tracer tracer, List<AsyncHttpClientSpanDecorator> decorators,
+    public TracingAsyncHttpClient(Tracer tracer, List<HttpClientSpanDecorator> decorators,
             boolean traceWithActiveSpanOnly) {
         this.tracer = tracer;
         this.decorators = new ArrayList<>(decorators);
@@ -51,21 +43,12 @@ public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
     }
 
     public TracingAsyncHttpClient(AsyncHttpClientConfig config) {
-        this(config, GlobalTracer.get(), Collections.singletonList(AsyncHttpClientSpanDecorator.DEFAULT), false);
+        this(config, GlobalTracer.get(), Collections.singletonList(new HttpClientSpanDecorator.StandardTags()),
+                false);
     }
 
     public TracingAsyncHttpClient(AsyncHttpClientConfig config, Tracer tracer,
-            boolean traceWithActiveSpanOnly) {
-        this(config, tracer, Collections.singletonList(AsyncHttpClientSpanDecorator.DEFAULT), traceWithActiveSpanOnly);
-    }
-
-    public TracingAsyncHttpClient(AsyncHttpClientConfig config, Tracer tracer,
-            List<AsyncHttpClientSpanDecorator> decorators) {
-        this(config, tracer, decorators, false);
-    }
-
-    public TracingAsyncHttpClient(AsyncHttpClientConfig config, Tracer tracer,
-            List<AsyncHttpClientSpanDecorator> decorators, boolean traceWithActiveSpanOnly) {
+            List<HttpClientSpanDecorator> decorators, boolean traceWithActiveSpanOnly) {
         super(config);
         this.tracer = tracer;
         this.decorators = new ArrayList<>(decorators);
@@ -80,9 +63,14 @@ public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
 
         final Span span = tracer
                 .buildSpan(getSpanName(request))
+                .withTag(Tags.COMPONENT.getKey(), COMPONENT_NAME)
                 .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT).start();
 
-        decorators.forEach(decorator -> decorator.onRequest(request, span));
+        HttpRequestTracing requestTracing = new HttpRequestTracing();
+        requestTracing.setMethod(request.getMethod());
+        requestTracing.setUrl(request.getUrl());
+
+        decorators.forEach(decorator -> decorator.onRequest(requestTracing, span));
         tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new HttpHeadersInjectAdapter(request.getHeaders()));
 
         return super.executeRequest(request, new TracingAsyncHandler<>(tracer, handler, span, decorators));

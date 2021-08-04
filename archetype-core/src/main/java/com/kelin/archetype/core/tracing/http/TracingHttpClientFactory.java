@@ -1,9 +1,9 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing;
+package com.kelin.archetype.core.tracing.http;
 
-import com.kelin.archetype.core.tracing.asynchttpclient.TracingAsyncHttpClient;
-import com.kelin.archetype.core.tracing.httpclient.TracingHttpClientBuilder;
+import com.kelin.archetype.core.tracing.http.asynchttpclient.TracingAsyncHttpClient;
+import com.kelin.archetype.core.tracing.http.httpclient.TracingHttpClientBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.asynchttpclient.AsyncHttpClient;

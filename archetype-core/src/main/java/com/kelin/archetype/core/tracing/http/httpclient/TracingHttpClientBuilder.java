@@ -1,8 +1,8 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing.httpclient;
+package com.kelin.archetype.core.tracing.http.httpclient;
 
-import com.kelin.archetype.core.tracing.httpclient.ApacheClientSpanDecorator.StandardTags;
+import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.apache.http.client.RedirectStrategy;
@@ -24,7 +24,7 @@ public class TracingHttpClientBuilder extends HttpClientBuilder {
     private final RedirectStrategy redirectStrategy;
     private final boolean redirectHandlingDisabled;
     private Tracer tracer;
-    private List<ApacheClientSpanDecorator> spanDecorators;
+    private List<HttpClientSpanDecorator> spanDecorators;
     private boolean injectDisabled;
 
     /**
@@ -35,7 +35,7 @@ public class TracingHttpClientBuilder extends HttpClientBuilder {
         this(DefaultRedirectStrategy.INSTANCE,
                 false,
                 GlobalTracer.get(),
-                Collections.singletonList(new ApacheClientSpanDecorator.StandardTags()));
+                Collections.singletonList(new HttpClientSpanDecorator.StandardTags()));
     }
 
     /**
@@ -49,7 +49,7 @@ public class TracingHttpClientBuilder extends HttpClientBuilder {
         this(redirectStrategy,
                 redirectHandlingDisabled,
                 GlobalTracer.get(),
-                Collections.singletonList(new StandardTags()));
+                Collections.singletonList(new HttpClientSpanDecorator.StandardTags()));
     }
 
     /**
@@ -63,7 +63,7 @@ public class TracingHttpClientBuilder extends HttpClientBuilder {
             RedirectStrategy redirectStrategy,
             boolean redirectHandlingDisabled,
             Tracer tracer,
-            List<ApacheClientSpanDecorator> spanDecorators) {
+            List<HttpClientSpanDecorator> spanDecorators) {
         this.redirectStrategy = redirectStrategy;
         this.redirectHandlingDisabled = redirectHandlingDisabled;
         this.tracer = tracer;
@@ -84,7 +84,7 @@ public class TracingHttpClientBuilder extends HttpClientBuilder {
         return this;
     }
 
-    public TracingHttpClientBuilder withSpanDecorators(List<ApacheClientSpanDecorator> decorators) {
+    public TracingHttpClientBuilder withSpanDecorators(List<HttpClientSpanDecorator> decorators) {
         this.spanDecorators = new ArrayList<>(decorators);
         return this;
     }

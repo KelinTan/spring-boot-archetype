@@ -1,6 +1,6 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing.asynchttpclient;
+package com.kelin.archetype.core.tracing.http.asynchttpclient;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import io.opentracing.propagation.TextMap;
