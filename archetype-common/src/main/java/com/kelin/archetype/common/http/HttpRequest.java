@@ -5,6 +5,7 @@ package com.kelin.archetype.common.http;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.utils.HttpUtils;
+import lombok.Getter;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -19,6 +20,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.assertj.core.util.Preconditions;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 /**
  * @author Kelin Tan
  */
+@Getter
 public class HttpRequest {
     private final URIBuilder uriBuilder;
     private final Map<String, Object> headers = new LinkedHashMap<>();
@@ -135,6 +138,10 @@ public class HttpRequest {
     }
 
     public HttpRequest execute() {
+        return execute(HttpClientFactory.getDefaultHttpClient());
+    }
+
+    public HttpRequest execute(CloseableHttpClient client) {
         Preconditions.checkNotNull(this.request);
 
         if (!headers.isEmpty()) {
@@ -146,7 +153,7 @@ public class HttpRequest {
                     .setSocketTimeout(config.getReadTimeout())
                     .build());
         }
-        this.response = HttpUtils.safeExecute(this.request);
+        this.response = HttpUtils.safeExecute(this.request, client);
         return this;
     }
 

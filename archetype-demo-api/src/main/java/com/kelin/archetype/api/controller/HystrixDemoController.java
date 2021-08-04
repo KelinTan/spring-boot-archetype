@@ -30,7 +30,7 @@ public class HystrixDemoController {
     @SneakyThrows
     @GetMapping("/demo")
     @HystrixCommand(fallbackMethod = "findAllFallback", groupKey = "hystrix")
-    public RestResponse<List<User>> findAll() {
+    public RestResponse<List<User>> findHystrixAll() {
         return userClient.findAll();
     }
 

@@ -1,6 +1,12 @@
-info:
-  tags:
-    environment: ${spring.profiles.active}
+client:
+  endpoint:
+    user: http://127.0.0.1:${server.port}
+opentracing:
+  jaeger:
+    enabled: true
+    udp-sender:
+      host: localhost
+      port: 6831
 spring:
   security:
     user:
