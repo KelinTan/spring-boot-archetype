@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.core.rpc;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
@@ -24,6 +25,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -98,25 +100,18 @@ public class RpcClientRegistrar
 
     private void registerBean(AnnotatedBeanDefinition definition) {
         String className = definition.getBeanClassName();
-        ((DefaultListableBeanFactory) this.beanFactory).registerSingleton(className, createProxy(definition));
+        ((DefaultListableBeanFactory) this.beanFactory).registerSingleton(Objects.requireNonNull(className),
+                createProxy(definition));
     }
 
+    @SneakyThrows
     private Object createProxy(AnnotatedBeanDefinition definition) {
-        try {
-            AnnotationMetadata annotationMetadata = definition.getMetadata();
-            Class<?> target = Class.forName(annotationMetadata.getClassName());
+        AnnotationMetadata annotationMetadata = definition.getMetadata();
+        Class<?> target = Class.forName(annotationMetadata.getClassName());
 
-            RpcClient annotation = target.getAnnotation(RpcClient.class);
-            String endpoint = this.environment.resolvePlaceholders(annotation.endpoint());
-            return Proxy.newProxyInstance(RpcClient.class.getClassLoader(), new Class[] {target},
-                    new RpcClientProxy(target, endpoint, annotation.errorHandler().newInstance()));
-        } catch (ClassNotFoundException e) {
-            if (log.isDebugEnabled()) {
-                log.debug(e.getMessage());
-            }
-        } catch (IllegalAccessException | InstantiationException e) {
-            log.error("error: ", e);
-        }
-        return null;
+        RpcClient annotation = target.getAnnotation(RpcClient.class);
+        String endpoint = this.environment.resolvePlaceholders(annotation.endpoint());
+        return Proxy.newProxyInstance(RpcClient.class.getClassLoader(), new Class[] {target},
+                new RpcClientProxy(target, endpoint, annotation.errorHandler().newInstance()));
     }
 }

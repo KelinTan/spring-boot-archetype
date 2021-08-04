@@ -7,10 +7,12 @@ import com.kelin.archetype.common.http.HttpClientFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.assertj.core.util.Preconditions;
@@ -125,11 +127,11 @@ public class HttpUtils {
         }
     }
 
-    public static CloseableHttpResponse safeExecute(HttpRequestBase request) {
+    public static CloseableHttpResponse safeExecute(HttpRequestBase request, CloseableHttpClient httpClient) {
         Preconditions.checkNotNull(request);
 
         try {
-            return HttpClientFactory.getDefaultHttpClient().execute(request);
+            return httpClient.execute(request);
         } catch (IOException e) {
             log.error("Invalid request: {} " + request.toString(), e);
             throw RestExceptionFactory.toSystemException();
@@ -187,5 +189,21 @@ public class HttpUtils {
         }
         return params.entrySet().stream().map(entry -> new Param(entry.getKey(), String.valueOf(entry.getValue())))
                 .collect(Collectors.toList());
+    }
+
+    public static int extractUriPort(URI uri) {
+        int port = uri.getPort();
+        if (port == -1) {
+            String scheme = uri.getScheme();
+            if (scheme != null) {
+                port = scheme.equalsIgnoreCase("https") ? 443 : 80;
+            }
+        }
+
+        return port;
+    }
+
+    public static int extractHostPort(HttpHost host) {
+        return host.getPort() == -1 ? host.getSchemeName().equalsIgnoreCase("https") ? 443 : 80 : host.getPort();
     }
 }
