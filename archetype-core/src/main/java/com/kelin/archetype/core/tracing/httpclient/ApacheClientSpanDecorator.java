@@ -4,6 +4,7 @@ package com.kelin.archetype.core.tracing.httpclient;
 
 import com.kelin.archetype.common.utils.HttpUtils;
 import io.opentracing.Span;
+import io.opentracing.log.Fields;
 import io.opentracing.tag.Tags;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
@@ -83,9 +84,10 @@ public interface ApacheClientSpanDecorator {
         public void onError(HttpRequest request, HttpContext httpContext, Exception ex, Span span) {
             Tags.ERROR.set(span, Boolean.TRUE);
 
-            Map<String, Object> errorLogs = new HashMap<>(2);
-            errorLogs.put("event", Tags.ERROR.getKey());
-            errorLogs.put("error.object", ex);
+            Map<String, Object> errorLogs = new HashMap<>(3);
+            errorLogs.put(Fields.EVENT, Tags.ERROR.getKey());
+            errorLogs.put(Fields.ERROR_KIND, "Exception");
+            errorLogs.put(Fields.ERROR_OBJECT, ex);
             span.log(errorLogs);
         }
     }

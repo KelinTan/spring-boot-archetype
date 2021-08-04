@@ -3,6 +3,7 @@
 package com.kelin.archetype.core.tracing.asynchttpclient;
 
 import io.opentracing.Span;
+import io.opentracing.log.Fields;
 import io.opentracing.tag.Tags;
 import org.asynchttpclient.HttpResponseStatus;
 import org.asynchttpclient.Request;
@@ -56,16 +57,12 @@ public interface AsyncHttpClientSpanDecorator {
         @Override
         public void onError(Throwable throwable, Span span) {
             Tags.ERROR.set(span, Boolean.TRUE);
-            if (throwable != null) {
-                span.log(errorLogs(throwable));
-            }
-        }
 
-        private Map<String, Object> errorLogs(final Throwable throwable) {
-            final Map<String, Object> errorLogs = new HashMap<>(2);
-            errorLogs.put("event", Tags.ERROR.getKey());
-            errorLogs.put("error.object", throwable);
-            return errorLogs;
+            Map<String, Object> errorLogs = new HashMap<>(3);
+            errorLogs.put(Fields.EVENT, Tags.ERROR.getKey());
+            errorLogs.put(Fields.ERROR_KIND, "Exception");
+            errorLogs.put(Fields.ERROR_OBJECT, throwable);
+            span.log(errorLogs);
         }
     };
 }
