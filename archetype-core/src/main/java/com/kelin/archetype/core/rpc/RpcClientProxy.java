@@ -10,7 +10,7 @@ import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.common.utils.ProxyUtils;
-import com.kelin.archetype.core.tracing.TracingHttpClientFactory;
+import com.kelin.archetype.core.tracing.http.TracingHttpClientFactory;
 import com.netflix.hystrix.HystrixCommand.Setter;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;

@@ -1,10 +1,12 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing.httpclient;
+package com.kelin.archetype.core.tracing.http.httpclient;
 
-import static com.kelin.archetype.core.tracing.httpclient.TracingConstants.PARENT_CONTEXT;
-
+import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.core.rpc.RpcConstants;
+import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
+import com.kelin.archetype.core.tracing.http.HttpRequestTracing;
+import com.kelin.archetype.core.tracing.http.HttpResponseTracing;
 import io.opentracing.References;
 import io.opentracing.Scope;
 import io.opentracing.Span;
@@ -14,6 +16,7 @@ import io.opentracing.propagation.Format;
 import io.opentracing.tag.Tags;
 import org.apache.http.Header;
 import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.RedirectStrategy;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,6 +27,7 @@ import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.impl.execchain.ClientExecChain;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +41,7 @@ import java.util.List;
  */
 public class TracingClientExec implements ClientExecChain {
     public static final String COMPONENT_NAME = "apache-httpclient";
+    public static final String PARENT_CONTEXT = TracingHttpClientBuilder.class.getName() + ".parentSpanContext";
 
     /**
      * Id of {@link HttpClientContext#setAttribute(String, Object)} representing span associated with the current client
@@ -55,7 +60,7 @@ public class TracingClientExec implements ClientExecChain {
     private final boolean injectDisabled;
 
     private final Tracer tracer;
-    private final List<ApacheClientSpanDecorator> spanDecorators;
+    private final List<HttpClientSpanDecorator> spanDecorators;
 
     public TracingClientExec(
             ClientExecChain clientExecChain,
@@ -63,7 +68,7 @@ public class TracingClientExec implements ClientExecChain {
             boolean redirectHandlingDisabled,
             boolean injectDisabled,
             Tracer tracer,
-            List<ApacheClientSpanDecorator> spanDecorators) {
+            List<HttpClientSpanDecorator> spanDecorators) {
         this.requestExecutor = clientExecChain;
         this.redirectStrategy = redirectStrategy;
         this.redirectHandlingDisabled = redirectHandlingDisabled;
@@ -141,12 +146,13 @@ public class TracingClientExec implements ClientExecChain {
         }
 
         try (Scope redirectScope = tracer.activateSpan(redirectSpan)) {
-            spanDecorators.forEach(decorator -> decorator.onRequest(request, clientContext, redirectSpan));
+            spanDecorators.forEach(decorator -> decorator.onRequest(buildRequestTracing(request), redirectSpan));
             CloseableHttpResponse response = requestExecutor.execute(route, request, clientContext, execAware);
-            spanDecorators.forEach(decorator -> decorator.onResponse(response, clientContext, redirectSpan));
+            spanDecorators.forEach(decorator -> decorator
+                    .onResponse(new HttpResponseTracing(response.getStatusLine().getStatusCode()), redirectSpan));
             return response;
         } catch (IOException | HttpException | RuntimeException e) {
-            spanDecorators.forEach(decorator -> decorator.onError(request, clientContext, e, redirectSpan));
+            spanDecorators.forEach(decorator -> decorator.onError(e, redirectSpan));
             throw e;
         } finally {
             redirectSpan.finish();
@@ -163,5 +169,24 @@ public class TracingClientExec implements ClientExecChain {
         } else {
             return httpRequest.getRequestLine().getMethod();
         }
+    }
+
+    private HttpRequestTracing buildRequestTracing(HttpRequestWrapper request) {
+        HttpRequestTracing tracing = new HttpRequestTracing();
+        tracing.setMethod(request.getMethod());
+
+        URI uri = request.getURI();
+        HttpHost target = request.getTarget();
+
+        if (uri != null && uri.isAbsolute()) {
+            tracing.setUrl(uri.toString());
+            tracing.setHostName(uri.getHost());
+            tracing.setPort(HttpUtils.extractUriPort(uri));
+        } else if (target != null) {
+            tracing.setUrl(request.getTarget() + request.getRequestLine().getUri());
+            tracing.setHostName(target.getHostName());
+            tracing.setPort(HttpUtils.extractHostPort(target));
+        }
+        return tracing;
     }
 }

@@ -1,7 +1,9 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing.asynchttpclient;
+package com.kelin.archetype.core.tracing.http.asynchttpclient;
 
+import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
+import com.kelin.archetype.core.tracing.http.HttpResponseTracing;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.opentracing.Scope;
@@ -21,10 +23,10 @@ public class TracingAsyncHandler<T> implements AsyncHandler<T> {
     private final Tracer tracer;
     private final AsyncHandler<T> handler;
     private final Span span;
-    private final List<AsyncHttpClientSpanDecorator> decorators;
+    private final List<HttpClientSpanDecorator> decorators;
 
     public TracingAsyncHandler(final Tracer tracer, final AsyncHandler<T> handler, final Span span,
-            List<AsyncHttpClientSpanDecorator> decorators) {
+            List<HttpClientSpanDecorator> decorators) {
         this.tracer = tracer;
         this.handler = handler;
         this.span = span;
@@ -36,7 +38,9 @@ public class TracingAsyncHandler<T> implements AsyncHandler<T> {
         try {
             return handler.onStatusReceived(responseStatus);
         } finally {
-            decorators.forEach(decorator -> decorator.onStatus(responseStatus, span));
+            HttpResponseTracing responseTracing = new HttpResponseTracing(responseStatus.getStatusCode());
+
+            decorators.forEach(decorator -> decorator.onResponse(responseTracing, span));
         }
     }
 

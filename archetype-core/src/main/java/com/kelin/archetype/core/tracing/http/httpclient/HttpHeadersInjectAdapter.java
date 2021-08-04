@@ -1,6 +1,6 @@
 // Copyright 2021 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.core.tracing.httpclient;
+package com.kelin.archetype.core.tracing.http.httpclient;
 
 import io.opentracing.propagation.TextMap;
 import org.apache.http.HttpRequest;
