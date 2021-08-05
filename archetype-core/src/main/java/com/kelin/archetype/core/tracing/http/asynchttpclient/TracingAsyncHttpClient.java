@@ -2,6 +2,8 @@
 
 package com.kelin.archetype.core.tracing.http.asynchttpclient;
 
+import static com.kelin.archetype.core.tracing.TracingConstants.ASYNC_COMPONENT_NAME;
+
 import com.kelin.archetype.core.rpc.RpcConstants;
 import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
 import com.kelin.archetype.core.tracing.http.HttpRequestTracing;
@@ -25,8 +27,6 @@ import java.util.List;
  * An {@link org.asynchttpclient.AsyncHttpClient} that traces HTTP calls using the OpenTracing API.
  */
 public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
-    public static final String COMPONENT_NAME = "async-httpclient";
-
     private final Tracer tracer;
     private final List<HttpClientSpanDecorator> decorators;
     private final boolean traceWithActiveSpanOnly;
@@ -63,7 +63,7 @@ public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
 
         final Span span = tracer
                 .buildSpan(getSpanName(request))
-                .withTag(Tags.COMPONENT.getKey(), COMPONENT_NAME)
+                .withTag(Tags.COMPONENT.getKey(), ASYNC_COMPONENT_NAME)
                 .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT).start();
 
         HttpRequestTracing requestTracing = new HttpRequestTracing();

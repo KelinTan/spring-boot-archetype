@@ -6,6 +6,7 @@ import com.kelin.archetype.common.beans.RestResponse;
 import com.kelin.archetype.common.beans.RestResponseFactory;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,12 +30,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/user")
+@Slf4j
 public class UserApiController {
     @Autowired
     private UserMapper userMapper;
 
     @GetMapping("/findAll")
     public RestResponse<List<User>> findAll() {
+        log.info("Find all user");
         return RestResponseFactory.success(userMapper.findAll());
     }
 

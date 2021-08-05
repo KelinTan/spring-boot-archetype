@@ -2,6 +2,9 @@
 
 package com.kelin.archetype.core.tracing.http.httpclient;
 
+import static com.kelin.archetype.core.tracing.TracingConstants.APACHE_COMPONENT_NAME;
+import static com.kelin.archetype.core.tracing.TracingConstants.PARENT_CONTEXT;
+
 import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.core.rpc.RpcConstants;
 import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
@@ -40,9 +43,6 @@ import java.util.List;
  * @author Kelin Tan
  */
 public class TracingClientExec implements ClientExecChain {
-    public static final String COMPONENT_NAME = "apache-httpclient";
-    public static final String PARENT_CONTEXT = TracingHttpClientBuilder.class.getName() + ".parentSpanContext";
-
     /**
      * Id of {@link HttpClientContext#setAttribute(String, Object)} representing span associated with the current client
      * processing. Referenced span is local span not a span representing HTTP communication.
@@ -115,7 +115,7 @@ public class TracingClientExec implements ClientExecChain {
         Tracer.SpanBuilder spanBuilder = tracer
                 .buildSpan(getLocalSpanName(httpRequest))
                 .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT)
-                .withTag(Tags.COMPONENT.getKey(), COMPONENT_NAME);
+                .withTag(Tags.COMPONENT.getKey(), APACHE_COMPONENT_NAME);
 
         if (clientContext.getAttribute(PARENT_CONTEXT, SpanContext.class) != null) {
             spanBuilder.ignoreActiveSpan().asChildOf(clientContext.getAttribute(PARENT_CONTEXT, SpanContext.class));
