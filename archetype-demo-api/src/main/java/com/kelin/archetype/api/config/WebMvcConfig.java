@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.api.config;
 
+import com.kelin.archetype.core.tracing.log.TracingMDCInterceptor;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
@@ -18,7 +20,14 @@ import java.util.Collections;
  */
 @Configuration
 @SuppressWarnings("SpellCheckingInspection")
-public class WebMvcConfig {
+public class WebMvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // MDC
+        TracingMDCInterceptor mdcInterceptor = new TracingMDCInterceptor();
+        registry.addInterceptor(mdcInterceptor);
+    }
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
