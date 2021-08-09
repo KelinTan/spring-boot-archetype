@@ -7,6 +7,7 @@ import com.kelin.archetype.common.json.JsonConverter
 import com.kelin.archetype.common.utils.HttpUtils
 import org.asynchttpclient.Response
 import org.junit.Assert.assertArrayEquals
+import org.springframework.test.web.reactive.server.WebTestClient
 import java.math.BigDecimal
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
@@ -142,6 +143,15 @@ interface KtTestUtils {
         return JsonNodeWrapper(
             JsonConverter.readTree(
                 entity
+            )
+        )
+    }
+
+    fun WebTestClient.ResponseSpec.json(): JsonNodeWrapper {
+        val entity = this.expectBody(String::class.java)
+        return JsonNodeWrapper(
+            JsonConverter.readTree(
+                entity.returnResult().responseBody
             )
         )
     }

@@ -5,6 +5,7 @@ package com.kelin.archetype.test
 import com.kelin.archetype.common.http.AsyncHttpRequest
 import com.kelin.archetype.common.http.HttpRequest
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.test.web.reactive.server.WebTestClient
 
 /**
  * @author Kelin Tan
@@ -23,4 +24,8 @@ abstract class KtBaseSpringWebTest : KtBaseSpringTest() {
     @Suppress("PropertyName")
     val AsyncHttp: AsyncHttpRequest
         get() = AsyncHttpRequest(host)
+
+    @Suppress("PropertyName")
+    val WebClient: WebTestClient
+        get() = WebTestClient.bindToServer().baseUrl(host).build()
 }

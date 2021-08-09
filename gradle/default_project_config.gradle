@@ -36,6 +36,7 @@ dependencyManagement {
             entry 'spring-boot-starter-security'
             entry 'spring-boot-starter-validation'
             entry 'spring-boot-starter-jdbc'
+            entry 'spring-boot-starter-webflux'
         }
         dependencySet(group: 'io.springfox', version: '2.9.2') {
             entry 'springfox-swagger2'

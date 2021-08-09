@@ -3,13 +3,16 @@
 package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.ApiApplication
-import com.kelin.archetype.common.json.JsonConverter
+import com.kelin.archetype.common.beans.RestResponse
 import com.kelin.archetype.database.config.PrimaryDatabase
+import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.apache.http.HttpStatus
 import org.junit.Test
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.core.ParameterizedTypeReference
+import org.springframework.http.MediaType
 
 /**
  * @author Kelin Tan
@@ -154,6 +157,40 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
             -"result" verify {
                 "id".node.asInt() greater 0
                 -"userName" eq "performPut"
+            }
+        }
+    }
+
+    @Test
+    fun `test find all users with web client`() {
+        WebClient.get().uri("${API_PREFIX}/findAll")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectBody(object : ParameterizedTypeReference<RestResponse<List<User>>>() {})
+            .returnResult() verify {
+            responseBody verify {
+                result verify {
+                    size eq 4
+                    item(0) verify {
+                        id eq 1
+                    }
+                }
+            }
+        }
+
+        WebClient.get().uri("${API_PREFIX}/findAll")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .json() verify {
+            -"result" verify {
+                size eq 4
+                item(0) verify {
+                    -"id" eq 1
+                    -"id" not 2
+                    "nId".node.isNullOrNone
+                    +"userName" startsWith "test"
+                    -"userName" endsWith "1"
+                }
             }
         }
     }
