@@ -2,35 +2,43 @@
 
 package com.kelin.archetype.common.exception;
 
+import static com.kelin.archetype.common.constants.TracingConstants.ERROR_META_SPAN_ID;
+import static com.kelin.archetype.common.constants.TracingConstants.ERROR_META_TRACE_ID;
+import static com.kelin.archetype.common.constants.TracingConstants.MDC_SPAN;
+import static com.kelin.archetype.common.constants.TracingConstants.MDC_TRACING;
+
 import com.kelin.archetype.common.beans.RestErrorResponse;
 import com.kelin.archetype.common.beans.RestResponseFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kelin Tan
  */
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
-@ResponseBody
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = RestException.class)
     public ResponseEntity<RestErrorResponse> handleRestException(RestException e) {
         RestErrorResponse errorResponse = RestErrorResponse.builder()
                 .errorCode(e.getErrorCode())
                 .errorMessage(e.getMessage())
+                .meta(buildErrorMeta())
                 .build();
 
         return new ResponseEntity<>(errorResponse, e.getStatus());
@@ -48,6 +56,7 @@ public class GlobalExceptionHandler {
         RestErrorResponse errorResponse = RestErrorResponse.builder()
                 .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .errorMessage("Rpc failed: " + e.getServiceName() + "." + e.getMethod())
+                .meta(buildErrorMeta())
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -82,7 +91,14 @@ public class GlobalExceptionHandler {
 
     private RestErrorResponse handleException(Exception e, int errorCode) {
         log.error("Handle Exception : ", e);
+        return RestResponseFactory.error(errorCode, e.getLocalizedMessage(), buildErrorMeta());
+    }
 
-        return RestResponseFactory.error(errorCode, e.getLocalizedMessage());
+    private Map<String, Object> buildErrorMeta() {
+        Map<String, Object> meta = new HashMap<>(2);
+        meta.put(ERROR_META_TRACE_ID, MDC.get(MDC_TRACING));
+        meta.put(ERROR_META_SPAN_ID, MDC.get(MDC_SPAN));
+
+        return meta;
     }
 }

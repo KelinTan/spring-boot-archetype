@@ -90,7 +90,7 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
     }
 
     private DataSource createDataSource(MybatisDatabase database) {
-        if (Profile.isTest(this.environment)) {
+        if (Profile.isTest()) {
             return new FakeDataSource(database.schemaLocation(), database.dataLocation());
         }
         return DataSourceBuilder.create()

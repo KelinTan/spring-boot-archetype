@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.core.tracing.http.httpclient;
 
-import static com.kelin.archetype.core.tracing.TracingConstants.APACHE_COMPONENT_NAME;
-import static com.kelin.archetype.core.tracing.TracingConstants.PARENT_CONTEXT;
+import static com.kelin.archetype.common.constants.TracingConstants.APACHE_COMPONENT_NAME;
+import static com.kelin.archetype.common.constants.TracingConstants.PARENT_CONTEXT;
 
 import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.core.rpc.RpcConstants;

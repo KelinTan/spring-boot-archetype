@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 /**
  * @author Kelin Tan
  */
@@ -17,4 +19,5 @@ import lombok.NoArgsConstructor;
 public class RestErrorResponse {
     private int errorCode;
     private String errorMessage;
+    private Map<String, Object> meta;
 }

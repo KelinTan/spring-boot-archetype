@@ -3,7 +3,8 @@
 package com.kelin.archetype.test;
 
 import com.kelin.archetype.common.constants.Profile;
-import com.kelin.archetype.test.database.DatabaseTestExecutionListener;
+import com.kelin.archetype.test.listener.DatabaseTestExecutionListener;
+import com.kelin.archetype.test.listener.SystemPropertyTestExecutionListener;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
@@ -25,6 +26,9 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
         DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
         MockitoTestExecutionListener.class,
         ResetMocksTestExecutionListener.class,
-        SqlScriptsTestExecutionListener.class, DatabaseTestExecutionListener.class})
+        SqlScriptsTestExecutionListener.class,
+        SystemPropertyTestExecutionListener.class,
+        DatabaseTestExecutionListener.class,
+})
 public abstract class BaseSpringTest {
 }

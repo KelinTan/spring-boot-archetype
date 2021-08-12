@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.core.tracing.http.httpclient;
 
+import com.kelin.archetype.core.tracing.CurrentTracer;
 import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
@@ -34,7 +35,7 @@ public class TracingHttpClientBuilder extends HttpClientBuilder {
     public TracingHttpClientBuilder() {
         this(DefaultRedirectStrategy.INSTANCE,
                 false,
-                GlobalTracer.get(),
+                CurrentTracer.get(),
                 Collections.singletonList(new HttpClientSpanDecorator.StandardTags()));
     }
 
