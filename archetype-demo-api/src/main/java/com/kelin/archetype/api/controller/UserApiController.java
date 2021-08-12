@@ -4,6 +4,7 @@ package com.kelin.archetype.api.controller;
 
 import com.kelin.archetype.common.beans.RestResponse;
 import com.kelin.archetype.common.beans.RestResponseFactory;
+import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +63,11 @@ public class UserApiController {
         user.setUserName(name);
         userMapper.insert(user);
         return RestResponseFactory.success(userMapper.findOne(user.getId()));
+    }
+
+    @PostMapping("/saveError")
+    public RestResponse<User> saveError(@RequestParam("name") String name) {
+        throw RestExceptionFactory.toSystemException();
     }
 
     @PostMapping("/save2")

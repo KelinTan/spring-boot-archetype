@@ -5,6 +5,7 @@ package com.kelin.archetype.common.beans;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kelin Tan
@@ -21,6 +22,14 @@ public class RestResponseFactory {
         return RestErrorResponse.builder()
                 .errorCode(errorCode)
                 .errorMessage(message)
+                .build();
+    }
+
+    public static RestErrorResponse error(int errorCode, String message, Map<String, Object> meta) {
+        return RestErrorResponse.builder()
+                .errorCode(errorCode)
+                .errorMessage(message)
+                .meta(meta)
                 .build();
     }
 

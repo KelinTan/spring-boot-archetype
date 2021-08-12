@@ -123,7 +123,7 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
                 item(0) verify {
                     -"id" eq 1
                     -"id" not 2
-                    "nId".node.isNullOrNone
+                    "nId".node.isNullOrNone eq true
                     +"userName" startsWith "test"
                     -"userName" endsWith "1"
                 }
@@ -140,6 +140,20 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
             -"result" verify {
                 isNull eq false
                 -"userName" eq "performPostWithParam"
+            }
+        }
+    }
+
+    @Test
+    fun `test save user error`() {
+        Http.withPath("${API_PREFIX}/saveError")
+            .withParam("name", "saveError")
+            .performPost()
+            .json() verify {
+            -"errorCode" eq HttpStatus.SC_INTERNAL_SERVER_ERROR
+            -"meta" verify {
+                "traceId".node.isNotNullOrNone eq true
+                "spanId".node.isNotNullOrNone eq true
             }
         }
     }
@@ -187,7 +201,7 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
                 item(0) verify {
                     -"id" eq 1
                     -"id" not 2
-                    "nId".node.isNullOrNone
+                    "nId".node.isNullOrNone eq true
                     +"userName" startsWith "test"
                     -"userName" endsWith "1"
                 }

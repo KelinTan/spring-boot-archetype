@@ -4,12 +4,14 @@ package com.kelin.archetype.test
 
 import com.kelin.archetype.common.http.AsyncHttpRequest
 import com.kelin.archetype.common.http.HttpRequest
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.test.web.reactive.server.WebTestClient
 
 /**
  * @author Kelin Tan
  */
+@AutoConfigureWebMvc
 abstract class KtBaseSpringWebTest : KtBaseSpringTest() {
     @LocalServerPort
     var serverPort = 0

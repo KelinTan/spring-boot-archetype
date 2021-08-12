@@ -58,6 +58,12 @@ class JsonNodeWrapper(val jsonNode: JsonNode) {
     val isNone
         get() = jsonNode.isMissingNode
 
+    val isNotNone
+        get() = !isNone
+
     val isNullOrNone
         get() = jsonNode.isNull || jsonNode.isMissingNode
+
+    val isNotNullOrNone
+        get() = !isNullOrNone
 }

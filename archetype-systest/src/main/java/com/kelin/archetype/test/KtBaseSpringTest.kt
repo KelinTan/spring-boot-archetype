@@ -3,7 +3,8 @@
 package com.kelin.archetype.test
 
 import com.kelin.archetype.common.constants.Profile.PROFILE_TEST
-import com.kelin.archetype.test.database.DatabaseTestExecutionListener
+import com.kelin.archetype.test.listener.DatabaseTestExecutionListener
+import com.kelin.archetype.test.listener.SystemPropertyTestExecutionListener
 import org.junit.runner.RunWith
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -22,6 +23,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener
     DependencyInjectionTestExecutionListener::class,
     ServletTestExecutionListener::class,
     SqlScriptsTestExecutionListener::class,
+    SystemPropertyTestExecutionListener::class,
     DatabaseTestExecutionListener::class
 )
 @ContextConfiguration(classes = [DefaultTestConfiguration::class])

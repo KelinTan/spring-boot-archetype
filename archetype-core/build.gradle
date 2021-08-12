@@ -12,6 +12,7 @@ dependencies {
     api 'com.netflix.hystrix:hystrix-javanica'
     api 'com.netflix.hystrix:hystrix-metrics-event-stream'
     api 'io.opentracing.contrib:opentracing-spring-jaeger-web-starter'
+    api 'io.opentracing:opentracing-mock'
 
     testCompile project(':archetype-systest')
 }

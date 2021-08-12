@@ -3,11 +3,13 @@
 package com.kelin.archetype.test;
 
 import org.junit.Before;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.web.server.LocalServerPort;
 
 /**
  * @author Kelin Tan
  */
+@AutoConfigureWebMvc
 public abstract class BaseSpringWebTest extends BaseSpringTest {
     @LocalServerPort
     private int serverPort;

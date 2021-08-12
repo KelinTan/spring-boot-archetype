@@ -2,9 +2,10 @@
 
 package com.kelin.archetype.core.tracing.http.asynchttpclient;
 
-import static com.kelin.archetype.core.tracing.TracingConstants.ASYNC_COMPONENT_NAME;
+import static com.kelin.archetype.common.constants.TracingConstants.ASYNC_COMPONENT_NAME;
 
 import com.kelin.archetype.core.rpc.RpcConstants;
+import com.kelin.archetype.core.tracing.CurrentTracer;
 import com.kelin.archetype.core.tracing.http.HttpClientSpanDecorator;
 import com.kelin.archetype.core.tracing.http.HttpRequestTracing;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -12,7 +13,6 @@ import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.tag.Tags;
-import io.opentracing.util.GlobalTracer;
 import org.asynchttpclient.AsyncHandler;
 import org.asynchttpclient.AsyncHttpClientConfig;
 import org.asynchttpclient.DefaultAsyncHttpClient;
@@ -32,7 +32,7 @@ public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
     private final boolean traceWithActiveSpanOnly;
 
     public TracingAsyncHttpClient() {
-        this(GlobalTracer.get(), Collections.singletonList(new HttpClientSpanDecorator.StandardTags()), false);
+        this(CurrentTracer.get(), Collections.singletonList(new HttpClientSpanDecorator.StandardTags()), false);
     }
 
     public TracingAsyncHttpClient(Tracer tracer, List<HttpClientSpanDecorator> decorators,
@@ -43,7 +43,7 @@ public class TracingAsyncHttpClient extends DefaultAsyncHttpClient {
     }
 
     public TracingAsyncHttpClient(AsyncHttpClientConfig config) {
-        this(config, GlobalTracer.get(), Collections.singletonList(new HttpClientSpanDecorator.StandardTags()),
+        this(config, CurrentTracer.get(), Collections.singletonList(new HttpClientSpanDecorator.StandardTags()),
                 false);
     }
 
