@@ -2,9 +2,7 @@
 
 package com.kelin.archetype.common.exception;
 
-import static com.kelin.archetype.common.constants.TracingConstants.ERROR_META_SPAN_ID;
 import static com.kelin.archetype.common.constants.TracingConstants.ERROR_META_TRACE_ID;
-import static com.kelin.archetype.common.constants.TracingConstants.MDC_SPAN;
 import static com.kelin.archetype.common.constants.TracingConstants.MDC_TRACING;
 
 import com.kelin.archetype.common.beans.RestErrorResponse;
@@ -35,6 +33,11 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = RestException.class)
     public ResponseEntity<RestErrorResponse> handleRestException(RestException e) {
+        log.warn(LogMessageBuilder.builder()
+                .message("Rest exception")
+                .parameter("message", e.getLocalizedMessage())
+                .build());
+
         RestErrorResponse errorResponse = RestErrorResponse.builder()
                 .errorCode(e.getErrorCode())
                 .errorMessage(e.getMessage())
@@ -95,10 +98,8 @@ public class GlobalExceptionHandler {
     }
 
     private Map<String, Object> buildErrorMeta() {
-        Map<String, Object> meta = new HashMap<>(2);
+        Map<String, Object> meta = new HashMap<>(1);
         meta.put(ERROR_META_TRACE_ID, MDC.get(MDC_TRACING));
-        meta.put(ERROR_META_SPAN_ID, MDC.get(MDC_SPAN));
-
         return meta;
     }
 }

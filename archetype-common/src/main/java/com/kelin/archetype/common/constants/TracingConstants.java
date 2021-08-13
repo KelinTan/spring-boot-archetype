@@ -10,10 +10,6 @@ public class TracingConstants {
     public static final String APACHE_COMPONENT_NAME = "apache-httpclient";
     public static final String PARENT_CONTEXT = "TracingHttpClientBuilder.parentSpanContext";
 
-    public static final String MDC_TRACING_CONTEXT = "X-TRACE-CONTEXT";
     public static final String MDC_TRACING = "X-TRACE";
-    public static final String MDC_SPAN = "X-SPAN";
-
     public static final String ERROR_META_TRACE_ID = "traceId";
-    public static final String ERROR_META_SPAN_ID = "spanId";
 }
