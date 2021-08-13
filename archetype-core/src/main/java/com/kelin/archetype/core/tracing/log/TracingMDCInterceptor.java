@@ -2,9 +2,7 @@
 
 package com.kelin.archetype.core.tracing.log;
 
-import static com.kelin.archetype.common.constants.TracingConstants.MDC_SPAN;
 import static com.kelin.archetype.common.constants.TracingConstants.MDC_TRACING;
-import static com.kelin.archetype.common.constants.TracingConstants.MDC_TRACING_CONTEXT;
 
 import com.kelin.archetype.core.tracing.CurrentTracer;
 import io.opentracing.Span;
@@ -30,14 +28,10 @@ public class TracingMDCInterceptor implements HandlerInterceptor {
         Tracer tracer = CurrentTracer.get();
         if (tracer instanceof MockTracer) {
             MDC.put(MDC_TRACING, "");
-            MDC.put(MDC_SPAN, "");
-            MDC.put(MDC_TRACING_CONTEXT, "");
         } else {
             Span activeSpan = tracer.activeSpan();
             if (activeSpan != null) {
                 MDC.put(MDC_TRACING, activeSpan.context().toTraceId());
-                MDC.put(MDC_SPAN, activeSpan.context().toSpanId());
-                MDC.put(MDC_TRACING_CONTEXT, activeSpan.context().toString());
             } else {
                 log.error("Empty active span: " + request.getRequestURL());
             }

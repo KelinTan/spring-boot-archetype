@@ -153,7 +153,6 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
             -"errorCode" eq HttpStatus.SC_INTERNAL_SERVER_ERROR
             -"meta" verify {
                 "traceId".node.isNotNullOrNone eq true
-                "spanId".node.isNotNullOrNone eq true
             }
         }
     }
