@@ -16,13 +16,15 @@ jobs:
         path: ~/.gradle/caches
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
-    - name: Build with Gradle
-      run: ./gradlew
+    - name: check
+      run: ./gradlew checkcode
+    - name: test
+      run: ./gradlew test aggregateJacocoReport
     - uses: codecov/codecov-action@v1
 #      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
-        files: ./**/build/reports/jacoco/test/jacocoTestReport.xml
+        files: build/reports/jacoco/aggregate/jacocoTestReport.html
 #        yml: ./codecov.yml #optional
         flags: unittests #optional
         name: codecov-jacoco #optional

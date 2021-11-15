@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.redis
 
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
@@ -13,7 +13,7 @@ class RedisServiceTest : KtBaseRedisTest() {
     @Autowired
     lateinit var redisService: RedisService
 
-    @Before
+    @BeforeEach
     fun reset() {
         redisService.sync().flushall()
     }

@@ -6,7 +6,7 @@ import com.kelin.archetype.common.http.HttpRequest
 import com.kelin.archetype.common.json.JsonConverter
 import com.kelin.archetype.common.utils.HttpUtils
 import org.asynchttpclient.Response
-import org.junit.Assert.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.math.BigDecimal
 import java.nio.charset.StandardCharsets

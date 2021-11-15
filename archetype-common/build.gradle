@@ -17,6 +17,7 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-jdbc'
     api 'org.springframework.boot:spring-boot-starter-log4j2'
     api 'org.springframework.boot:spring-boot-starter-webflux'
+    api "org.junit.jupiter:junit-jupiter"
 
     testCompile project(':archetype-systest')
 }

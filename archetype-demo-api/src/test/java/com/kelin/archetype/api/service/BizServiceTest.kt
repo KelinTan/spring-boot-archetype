@@ -10,7 +10,7 @@ import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringTest
 import com.kelin.archetype.test.database.MockDatabase
 import com.kelin.archetype.test.database.MockDatabases
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 

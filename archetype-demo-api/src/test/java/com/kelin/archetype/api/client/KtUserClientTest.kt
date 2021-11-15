@@ -9,7 +9,8 @@ import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringTest
 import com.kelin.archetype.test.database.MockDatabase
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
@@ -40,14 +41,14 @@ class KtUserClientTest : KtBaseSpringTest() {
         }
     }
 
-    @Test(expected = RpcException::class)
+    @Test
     fun testRpcError() {
-        userClient.findAllError()
+        assertThrows<RpcException> { userClient.findAllError() }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testRpcCustomError() {
-        userClientV2.findAllError()
+        assertThrows<IllegalArgumentException> { userClientV2.findAllError() }
     }
 
     @Test

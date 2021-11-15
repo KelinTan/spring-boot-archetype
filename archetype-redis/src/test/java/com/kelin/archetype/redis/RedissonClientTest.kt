@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.redis
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.redisson.api.RedissonClient
 import org.springframework.beans.factory.annotation.Autowired
 import java.lang.Thread.sleep

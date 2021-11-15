@@ -6,7 +6,7 @@ import com.kelin.archetype.database.config.BizDatabase
 import com.kelin.archetype.database.mapper.biz.YearShardingMapper
 import com.kelin.archetype.test.KtBaseSpringTest
 import com.kelin.archetype.test.database.MockDatabase
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 

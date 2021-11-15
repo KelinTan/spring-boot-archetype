@@ -8,7 +8,7 @@ import com.kelin.archetype.common.exception.RpcExceptionFactory
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.test.KtBaseSpringMockWebTest
 import com.kelin.archetype.test.database.MockDatabase
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito

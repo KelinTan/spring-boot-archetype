@@ -4,7 +4,7 @@ package com.kelin.archetype.core.cache
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.kelin.archetype.test.KtTestUtils
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.util.concurrent.TimeUnit
 
 /**
