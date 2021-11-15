@@ -24,7 +24,7 @@ jobs:
 #      if: endsWith(github.ref,'master') || endsWith(github.base_ref,'master')
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
-        files: build/reports/jacoco/aggregate/jacocoTestReport.html
+        files: build/reports/jacoco/aggregate/jacocoTestReport.xml
 #        yml: ./codecov.yml #optional
         flags: unittests #optional
         name: codecov-jacoco #optional
