@@ -3,7 +3,7 @@
 package com.kelin.archetype.jwt
 
 import com.kelin.archetype.test.KtTestUtils
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 /**
  * @author Kelin Tan

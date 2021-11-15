@@ -9,7 +9,7 @@ import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.test.KtBaseSpringWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.apache.http.HttpStatus
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.MediaType

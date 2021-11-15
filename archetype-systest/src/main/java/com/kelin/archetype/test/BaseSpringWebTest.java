@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.test;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -16,7 +16,7 @@ public abstract class BaseSpringWebTest extends BaseSpringTest {
 
     protected String serverPrefix;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         serverPrefix = "http://localhost:" + serverPort;
     }

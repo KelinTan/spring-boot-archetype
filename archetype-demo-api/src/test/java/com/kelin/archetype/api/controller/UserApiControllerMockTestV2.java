@@ -12,7 +12,7 @@ import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import com.kelin.archetype.test.BaseMockMvcTest;
 import org.assertj.core.util.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;

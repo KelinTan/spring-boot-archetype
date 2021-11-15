@@ -1,8 +1,9 @@
 buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "org.jetbrains.kotlin:kotlin-allopen:1.4.0"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
+        classpath "org.kordamp.gradle:jacoco-gradle-plugin:0.46.0"
     }
 
     repositories {
@@ -10,22 +11,19 @@ buildscript {
 
         maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url "https://repo.maven.apache.org/maven2" }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 
 allprojects {
     group = 'com.github.kelin'
     version = '1.1.0-SNAPSHOT'
-}
 
-subprojects {
     apply from: rootProject.file("gradle/default_project_config.gradle")
 }
 
 defaultTasks("checkcode", "test")
 
-task jacocoMerge(type: JacocoMerge) {
-    subprojects.each { subproject ->
-        executionData subproject.tasks.withType(Test)
-    }
-} 
+apply plugin: "org.kordamp.gradle.jacoco"

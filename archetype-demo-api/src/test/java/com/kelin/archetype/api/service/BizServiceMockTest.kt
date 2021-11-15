@@ -6,7 +6,7 @@ import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.api.service.impl.BizServiceImpl
 import com.kelin.archetype.database.mapper.primary.UserMapper
 import com.kelin.archetype.test.KtBaseSpringMockTest
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mockito
 import org.mockito.Spy

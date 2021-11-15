@@ -1,7 +1,7 @@
 package com.kelin.archetype.jwt
 
 import com.kelin.archetype.test.KtBaseSpringTest
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 

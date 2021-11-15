@@ -4,8 +4,8 @@ package com.kelin.archetype.core.cache
 
 import com.kelin.archetype.core.cache.DemoService.CACHE_NAME
 import com.kelin.archetype.test.KtBaseSpringTest
-import org.junit.After
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.CacheManager
 import org.springframework.cache.caffeine.CaffeineCacheManager
@@ -22,7 +22,7 @@ class CacheManagerTest : KtBaseSpringTest() {
     @Autowired
     lateinit var demoService: DemoService
 
-    @After
+    @AfterEach
     fun clear() {
         cacheManager.getCache(CACHE_NAME)?.clear()
     }

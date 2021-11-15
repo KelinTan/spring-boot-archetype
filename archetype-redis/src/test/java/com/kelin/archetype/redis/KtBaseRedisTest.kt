@@ -3,8 +3,8 @@
 package com.kelin.archetype.redis
 
 import com.kelin.archetype.test.KtBaseSpringTest
-import org.junit.AfterClass
-import org.junit.BeforeClass
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import redis.embedded.RedisServer
 
 /**
@@ -14,14 +14,14 @@ abstract class KtBaseRedisTest : KtBaseSpringTest() {
     companion object {
         private var redisServer: RedisServer? = null
 
-        @BeforeClass
+        @BeforeAll
         @JvmStatic
         fun setUp() {
             redisServer = RedisServer()
             redisServer!!.start()
         }
 
-        @AfterClass
+        @AfterAll
         @JvmStatic
         fun tearDown() {
             redisServer?.stop()

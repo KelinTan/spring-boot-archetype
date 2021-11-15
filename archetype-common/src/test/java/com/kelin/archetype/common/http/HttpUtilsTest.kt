@@ -6,7 +6,7 @@ import com.kelin.archetype.common.utils.HttpUtils.concatPath
 import com.kelin.archetype.common.utils.HttpUtils.formatUrlWithParams
 import com.kelin.archetype.common.utils.HttpUtils.formatUrlWithPathParams
 import com.kelin.archetype.test.KtTestUtils
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 /**
  * @author Kelin Tan
