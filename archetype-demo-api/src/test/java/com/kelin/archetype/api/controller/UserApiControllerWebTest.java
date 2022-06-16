@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kelin.archetype.api.ApiApplication;
-import com.kelin.archetype.common.beans.RestResponse;
+import com.kelin.archetype.beans.RestResponse;
 import com.kelin.archetype.common.http.HttpRequest;
 import com.kelin.archetype.common.utils.HttpUtils;
 import com.kelin.archetype.database.config.PrimaryDatabase;
