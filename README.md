@@ -270,3 +270,7 @@ class KtUserApiControllerWebTest : KtBaseSpringWebTest() {
 ### JWT
 
 集成`JWT`提供统一认证授权 参见：`archetype-jwt`
+
+### Gateway
+
+基于`spring-cloud-gateway`搭建的服务网关，支持全局异常处理，通用路由支持，参见：`archetype-demo-gateway`
