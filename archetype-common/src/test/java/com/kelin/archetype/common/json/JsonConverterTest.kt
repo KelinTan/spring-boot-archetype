@@ -3,7 +3,7 @@
 package com.kelin.archetype.common.json
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.kelin.archetype.common.beans.RestResponse
+import com.kelin.archetype.beans.RestResponse
 import com.kelin.archetype.test.KtTestUtils
 import org.junit.jupiter.api.Test
 

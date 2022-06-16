@@ -69,6 +69,5 @@ public class UserApiAuthControllerTest extends BaseMockMvcTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.SC_UNAUTHORIZED))
                 .andExpect(jsonPath("$.errorCode").value(BizErrorCode.ACCOUNT_SESSION_EXPIRED.getErrorCode()));
-        ;
     }
 }
