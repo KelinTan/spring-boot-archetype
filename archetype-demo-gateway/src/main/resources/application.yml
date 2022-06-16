@@ -1,0 +1,20 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: demo-gateway
+  profiles:
+    active: dev
+  jmx:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+logging:
+  file:
+    name: logs/archetype-gateway.log

@@ -1,8 +1,6 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.beans;
-
-import org.springframework.data.domain.Page;
+package com.kelin.archetype.beans;
 
 import java.util.List;
 import java.util.Map;
@@ -37,10 +35,6 @@ public class RestResponseFactory {
         return RestResponse.<T>builder()
                 .result(result)
                 .build();
-    }
-
-    public static <T> RestPageResponse<T> successPage(Page<T> page) {
-        return successPage(page.getNumber(), page.getSize(), page.getTotalElements(), page.getContent());
     }
 
     public static <T> RestPageResponse<T> successPage(int pageNo, int pageSize, long totalCount, List<T> results) {

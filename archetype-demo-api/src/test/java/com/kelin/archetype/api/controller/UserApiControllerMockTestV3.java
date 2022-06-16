@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.kelin.archetype.api.ApiApplication;
-import com.kelin.archetype.common.beans.RestResponse;
+import com.kelin.archetype.beans.RestResponse;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import com.kelin.archetype.test.BaseSpringTest;

@@ -3,9 +3,9 @@
 package com.kelin.archetype.api.controller;
 
 import com.kelin.archetype.api.session.SessionAuth;
-import com.kelin.archetype.common.beans.RestPageResponse;
-import com.kelin.archetype.common.beans.RestResponse;
-import com.kelin.archetype.common.beans.RestResponseFactory;
+import com.kelin.archetype.beans.RestPageResponse;
+import com.kelin.archetype.beans.RestResponse;
+import com.kelin.archetype.beans.RestResponseFactory;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,7 @@ public class UserApiAuthController {
     public RestPageResponse<User> findPage(@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Page<User> page = userMapper.findPage(null, PageRequest.of(pageNo, pageSize));
-        return RestResponseFactory.successPage(page);
+        return RestResponseFactory.successPage(page.getNumber(), page.getSize(), page.getTotalElements(),
+                page.getContent());
     }
 }

@@ -5,8 +5,8 @@ package com.kelin.archetype.common.exception;
 import static com.kelin.archetype.common.constants.TracingConstants.ERROR_META_TRACE_ID;
 import static com.kelin.archetype.common.constants.TracingConstants.MDC_TRACING;
 
-import com.kelin.archetype.common.beans.RestErrorResponse;
-import com.kelin.archetype.common.beans.RestResponseFactory;
+import com.kelin.archetype.beans.RestErrorResponse;
+import com.kelin.archetype.beans.RestResponseFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;

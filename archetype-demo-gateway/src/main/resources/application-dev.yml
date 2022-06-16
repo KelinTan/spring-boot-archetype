@@ -1,0 +1,4 @@
+route:
+  commonRoutes:
+    - path: /demo/**
+      url: http://localhost:8081

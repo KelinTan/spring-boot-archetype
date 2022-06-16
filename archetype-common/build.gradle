@@ -1,5 +1,7 @@
 description = 'archetype-common'
 dependencies {
+    compile project(':archetype-beans')
+
     api(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
         exclude module: "spring-boot-starter-tomcat"
     }

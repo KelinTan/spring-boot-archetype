@@ -1,6 +1,6 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.common.beans;
+package com.kelin.archetype.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

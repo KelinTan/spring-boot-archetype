@@ -1,0 +1,7 @@
+description = 'archetype-demo-gateway'
+dependencies {
+    compile project(':archetype-beans')
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway:2.2.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+}
