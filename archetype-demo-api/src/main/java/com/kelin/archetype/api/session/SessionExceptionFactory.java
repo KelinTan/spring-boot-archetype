@@ -3,7 +3,7 @@
 package com.kelin.archetype.api.session;
 
 import com.kelin.archetype.api.model.constant.BizErrorCode;
-import com.kelin.archetype.common.exception.RestException;
+import com.kelin.archetype.beans.exception.RestException;
 import com.kelin.archetype.common.exception.RestExceptionFactory;
 
 /**

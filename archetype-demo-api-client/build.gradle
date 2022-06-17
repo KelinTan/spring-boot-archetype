@@ -1,0 +1,4 @@
+description = 'archetype-demo-api-client'
+dependencies {
+    api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}

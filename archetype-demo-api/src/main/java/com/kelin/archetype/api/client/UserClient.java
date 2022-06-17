@@ -2,8 +2,8 @@
 
 package com.kelin.archetype.api.client;
 
-import com.kelin.archetype.beans.RestResponse;
-import com.kelin.archetype.beans.RestResponseFactory;
+import com.kelin.archetype.beans.rest.RestResponse;
+import com.kelin.archetype.beans.rest.RestResponseFactory;
 import com.kelin.archetype.common.exception.RpcException;
 import com.kelin.archetype.core.rpc.HttpMethod;
 import com.kelin.archetype.core.rpc.RpcClient;

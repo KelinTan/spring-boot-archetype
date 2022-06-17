@@ -2,7 +2,6 @@
 
 package com.kelin.archetype.api.session;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kelin.archetype.database.entity.biz.BizAccount;
 
 /**
@@ -10,5 +9,4 @@ import com.kelin.archetype.database.entity.biz.BizAccount;
  */
 public class SessionCache {
     public static final ThreadLocal<BizAccount> ACCOUNT = new ThreadLocal<>();
-    public static final ThreadLocal<DecodedJWT> JWT = new ThreadLocal<>();
 }

@@ -3,8 +3,8 @@
 package com.kelin.archetype.api.controller;
 
 import com.kelin.archetype.api.client.UserClient;
-import com.kelin.archetype.beans.RestResponse;
-import com.kelin.archetype.beans.RestResponseFactory;
+import com.kelin.archetype.beans.rest.RestResponse;
+import com.kelin.archetype.beans.rest.RestResponseFactory;
 import com.kelin.archetype.database.entity.primary.User;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.SneakyThrows;

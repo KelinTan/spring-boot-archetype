@@ -2,11 +2,17 @@
 
 package com.kelin.gateway.config
 
+import com.kelin.archetype.client.service.AccountApiService
 import com.kelin.gateway.exception.DemoGatewayErrorWebExceptionHandler
+import com.kelin.gateway.filter.GatewayGlobalSessionFilter
+import org.springframework.beans.factory.ObjectProvider
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.boot.autoconfigure.web.ResourceProperties
 import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.boot.web.reactive.error.ErrorAttributes
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler
+import org.springframework.cloud.gateway.filter.GlobalFilter
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
 import org.springframework.context.ApplicationContext
@@ -15,9 +21,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.codec.ServerCodecConfigurer
+import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
+import java.util.stream.Collectors
 
 
 /**
@@ -38,6 +46,11 @@ class DemoGatewayConfig {
             }
         }
         return routeBuilder.build()
+    }
+
+    @Bean
+    fun gatewayGlobalFilter(accountApiService: AccountApiService): GlobalFilter {
+        return GatewayGlobalSessionFilter(accountApiService)
     }
 
     @Bean
@@ -71,5 +84,11 @@ class DemoGatewayConfig {
             setMessageWriters(serverCodecConfigurer.writers)
             setMessageReaders(serverCodecConfigurer.readers)
         }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun messageConverters(converters: ObjectProvider<HttpMessageConverter<*>>): HttpMessageConverters {
+        return HttpMessageConverters(converters.orderedStream().collect(Collectors.toList()))
     }
 }

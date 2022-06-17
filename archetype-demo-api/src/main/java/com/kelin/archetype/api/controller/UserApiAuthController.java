@@ -3,9 +3,9 @@
 package com.kelin.archetype.api.controller;
 
 import com.kelin.archetype.api.session.SessionAuth;
-import com.kelin.archetype.beans.RestPageResponse;
-import com.kelin.archetype.beans.RestResponse;
-import com.kelin.archetype.beans.RestResponseFactory;
+import com.kelin.archetype.beans.rest.RestPageResponse;
+import com.kelin.archetype.beans.rest.RestResponse;
+import com.kelin.archetype.beans.rest.RestResponseFactory;
 import com.kelin.archetype.database.entity.primary.User;
 import com.kelin.archetype.database.mapper.primary.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
