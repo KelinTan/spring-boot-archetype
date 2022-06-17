@@ -3,6 +3,7 @@
 package com.kelin.archetype.common.exception;
 
 import com.google.common.base.Preconditions;
+import com.kelin.archetype.beans.exception.RestException;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -84,18 +85,18 @@ public class RestExceptionFactory {
     public static RestException toException(int errorCode, HttpStatus httpStatus) {
         Preconditions.checkNotNull(httpStatus);
 
-        return new RestException(httpStatus, errorCode);
+        return new RestException(httpStatus.value(), httpStatus.getReasonPhrase(), errorCode);
     }
 
     public static RestException toException(HttpStatus httpStatus) {
         Preconditions.checkNotNull(httpStatus);
 
-        return new RestException(httpStatus);
+        return new RestException(httpStatus.value(), httpStatus.getReasonPhrase());
     }
 
     public static RestException toException(HttpStatus status, int errorCode, String message) {
         Preconditions.checkNotNull(status);
 
-        return new RestException(status, errorCode, message);
+        return new RestException(status.value(), message, errorCode);
     }
 }

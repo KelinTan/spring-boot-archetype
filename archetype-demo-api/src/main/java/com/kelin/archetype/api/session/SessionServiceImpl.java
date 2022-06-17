@@ -2,14 +2,13 @@
 
 package com.kelin.archetype.api.session;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
+import com.kelin.archetype.beans.constants.GatewayConstant;
 import com.kelin.archetype.database.entity.biz.BizAccount;
 import com.kelin.archetype.database.mapper.biz.BizAccountMapper;
 import com.kelin.archetype.jwt.JwtManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,26 +20,20 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Slf4j
 public class SessionServiceImpl implements SessionService {
-    private static final String AUTHORIZATION_SCHEME = "Bearer ";
-
     private final JwtManager jwtManager;
     private final BizAccountMapper accountMapper;
 
     @Override
     public BizAccount getCurrentAccount(HttpServletRequest request) {
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isBlank(header) || !header.startsWith(AUTHORIZATION_SCHEME)) {
+        String header = request.getHeader(GatewayConstant.GATEWAY_ACCOUNT_HEADER);
+        if (StringUtils.isBlank(header)) {
             throw SessionExceptionFactory.toAccountSessionExpired();
         }
 
         try {
-            DecodedJWT jwt = jwtManager.verify(header.substring(AUTHORIZATION_SCHEME.length()));
-            if (jwt != null) {
-                BizAccount account = accountMapper.findByAccount(jwt.getSubject());
-                if (account != null) {
-                    SessionCache.JWT.set(jwt);
-                    return account;
-                }
+            BizAccount account = accountMapper.findByAccount(header);
+            if (account != null) {
+                return account;
             }
         } catch (Exception e) {
             log.error("jwt verify error:", e);

@@ -38,6 +38,10 @@ dependencyManagement {
             entry 'spring-boot-starter-jdbc'
             entry 'spring-boot-starter-webflux'
         }
+        dependencySet(group: 'org.springframework.cloud', version: '2.2.4.RELEASE') {
+            entry 'spring-cloud-starter-gateway'
+            entry 'spring-cloud-starter-openfeign'
+        }
         dependencySet(group: 'io.springfox', version: '2.9.2') {
             entry 'springfox-swagger2'
             entry 'springfox-swagger-ui'

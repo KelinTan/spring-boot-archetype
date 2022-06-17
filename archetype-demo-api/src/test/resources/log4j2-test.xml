@@ -7,10 +7,10 @@
         </console>
     </appenders>
     <loggers>
-        <logger name="org.springframework" level="DEBUG"/>
-        <logger name="org.mybatis" level="DEBUG"/>
-        <logger name="springfox.documentation" level="DEBUG"/>
-        <root level="ALL">
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="org.mybatis" level="INFO"/>
+        <logger name="springfox.documentation" level="INFO"/>
+        <root level="INFO">
             <appender-ref ref="Console"/>
         </root>
     </loggers>

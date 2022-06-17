@@ -2,8 +2,9 @@
 
 package com.kelin.gateway.exception
 
-import com.kelin.archetype.beans.RestErrorResponse
-import com.kelin.archetype.beans.RestResponseFactory
+import com.kelin.archetype.beans.rest.RestErrorResponse
+import com.kelin.archetype.beans.rest.RestResponseFactory
+import com.kelin.archetype.beans.exception.RestException
 import org.springframework.boot.autoconfigure.web.ErrorProperties
 import org.springframework.boot.autoconfigure.web.ResourceProperties
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler
@@ -38,14 +39,17 @@ class DemoGatewayErrorWebExceptionHandler(
         val error = this.getError(request)
 
         val errorStatus = determineHttpStatus(error)
-        val errorResponse = determineError(errorStatus, error, request)
+        val errorResponse = determineError(errorStatus, error)
         return ServerResponse.status(errorStatus)
             .contentType(MediaType.APPLICATION_JSON)
             .body(BodyInserters.fromValue(errorResponse))
             .doOnNext { logError(request, it, error) }
     }
 
-    private fun determineError(httpStatus: HttpStatus, error: Throwable, request: ServerRequest): RestErrorResponse {
+    private fun determineError(httpStatus: HttpStatus, error: Throwable): RestErrorResponse {
+        if (error is RestException) {
+            return RestResponseFactory.error(error.errorCode, error.message)
+        }
         return when {
             httpStatus == HttpStatus.NOT_FOUND -> {
                 RestResponseFactory.error(HttpStatus.NOT_FOUND.value(), "Gateway not found")

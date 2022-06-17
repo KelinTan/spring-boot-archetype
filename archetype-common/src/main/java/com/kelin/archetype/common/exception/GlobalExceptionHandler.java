@@ -5,8 +5,9 @@ package com.kelin.archetype.common.exception;
 import static com.kelin.archetype.common.constants.TracingConstants.ERROR_META_TRACE_ID;
 import static com.kelin.archetype.common.constants.TracingConstants.MDC_TRACING;
 
-import com.kelin.archetype.beans.RestErrorResponse;
-import com.kelin.archetype.beans.RestResponseFactory;
+import com.kelin.archetype.beans.exception.RestException;
+import com.kelin.archetype.beans.rest.RestErrorResponse;
+import com.kelin.archetype.beans.rest.RestResponseFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
                 .meta(buildErrorMeta())
                 .build();
 
-        return new ResponseEntity<>(errorResponse, e.getStatus());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(e.getStatus()));
     }
 
     @ExceptionHandler(value = RpcException.class)

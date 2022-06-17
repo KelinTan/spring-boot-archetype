@@ -3,7 +3,7 @@
 package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.ApiApplication
-import com.kelin.archetype.beans.RestResponse
+import com.kelin.archetype.beans.rest.RestResponse
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.test.KtBaseSpringWebTest

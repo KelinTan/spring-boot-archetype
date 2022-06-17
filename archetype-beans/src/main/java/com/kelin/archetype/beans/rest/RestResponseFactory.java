@@ -1,6 +1,6 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.beans;
+package com.kelin.archetype.beans.rest;
 
 import java.util.List;
 import java.util.Map;

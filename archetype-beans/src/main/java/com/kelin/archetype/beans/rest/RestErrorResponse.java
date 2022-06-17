@@ -1,11 +1,13 @@
 // Copyright 2019 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.beans;
+package com.kelin.archetype.beans.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
 
 /**
  * @author Kelin Tan
@@ -14,7 +16,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestPageRequest {
-    private int pageNo;
-    private int pageSize;
+public class RestErrorResponse {
+    private int errorCode;
+    private String errorMessage;
+    private Map<String, Object> meta;
 }

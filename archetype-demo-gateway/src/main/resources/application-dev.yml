@@ -2,3 +2,7 @@ route:
   commonRoutes:
     - path: /demo/**
       url: http://localhost:8081
+
+feign:
+  api:
+    client: http://localhost:8081
