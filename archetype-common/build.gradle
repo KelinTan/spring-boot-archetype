@@ -2,24 +2,14 @@ description = 'archetype-common'
 dependencies {
     compile project(':archetype-beans')
 
-    api(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
-        exclude module: "spring-boot-starter-tomcat"
-    }
     api 'org.apache.commons:commons-lang3'
     api 'org.apache.commons:commons-collections4'
     api 'org.apache.httpcomponents:httpclient'
     api 'org.asynchttpclient:async-http-client'
     api 'commons-io:commons-io'
     api 'com.google.guava:guava'
-    api 'org.springframework.data:spring-data-commons'
-    api 'org.assertj:assertj-core'
-    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
-    api 'org.springframework.boot:spring-boot-starter-undertow'
-    api 'org.springframework.boot:spring-boot-autoconfigure'
-    api 'org.springframework.boot:spring-boot-starter-jdbc'
-    api 'org.springframework.boot:spring-boot-starter-log4j2'
-    api 'org.springframework.boot:spring-boot-starter-webflux'
-    api "org.junit.jupiter:junit-jupiter"
+    api 'io.opentracing.contrib:opentracing-spring-jaeger-web-starter'
+    api 'io.opentracing:opentracing-mock'
 
     testCompile project(':archetype-systest')
 }

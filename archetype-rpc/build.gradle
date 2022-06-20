@@ -1,0 +1,10 @@
+description = 'archetype-rpc'
+dependencies {
+    compile project(':archetype-common')
+
+    api 'org.springframework.boot:spring-boot-autoconfigure'
+    api 'org.springframework:spring-web'
+    api 'com.netflix.hystrix:hystrix-core'
+    api 'com.netflix.hystrix:hystrix-javanica'
+    api 'com.netflix.hystrix:hystrix-metrics-event-stream'
+}

@@ -3,10 +3,10 @@
 package com.kelin.archetype.api.client
 
 import com.kelin.archetype.api.ApiApplication
-import com.kelin.archetype.common.exception.RpcException
 import com.kelin.archetype.database.config.PrimaryDatabase
 import com.kelin.archetype.database.entity.primary.User
 import com.kelin.archetype.database.mapper.primary.UserMapper
+import com.kelin.archetype.rpc.RpcException
 import com.kelin.archetype.test.KtBaseSpringTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.junit.jupiter.api.Test

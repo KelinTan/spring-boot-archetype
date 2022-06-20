@@ -1,0 +1,11 @@
+description = 'archetype-database'
+dependencies {
+    compile project(':archetype-common')
+
+    implementation 'mysql:mysql-connector-java'
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    api 'org.springframework.boot:spring-boot-starter-jdbc'
+    api 'org.springframework.data:spring-data-commons'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    testCompile project(':archetype-systest')
+}

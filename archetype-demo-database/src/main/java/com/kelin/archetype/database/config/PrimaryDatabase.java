@@ -4,7 +4,7 @@ package com.kelin.archetype.database.config;
 
 import static com.kelin.archetype.database.config.PrimaryDatabase.NAME;
 
-import com.kelin.archetype.core.mybatis.MybatisDatabase;
+import com.kelin.archetype.database.mybatis.MybatisDatabase;
 import org.springframework.context.annotation.Configuration;
 
 /**

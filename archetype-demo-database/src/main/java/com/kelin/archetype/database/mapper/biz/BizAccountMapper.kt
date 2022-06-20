@@ -2,9 +2,9 @@
 
 package com.kelin.archetype.database.mapper.biz
 
-import com.kelin.archetype.common.database.MapperTable
-import com.kelin.archetype.core.mybatis.crud.BaseCrudMapper
+import com.kelin.archetype.database.MapperTable
 import com.kelin.archetype.database.entity.biz.BizAccount
+import com.kelin.archetype.database.mybatis.crud.BaseCrudMapper
 import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.Update

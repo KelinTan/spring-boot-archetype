@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.database.entity.primary;
 
-import com.kelin.archetype.core.mybatis.crud.BaseEntity;
+import com.kelin.archetype.database.mybatis.crud.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

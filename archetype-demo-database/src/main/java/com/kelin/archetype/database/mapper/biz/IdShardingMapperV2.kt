@@ -2,9 +2,9 @@
 
 package com.kelin.archetype.database.mapper.biz
 
-import com.kelin.archetype.common.database.MapperTable
-import com.kelin.archetype.core.mybatis.crud.BaseCrudMapper
+import com.kelin.archetype.database.MapperTable
 import com.kelin.archetype.database.entity.biz.IdSharding
+import com.kelin.archetype.database.mybatis.crud.BaseCrudMapper
 
 /**
  * @author Kelin Tan
