@@ -4,8 +4,8 @@ package com.kelin.archetype.api.controller
 
 import com.kelin.archetype.api.ApiApplication
 import com.kelin.archetype.api.client.UserClient
-import com.kelin.archetype.common.exception.RpcExceptionFactory
 import com.kelin.archetype.database.config.PrimaryDatabase
+import com.kelin.archetype.rpc.RpcExceptionFactory
 import com.kelin.archetype.test.KtBaseSpringMockWebTest
 import com.kelin.archetype.test.database.MockDatabase
 import org.junit.jupiter.api.Test

@@ -1,11 +1,21 @@
 description = 'archetype-demo-api'
 dependencies {
     compile project(':archetype-demo-database')
+    compile project(':archetype-rpc')
     compile project(':archetype-jwt')
     compile project(':archetype-demo-api-client')
 
     testCompile project(':archetype-systest')
 
+    implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'javax.servlet:javax.servlet-api'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'io.springfox:springfox-swagger2'
     implementation 'io.springfox:springfox-swagger-ui'
     implementation 'org.springframework.boot:spring-boot-starter-security'

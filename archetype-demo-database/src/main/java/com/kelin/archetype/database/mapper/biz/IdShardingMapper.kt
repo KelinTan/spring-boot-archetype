@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.database.mapper.biz
 
-import com.kelin.archetype.common.database.MapperTable
+import com.kelin.archetype.database.MapperTable
 import com.kelin.archetype.database.entity.biz.IdSharding
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert

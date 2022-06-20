@@ -1,5 +1,5 @@
 description = 'archetype-demo-database'
 dependencies {
-  compile project(':archetype-core')
+  compile project(':archetype-database')
   testCompile project(':archetype-systest')
 }

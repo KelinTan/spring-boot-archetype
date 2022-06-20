@@ -4,10 +4,10 @@ package com.kelin.archetype.api.client;
 
 import com.kelin.archetype.beans.rest.RestResponse;
 import com.kelin.archetype.beans.rest.RestResponseFactory;
-import com.kelin.archetype.common.exception.RpcException;
-import com.kelin.archetype.core.rpc.HttpMethod;
-import com.kelin.archetype.core.rpc.RpcClient;
 import com.kelin.archetype.database.entity.primary.User;
+import com.kelin.archetype.rpc.HttpMethod;
+import com.kelin.archetype.rpc.RpcClient;
+import com.kelin.archetype.rpc.RpcException;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

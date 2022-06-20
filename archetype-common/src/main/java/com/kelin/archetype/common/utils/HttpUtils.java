@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.common.utils;
 
+import com.google.common.base.Preconditions;
 import com.kelin.archetype.common.exception.RestExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
@@ -14,7 +15,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.assertj.core.util.Preconditions;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Param;
@@ -106,7 +106,7 @@ public class HttpUtils {
     }
 
     public static URIBuilder safeURIBuilder(String host) {
-        Preconditions.checkNotNullOrEmpty(host);
+        Preconditions.checkNotNull(host);
 
         try {
             return new URIBuilder(host);

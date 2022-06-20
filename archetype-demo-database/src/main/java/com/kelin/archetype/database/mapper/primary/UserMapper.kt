@@ -2,9 +2,9 @@
 
 package com.kelin.archetype.database.mapper.primary
 
-import com.kelin.archetype.common.database.MapperTable
-import com.kelin.archetype.core.mybatis.crud.BaseCrudMapper
+import com.kelin.archetype.database.MapperTable
 import com.kelin.archetype.database.entity.primary.User
+import com.kelin.archetype.database.mybatis.crud.BaseCrudMapper
 import org.apache.ibatis.annotations.Select
 
 /**

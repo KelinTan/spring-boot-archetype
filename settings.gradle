@@ -7,4 +7,5 @@ fileTree(".") {
 }.each {
     include(it)
 }
+include 'archetype-database'
 

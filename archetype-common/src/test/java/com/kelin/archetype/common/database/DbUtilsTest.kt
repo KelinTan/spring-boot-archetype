@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.common.database
 
+import com.kelin.archetype.database.DbUtils
 import com.kelin.archetype.test.KtTestUtils
 import org.junit.jupiter.api.Test
 

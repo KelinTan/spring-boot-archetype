@@ -5,7 +5,7 @@ package com.kelin.archetype.api;
 import static com.kelin.archetype.api.model.constant.ApiConstants.RPC_CLIENT_SCAN_PACKAGE;
 
 import com.kelin.archetype.common.constants.Profile;
-import com.kelin.archetype.core.rpc.RpcClientScan;
+import com.kelin.archetype.rpc.RpcClientScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

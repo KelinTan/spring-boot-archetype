@@ -3,6 +3,7 @@
 package com.kelin.archetype.common.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Preconditions;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.utils.HttpUtils;
 import lombok.Getter;
@@ -22,7 +23,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.assertj.core.util.Preconditions;
 
 import java.net.URI;
 import java.util.LinkedHashMap;

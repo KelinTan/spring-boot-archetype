@@ -3,11 +3,11 @@
 package com.kelin.archetype.common.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Preconditions;
 import com.kelin.archetype.common.json.JsonConverter;
 import com.kelin.archetype.common.utils.HttpUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
-import org.assertj.core.util.Preconditions;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.Dsl;
 import org.asynchttpclient.ListenableFuture;

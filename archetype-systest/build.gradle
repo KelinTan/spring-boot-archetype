@@ -1,9 +1,10 @@
 description = 'archetype-systest'
 dependencies {
-    compile project(':archetype-common')
+    compile project(':archetype-database')
 
     api 'org.springframework.boot:spring-boot-starter-test'
     api 'org.assertj:assertj-core'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    api "org.junit.jupiter:junit-jupiter"
+//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
     implementation 'com.h2database:h2'
 }

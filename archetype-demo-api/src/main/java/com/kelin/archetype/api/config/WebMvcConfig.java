@@ -2,7 +2,7 @@
 
 package com.kelin.archetype.api.config;
 
-import com.kelin.archetype.core.tracing.log.TracingMDCInterceptor;
+import com.kelin.archetype.api.interceptor.TracingMDCInterceptor;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
 import org.jetbrains.annotations.NotNull;

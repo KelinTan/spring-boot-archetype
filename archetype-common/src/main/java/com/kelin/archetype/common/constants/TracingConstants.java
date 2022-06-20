@@ -12,4 +12,5 @@ public class TracingConstants {
 
     public static final String MDC_TRACING = "X-TRACE";
     public static final String ERROR_META_TRACE_ID = "traceId";
+    public static final String CUSTOM_TRACING_NAME_HEADER = "X-CUSTOM-TRACE-NAME";
 }
