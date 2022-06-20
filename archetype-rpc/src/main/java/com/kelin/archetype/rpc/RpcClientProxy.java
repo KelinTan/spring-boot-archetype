@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.rpc;
 
+import com.kelin.archetype.common.constants.TracingConstants;
 import com.kelin.archetype.common.http.AsyncHttpRequest;
 import com.kelin.archetype.common.http.HttpConfig;
 import com.kelin.archetype.common.http.HttpRequest;
@@ -253,7 +254,7 @@ public class RpcClientProxy implements InvocationHandler {
             Map<String, Object> paramsMap,
             Map<String, Object> headerMap,
             Object requestBody) {
-        headerMap.put(RpcConstants.RPC_NAME_HEADER, getRpcName(method.getName()));
+        headerMap.put(TracingConstants.CUSTOM_TRACING_NAME_HEADER, getRpcName(method.getName()));
         HttpRequest request = HttpRequest
                 .host(uri)
                 .withConfig(config)
@@ -284,7 +285,7 @@ public class RpcClientProxy implements InvocationHandler {
             Map<String, Object> paramsMap,
             Map<String, Object> headerMap,
             Object requestBody) {
-        headerMap.put(RpcConstants.RPC_NAME_HEADER, getRpcName(method.getName(), true));
+        headerMap.put(TracingConstants.CUSTOM_TRACING_NAME_HEADER, getRpcName(method.getName(), true));
 
         AsyncHttpRequest request = AsyncHttpRequest
                 .host(uri)
