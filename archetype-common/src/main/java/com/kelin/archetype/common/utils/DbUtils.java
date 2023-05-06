@@ -1,6 +1,6 @@
 // Copyright 2020 Kelin Inc. All rights reserved.
 
-package com.kelin.archetype.database;
+package com.kelin.archetype.common.utils;
 
 /**
  * @author Kelin Tan

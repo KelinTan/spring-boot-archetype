@@ -4,7 +4,7 @@ package com.kelin.archetype.test.listener;
 
 import com.kelin.archetype.common.exception.RestExceptionFactory;
 import com.kelin.archetype.common.log.LogMessageBuilder;
-import com.kelin.archetype.database.DbUtils;
+import com.kelin.archetype.common.utils.DbUtils;
 import com.kelin.archetype.database.FakeDataSource;
 import com.kelin.archetype.database.MapperTable;
 import com.kelin.archetype.database.sharding.ShardingStrategy;
@@ -124,11 +124,13 @@ public class DatabaseTestExecutionListener extends AbstractTestExecutionListener
             FakeDataSource fakeDataSource = (FakeDataSource) dataSource;
             mockDatabaseConfig.setSchemaLocation(fakeDataSource.getSchemaLocation());
             mockDatabaseConfig.setDataLocation(fakeDataSource.getDataLocation());
-        } else {
+        }
+        if (StringUtils.isNotEmpty(mockDatabase.schema())) {
             mockDatabaseConfig.setSchemaLocation(mockDatabase.schema());
+        }
+        if (StringUtils.isNotEmpty(mockDatabase.data())) {
             mockDatabaseConfig.setDataLocation(mockDatabase.data());
         }
-
         return mockDatabaseConfig;
     }
 

@@ -18,6 +18,8 @@ jobs:
         restore-keys: ${{ runner.os }}-gradle
     - name: check
       run: ./gradlew checkcode
+    - name: Check Docker version
+      run: docker version
     - name: test
       run: ./gradlew test aggregateJacocoReport
     - uses: codecov/codecov-action@v1

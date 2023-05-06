@@ -3,8 +3,10 @@
 package com.kelin.archetype.database.mybatis;
 
 import com.kelin.archetype.common.constants.Profile;
-import com.kelin.archetype.database.DbUtils;
+import com.kelin.archetype.common.utils.DbUtils;
 import com.kelin.archetype.database.FakeDataSource;
+import com.kelin.archetype.database.FakeDataSourceType;
+import com.kelin.archetype.database.MySQLContainerInitializer;
 import com.kelin.archetype.database.mybatis.plugins.MybatisShardingPlugin;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
@@ -91,14 +93,30 @@ public class MybatisDatabaseRegistrar implements ImportBeanDefinitionRegistrar, 
 
     private DataSource createDataSource(MybatisDatabase database) {
         if (Profile.isTest()) {
-            return new FakeDataSource(database.schemaLocation(), database.dataLocation());
+            if (database.fakeDataSourceType() == FakeDataSourceType.TEST_CONTAINERS) {
+                MySQLContainerInitializer instance = MySQLContainerInitializer.getContainer(database.name());
+                if (!instance.isRunning()) {
+                    instance.start();
+                }
+
+                FakeDataSource fakeDataSource = new FakeDataSource(database.schemaLocation(), database.dataLocation());
+                fakeDataSource.setJdbcUrl(instance.getJdbcUrl());
+                fakeDataSource.setUsername(instance.getUsername());
+                fakeDataSource.setPassword(instance.getPassword());
+                return fakeDataSource;
+            } else {
+                FakeDataSource fakeDataSource = new FakeDataSource(database.schemaLocation(), database.dataLocation());
+                fakeDataSource.setJdbcUrl("jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false");
+                return fakeDataSource;
+            }
+        } else {
+            return DataSourceBuilder.create()
+                    .type(HikariDataSource.class)
+                    .url(resolvePlaceholders(database.databaseUrl()))
+                    .username(resolvePlaceholders(database.databaseUserName()))
+                    .password(resolvePlaceholders(database.databasePassword()))
+                    .build();
         }
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .url(resolvePlaceholders(database.databaseUrl()))
-                .username(resolvePlaceholders(database.databaseUserName()))
-                .password(resolvePlaceholders(database.databasePassword()))
-                .build();
     }
 
     private String resolvePlaceholders(String placeHolder) {

@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
         mapperPackages = "com.kelin.archetype.database.mapper.biz",
         mapperXmlLocation = "classpath:mappers/biz/*.xml",
         typeAliasesPackage = "com.kelin.archetype.database.entity.biz",
-        schemaLocation = "classpath:schema/biz/*.sql",
+        schemaLocation = "classpath:schema/biz/mysql_*.sql",
         dataLocation = "classpath:data/biz/*.sql"
 )
 public class BizDatabase {
