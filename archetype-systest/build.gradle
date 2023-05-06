@@ -1,9 +1,13 @@
 description = 'archetype-systest'
 dependencies {
-    compile project(':archetype-database')
+    implementation project(':archetype-database')
 
     api 'org.springframework.boot:spring-boot-starter-test'
     api 'org.assertj:assertj-core'
     api "org.junit.jupiter:junit-jupiter"
     implementation 'com.h2database:h2'
+    implementation "org.testcontainers:testcontainers:1.18.0"
+    implementation "org.testcontainers:mysql:1.18.0"
+    implementation "org.testcontainers:junit-jupiter:1.18.0"
+
 }

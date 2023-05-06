@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 import org.springframework.test.context.web.ServletTestExecutionListener
 
+
 /**
  * @author Kelin Tan
  */
@@ -28,3 +29,4 @@ import org.springframework.test.context.web.ServletTestExecutionListener
 )
 @ContextConfiguration(classes = [DefaultTestConfiguration::class])
 abstract class KtBaseSpringTest : KtTestUtils
+

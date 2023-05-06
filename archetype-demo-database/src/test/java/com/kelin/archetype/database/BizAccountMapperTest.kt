@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 /**
  * @author Kelin Tan
  */
-@MockDatabase(name = BizDatabase.NAME)
+@MockDatabase(name = BizDatabase.NAME, schema = "classpath:schema/biz/mysql_*.sql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class BizAccountMapperTest : KtBaseSpringTest() {
     @Autowired

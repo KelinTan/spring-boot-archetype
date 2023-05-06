@@ -2,6 +2,7 @@
 
 package com.kelin.archetype.database.mybatis;
 
+import com.kelin.archetype.database.FakeDataSourceType;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -61,4 +62,9 @@ public @interface MybatisDatabase {
      * Database data location for test
      */
     String dataLocation() default "";
+
+    /**
+     * Database fake type
+     */
+    FakeDataSourceType fakeDataSourceType() default FakeDataSourceType.TEST_CONTAINERS;
 }
