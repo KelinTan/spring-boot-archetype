@@ -6,6 +6,11 @@
 
 # Spring Boot 脚手架
 
+## 脚手架系列 
+[纯净的脚手架 Test For Java](https://github.com/KelinTan/spring-boot-archetype-test)
+
+[纯净的脚手架 Test For Kotlin](https://github.com/KelinTan/spring-boot-archetype-test-kotlin)
+
 [TOC]
 
 ## 简介
