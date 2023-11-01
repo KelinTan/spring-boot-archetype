@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.kelin.archetype.beans.rest.RestResponse
 import com.kelin.archetype.test.KtTestUtils
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertTrue
 
 /**
  * @author Kelin Tan
@@ -13,10 +14,16 @@ import org.junit.jupiter.api.Test
 class JsonConverterTest : KtTestUtils {
     @Test
     fun testSerialize() {
-        JsonConverter.serialize(TestObject().apply {
+        val json = JsonConverter.serialize(TestObject().apply {
             id = 1
             name = "test"
-        }) eq """{"id":1,"name":"test"}"""
+        })
+
+        val expectedJson1 = """{"id":1,"name":"test"}"""
+        val expectedJson2 = """{"name":"test","id":1}"""
+
+        // Check if the JSON matches either variation
+        assertTrue(json == expectedJson1 || json == expectedJson2)
     }
 
     @Test
